@@ -7,10 +7,21 @@ import java.util.regex.Pattern;
 
 public abstract class NumberPattern {
 
-	static final String normalize(String s) {
+	public static final String normalize(String s) {
 			String result = Normalizer.normalize(s, Form.NFKC);
 			result = result.replaceAll("―", "-");
 			return result;
+	}
+
+	/**
+	 * 漢数字表現をアラビア数字表現に変換します。
+	 * 1または2桁の数字しか処理できません。
+	 */
+	public static String translate漢数字(String s) {
+		return s.replaceFirst("^十$", "10").replaceFirst("^十", "1").replaceAll("十", "")
+				.replaceAll("一", "1").replaceAll("二", "2").replaceAll("三", "3")
+				.replaceAll("四", "4").replaceAll("五", "5").replaceAll("六", "6")
+				.replaceAll("七", "7").replaceAll("八", "8").replaceAll("九", "9");
 	}
 
 	public static final NumberPattern 数字 = new NumberPattern("", "[0-9０-９]+", "") {
@@ -26,13 +37,6 @@ public abstract class NumberPattern {
 			return Normalizer.normalize(s, Form.NFKC);
 		}
 	};
-
-	static String translate漢数字(String s) {
-		return s.replaceFirst("^十$", "10").replaceFirst("^十", "1").replaceAll("十", "")
-				.replaceAll("一", "1").replaceAll("二", "2")
-				.replaceAll("三", "3").replaceAll("四", "4").replaceAll("五", "5").replaceAll("六", "6")
-				.replaceAll("七", "7").replaceAll("八", "8").replaceAll("九", "9");
-	}
 
 	public static final NumberPattern 漢数字 = new NumberPattern("", "[一二三四五六七八九十]+", "") {
 		@Override
@@ -54,8 +58,6 @@ public abstract class NumberPattern {
 			return normalize(s);
 		}
 	};
-			
-			
 
 	public final String prefix, body, suffix, full;
 	public final Pattern pattern;
