@@ -28,6 +28,11 @@ public class ItemPattern {
 	    return new ItemPattern(prefix, body, suffix, conj, pattern);
 	}
 	
+	/**
+	 * 見出し番号からidを得ます。
+	 * idは半角数字をハイフンでつないだものです。
+	 * 例えば見出し番号が「別表第五の一の三」ならidは「5-1-3」です。
+	 */
 	public String id(String itemNumber) {
 		Matcher m = body.bodyPattern.matcher(itemNumber);
 		if (!m.find())
