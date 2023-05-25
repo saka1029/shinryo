@@ -7,12 +7,24 @@ import java.util.regex.Pattern;
 
 public abstract class NumberPattern {
 
+	static final String カタカナ = "アイウエオ"
+	    + "カキクケコ"
+	    + "サシスセソ"
+	    + "タチツテト"
+	    + "ナニヌネノ"
+	    + "ハヒフヘホ"
+	    + "マミムメモ"
+	    + "ヤユヨ"
+	    + "ラリルレロ"
+	    + "ワヰヱヲ"
+	    + "ン";
+
 	public static final String normalize(String s) {
 			String result = Normalizer.normalize(s, Form.NFKC);
 			result = result.replaceAll("―", "-");
 			return result;
 	}
-
+	
 	/**
 	 * 漢数字表現をアラビア数字表現に変換します。
 	 * 1または2桁の数字しか処理できません。
@@ -38,6 +50,26 @@ public abstract class NumberPattern {
 		}
 	};
 
+	public static final NumberPattern カナ = new NumberPattern("", "[" + カタカナ + "]", "") {
+		@Override
+		public String translate(String s) {
+		    int index = カタカナ.indexOf(s);
+		    if (index < 0)
+		        throw new RuntimeException("「" + s + "」はカタカナ1文字ではありません");
+		    return "" + (index + 1);
+		}
+	};
+
+	public static final NumberPattern 括弧カナ = new NumberPattern("[(（]", "[" + カタカナ + "]", "[)）]") {
+		@Override
+		public String translate(String s) {
+		    int index = カタカナ.indexOf(s);
+		    if (index < 0)
+		        throw new RuntimeException("「" + s + "」はカタカナ1文字ではありません");
+		    return "" + (index + 1);
+		}
+	};
+
 	public static final NumberPattern 漢数字 = new NumberPattern("", "[一二三四五六七八九十]+", "") {
 		@Override
 		public String translate(String s) {
@@ -59,21 +91,21 @@ public abstract class NumberPattern {
 		}
 	};
 
-	public final String prefix, body, suffix, full;
-	public final Pattern pattern;
+	public final String prefix, body, suffix, fullPattern;
+	public final Pattern bodyPattern;
 
 	NumberPattern(String prefix, String body, String suffix) {
 		this.prefix = prefix;
 		this.body = body;
 		this.suffix = suffix;
-		this.full = prefix + body + suffix;
-		this.pattern = Pattern.compile(body);
+		this.fullPattern = prefix + body + suffix;
+		this.bodyPattern = Pattern.compile(body);
 	}
 
 	public abstract String translate(String s);
 
 	public String id(String number) {
-		Matcher m = pattern.matcher(number);
+		Matcher m = bodyPattern.matcher(number);
 		if (!m.find())
 			throw new RuntimeException(number + "に" + body + "がありません");
 		return translate(m.group());

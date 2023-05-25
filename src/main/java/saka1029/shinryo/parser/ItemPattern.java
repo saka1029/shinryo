@@ -18,18 +18,18 @@ public class ItemPattern {
 	
 	public static ItemPattern conj(String prefix, NumberPattern body, String suffix, String conj) {
 		Pattern pattern = Pattern.compile(
-            "%1$s%2$s(%4$s%2$s)*%3$s".formatted(prefix, body.body, suffix, conj));
+            "%1$s%2$s(%4$s%2$s)*%3$s".formatted(prefix, body.fullPattern, suffix, conj));
 	    return new ItemPattern(prefix, body, suffix, conj, pattern);
 	}
 	
 	public static ItemPattern noConj(String prefix, NumberPattern body, String suffix) {
 		Pattern pattern = Pattern.compile(
-            "%1$s%2$s%3$s".formatted(prefix, body.body, suffix));
+            "%1$s%2$s%3$s".formatted(prefix, body.fullPattern, suffix));
 	    return new ItemPattern(prefix, body, suffix, null, pattern);
 	}
 	
 	public String id(String itemNumber) {
-		Matcher m = body.pattern.matcher(itemNumber);
+		Matcher m = body.bodyPattern.matcher(itemNumber);
 		if (!m.find())
 			throw new RuntimeException(itemNumber + "に" + pattern + "がありません");
 		StringBuilder sb = new StringBuilder();

@@ -9,6 +9,7 @@ public class TestTokenType {
 	static final TokenType 別表第漢数字の = TokenType.simple("別表第漢数字の", ItemPattern.conj("別表第", NumberPattern.漢数字, "", "の"));
 	static final TokenType 数字の = TokenType.fromTo("数字の", ItemPattern.conj("", NumberPattern.数字, "", "の"));
 	static final TokenType 漢数字の = TokenType.fromTo("漢数字の", ItemPattern.conj("", NumberPattern.漢数字, "", "の"));
+	static final TokenType 括弧カナ = TokenType.fromTo("括弧カナ", ItemPattern.noConj("", NumberPattern.括弧カナ, ""));
 
     @Test
     public void testMatchの() {
@@ -38,6 +39,16 @@ public class TestTokenType {
         assertEquals("四の二から四の十二の三まで", token.number);
         assertEquals("削除", token.header);
         assertEquals("4-2+4-12-3", token.id);
+    }
+
+    @Test
+    public void testMatchカナからまで() {
+        String line = "(イ)及び(ウ) 削除";
+        Token token = 括弧カナ.match(line);
+        assertNotNull(token);
+        assertEquals("(イ)及び(ウ)", token.number);
+        assertEquals("削除", token.header);
+        assertEquals("2+3", token.id);
     }
 
 }
