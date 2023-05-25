@@ -34,7 +34,9 @@ public class TokenType implements Syntax {
 	    String header = m.group("H");
 	    String from = m.group("F");
 	    String to = m.group("T");
-	    String id = itemPattern.id(from) + (to.equals("") ? "" : "+" + itemPattern.id(to));
+	    String id = itemPattern.id(from);
+	    if (!to.equals(""))
+	        id += "+" + itemPattern.id(to);
 	    return new Token(this, number, header, id);
 	}
 
