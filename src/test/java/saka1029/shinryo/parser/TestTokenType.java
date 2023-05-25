@@ -1,6 +1,8 @@
 package saka1029.shinryo.parser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -51,4 +53,16 @@ public class TestTokenType {
         assertEquals("2+3", token.id);
     }
 
+    @Test
+    public void testIsNext() {
+    	assertTrue(TokenType.isNext("1", "2"));
+    	assertTrue(TokenType.isNext("1", "1-2"));
+    	assertTrue(TokenType.isNext("1-2", "2"));
+    	assertTrue(TokenType.isNext("1-2", "1-3"));
+    	assertTrue(TokenType.isNext("1-2", "1-2-2"));
+    	assertTrue(TokenType.isNext("1-2-3", "2"));
+    	assertTrue(TokenType.isNext("1-2-3", "1-3"));
+    	assertTrue(TokenType.isNext("1-2-3", "1-2-4"));
+    	assertTrue(TokenType.isNext("1-2-3", "1-2-3-2"));
+    }
 }

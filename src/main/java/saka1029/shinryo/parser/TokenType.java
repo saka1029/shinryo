@@ -1,7 +1,10 @@
 package saka1029.shinryo.parser;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TokenType implements Syntax {
 	static final String PREFIX = "^\\s*(?<N>";
@@ -44,5 +47,20 @@ public class TokenType implements Syntax {
 	public String toString() {
 		return name;
 	}
-
+	
+	public static boolean isNext(String id1, String id2) {
+		List<Integer> ints = Stream.of(id1.split("-"))
+			.map(e -> Integer.parseInt(e))
+			.toList();
+		for (int i = 0, size = ints.size(); i < size; ++i) {
+			String next = ints.subList(0, i).stream()
+				.map(e -> "" + e)
+				.collect(Collectors.joining("-"))
+				+ (i == 0 ? "" : "-") + (ints.get(i) + 1);
+			if (id2.equals(next))
+				return true;
+		}
+		return id2.equals(id1 + "-2");
+	}
+	
 }
