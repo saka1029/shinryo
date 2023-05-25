@@ -9,7 +9,7 @@ public class TestTokenType {
 	static final TokenType 別表第漢数字の = TokenType.simple("別表第漢数字の", ItemPattern.conj("別表第", NumberPattern.漢数字, "", "の"));
 	static final TokenType 数字の = TokenType.fromTo("数字の", ItemPattern.conj("", NumberPattern.数字, "", "の"));
 	static final TokenType 漢数字の = TokenType.fromTo("漢数字の", ItemPattern.conj("", NumberPattern.漢数字, "", "の"));
-	static final TokenType 括弧カナ = TokenType.fromTo("括弧カナ", ItemPattern.noConj("", NumberPattern.括弧カナ, ""));
+	static final TokenType 括弧カナ = TokenType.fromTo("括弧カナ", ItemPattern.simple("", NumberPattern.括弧カナ, ""));
 
     @Test
     public void testMatchの() {

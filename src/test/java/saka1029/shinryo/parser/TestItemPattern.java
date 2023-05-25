@@ -7,7 +7,7 @@ import org.junit.Test;
 public class TestItemPattern {
 
 	static final ItemPattern 別表第漢数字の = ItemPattern.conj("別表第", NumberPattern.漢数字, "", "の");
-	static final ItemPattern 区分番号 = ItemPattern.noConj("", NumberPattern.区分番号, "");
+	static final ItemPattern 区分番号 = ItemPattern.simple("", NumberPattern.区分番号, "");
 	static final ItemPattern 数字の = ItemPattern.conj("", NumberPattern.数字, "", "の");
 
 	@Test

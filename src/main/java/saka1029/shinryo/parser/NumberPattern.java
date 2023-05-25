@@ -7,17 +7,18 @@ import java.util.regex.Pattern;
 
 public abstract class NumberPattern {
 
-	static final String カタカナ = "アイウエオ"
-	    + "カキクケコ"
-	    + "サシスセソ"
-	    + "タチツテト"
-	    + "ナニヌネノ"
-	    + "ハヒフヘホ"
-	    + "マミムメモ"
-	    + "ヤユヨ"
-	    + "ラリルレロ"
-	    + "ワヰヱヲ"
-	    + "ン";
+	static final String カタカナ =
+	    "アイウエオカキクケコ"
+	    + "サシスセソタチツテト"
+	    + "ナニヌネノハヒフヘホ"
+	    + "マミムメモヤユヨ"
+	    + "ラリルレロワヰヱヲン";
+	
+	public static final String イロハ =
+	    "イロハニホヘトチリヌルヲ"
+	    + "ワカヨタレソツネナラム"
+	    + "ウヰノオクヤマケフコエテ"
+	    + "アサキユメミシヱヒモセスン";
 
 	public static final String normalize(String s) {
 			String result = Normalizer.normalize(s, Form.NFKC);
