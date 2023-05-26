@@ -48,6 +48,13 @@ public class TokenType implements Syntax {
 		return name;
 	}
 	
+	/**
+	 * id1の次にid2が続く場合はtrue、そうでない場合はfalseを返します。
+	 * trueを返す例は以下のとおりです。
+	 * id1が「1」のとき、id2が「2」または「1-2」
+	 * id1が「1-2」のとき、id2が「2」または「1-3」または「1-2-2」
+	 * id1が「1-2-3」のとき、id2が「2」または「1-3」または「1-2-4」または「1-2-3-2」
+	 */
 	public static boolean isNext(String id1, String id2) {
 		List<Integer> ints = Stream.of(id1.split("-"))
 			.map(e -> Integer.parseInt(e))
