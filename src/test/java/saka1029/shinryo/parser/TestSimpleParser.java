@@ -155,16 +155,15 @@ public class TestSimpleParser {
 	        }
 
 	        void 通則(Node parent) {
-	            if (!eat(通則))
-	                throw error("通則なし");
-	            Node n = add(parent, prev);
-	            数字(n);
+	            if (eat(通則)) {
+                    Node n = add(parent, prev);
+                    数字(n);
+	            }
 	        }
 	        
 	        void 区分番号(Node parent) {
 	            while (eat(区分番号)) {
 	                Node n = add(parent, prev);
-//                    OUT.println("区分番号: " + prev);
                     数字(n);
                     注(n);
 	            }
@@ -176,11 +175,9 @@ public class TestSimpleParser {
 	                if (eat(区分)) {
 	                    Node k = add(n, prev);
 	                    区分番号(k);
-	                } else if (eat(数字)) {
-	                    Node k = add(n, prev);
-	                    数字(k);
-	                } else
-	                    throw error("節の下に区分または数字がありません。");
+	                } else {
+	                    数字(n);
+	                }
 	            }
 	        }
 
