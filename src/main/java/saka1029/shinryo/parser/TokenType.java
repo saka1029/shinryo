@@ -7,8 +7,16 @@ public record TokenType(
     String name,
     Pattern pattern) {
 
+    public static final TokenType ROOT = new TokenType("ROOT", "");
     public static final TokenType START = new TokenType("START", "");
     
+	static final String アイウ =
+	    "アイウエオカキクケコ"
+	    + "サシスセソタチツテト"
+	    + "ナニヌネノハヒフヘホ"
+	    + "マミムメモヤユヨ"
+	    + "ラリルレロワヰヱヲン";
+
 	public static final String イロハ =
 	    "イロハニホヘトチリヌルヲ"
 	    + "ワカヨタレソツネナラム"
@@ -28,5 +36,4 @@ public record TokenType(
             ++i;
         return new Token(this, matcher.group("N"), matcher.group("H"), fileName, pageNo, lineNo, i);
     }
-
 }
