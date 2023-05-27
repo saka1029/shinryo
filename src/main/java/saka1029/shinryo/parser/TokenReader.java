@@ -40,7 +40,7 @@ public class TokenReader {
                     }
                     if (token == null)
                         token = new Token(TokenType.START, null, null, fileName, pageNo, lineNo, 0);
-                    token.body().add(line);
+                    token.body().add(line.trim());
                 }
             }
             if (token != null)
