@@ -1,10 +1,15 @@
-package saka1029.shinryo.parser;
+package saka1029.shinryo.parser0;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import saka1029.shinryo.parser0.ItemPattern;
+import saka1029.shinryo.parser0.NumberPattern;
+import saka1029.shinryo.parser0.Token;
+import saka1029.shinryo.parser0.TokenType;
 
 public class TestTokenType {
 

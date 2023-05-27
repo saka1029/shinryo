@@ -1,4 +1,4 @@
-package saka1029.shinryo.parser;
+package saka1029.shinryo.parser0;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,8 +17,6 @@ public class TestSimpleParser {
 	static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 	
 	record Token(TokenType type, int indent, String number, String header) { 
-		public static final Token EOT = new Token(null, 0, null, null);
-
 		@Override
 		public String toString() {
 			return "Token(%s, %d, %s, %s)".formatted(type.name, indent, number, header);
@@ -116,11 +114,11 @@ public class TestSimpleParser {
 		}
 		
 		Token get() {
-			return index < max ? tokens.get(index++) : Token.EOT;
+			return index < max ? tokens.get(index++) : null;
 		}
 		
 		boolean eat(TokenType expected) {
-			if (token == Token.EOT)
+			if (token == null)
 				return false;
 			if (token.type.equals(expected)) {
 				eaten = token;
@@ -131,7 +129,7 @@ public class TestSimpleParser {
 		}
 		
 		boolean eatInner(Node parent, TokenType expected) {
-			if (token == Token.EOT)
+			if (token == null)
 				return false;
 			if (token.indent > parent.token.indent && token.type.equals(expected)) {
 				eaten = token;
@@ -217,7 +215,7 @@ public class TestSimpleParser {
 	        public void parse(Node parent) {
 	            通則(parent);
 	            節(parent);
-	            if (token != Token.EOT)
+	            if (token != null)
 	                throw error("未処理のトークン: %s", tokens.subList(index - 1, max));
 	        }
 	    }.root();

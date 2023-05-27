@@ -1,8 +1,11 @@
-package saka1029.shinryo.parser;
+package saka1029.shinryo.parser0;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import saka1029.shinryo.parser0.ItemPattern;
+import saka1029.shinryo.parser0.NumberPattern;
 
 public class TestItemPattern {
 

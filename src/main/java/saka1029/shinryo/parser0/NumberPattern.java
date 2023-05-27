@@ -1,4 +1,4 @@
-package saka1029.shinryo.parser;
+package saka1029.shinryo.parser0;
 
 import java.text.Normalizer;
 import java.text.Normalizer.Form;

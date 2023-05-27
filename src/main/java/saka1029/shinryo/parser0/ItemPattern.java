@@ -1,4 +1,4 @@
-package saka1029.shinryo.parser;
+package saka1029.shinryo.parser0;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
