@@ -3,6 +3,21 @@ package saka1029.shinryo.parser;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * 文法:
+ * 調剤告示 = [ "通則" 数字 ] 節
+ * 節       = { "節" ( "区分" 区分番号 | 数字 ) }
+ * 数字     = { "数字" カナ 注 }
+ * カナ     = { "カナ" { "括弧数字" } }
+ * 区分番号 = { "区分番号" 数字 注 }
+ * 注       = "注" カナ | "注１" カナ 数字
+ * OR
+ * 文法:
+ * 調剤告示 = [ "通則" 数字 ] { "節" ( "区分" { "区分番号" 数字 注 } | 数字 ) }
+ * 数字     = { "数字" カナ 注 }
+ * カナ     = { "カナ" { "括弧数字" } }
+ * 注       = "注" カナ | "注１" カナ 数字
+ */
 public class TKParser extends Parser {
     static final Logger logger = Logger.getLogger(TKParser.class.getName());
 
