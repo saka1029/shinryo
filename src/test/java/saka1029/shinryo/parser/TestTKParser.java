@@ -12,10 +12,7 @@ import saka1029.shinryo.common.Logging;
 
 public class TestTKParser {
 
-    static {
-        Logging.init();
-    }
-
+    static { Logging.init(); } 
     static final Logger logger = Logger.getLogger(TestTKParser.class.getSimpleName());
 
     static void print(Node parent, int level) {
