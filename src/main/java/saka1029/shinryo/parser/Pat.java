@@ -19,6 +19,7 @@ public class Pat {
     public static final String 漢数字 = "[" + 漢字数字 + "]+";
     public static final String 漢数字の = repeat(漢数字, "の");
     public static final String 括弧漢数字 = paren(漢数字);
+    public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[-ー－‐]", 数字);
 
     public static String numberHeader(String number) {
         return "\\s*(?<N>" + number + ")\\s+(?<H>.*)\\s*";

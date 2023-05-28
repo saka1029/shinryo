@@ -13,10 +13,6 @@ public record Token(
     int indent,
     List<String> body) {
 	
-	public static Token root(String name) {
-		return new Token(TokenType.ROOT, "", name, "", -1, -1, -1);
-	}
-    
     public Token(TokenType type, String number, String header, String fileName, int pageNo, int lineNo, int indent) {
         this(type, number, header, fileName, pageNo, lineNo, indent, new ArrayList<>());
     }

@@ -1,5 +1,6 @@
 package saka1029.shinryo.parser;
 
+import java.io.IOException;
 import java.util.List;
 
 public abstract class Parser {
@@ -44,14 +45,20 @@ public abstract class Parser {
 		return child;
 	}
 	
+	public abstract List<TokenType> types();
 	public abstract void parse(Node parent);
 	
-	public Node parse(String docName, List<Token> tokens) {
+	public Node parse(List<Token> tokens) {
 		this.tokens = tokens;
 		this.max = tokens.size();
 		this.token = get();
-		Node root = Node.root(docName);
+		Node root = new Node(null);
 		parse(root);
 		return root;
+	}
+	
+	public Node parse(String inTxtFile) throws IOException {
+	    List<Token> tokens = TokenReader.read(types(), inTxtFile);
+	    return parse(tokens);
 	}
 }

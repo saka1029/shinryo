@@ -10,9 +10,4 @@ public record Node(
     public Node(Token token) {
         this(token, new ArrayList<>());
     }
-    
-    public static Node root(String name) {
-    	return new Node(Token.root(name));
-    }
-
 }
