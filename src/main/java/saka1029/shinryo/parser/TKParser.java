@@ -17,6 +17,9 @@ import java.util.logging.Logger;
  * 数字     = { "数字" カナ 注 }
  * カナ     = { "カナ" { "括弧数字" } }
  * 注       = "注" カナ | "注１" カナ 数字
+ * 
+ * 「注」は単一の場合には「"注" カナ」であるが、
+ * 複数の注が連続する場合には「"注１" カナ」、「"２" カナ」、「"３" カナ」...となる。
  */
 public class TKParser extends Parser {
     static final Logger logger = Logger.getLogger(TKParser.class.getName());
