@@ -15,13 +15,13 @@ public class TestTokenReader {
 
     @Test
     public void testRead() throws IOException {
-		String inFile = "data/04-t-kokuji.txt";
+		String inFile = "data/04tk.txt";
 		List<Token> tokens = TokenReader.read(TKParser.TYPES, inFile);
 //		for (Token t : tokens)
 //		    OUT.println(t);
-		assertEquals(212, tokens.size());
-		assertEquals(TKParser.数字, tokens.get(211).type());
-		assertEquals("２", tokens.get(211).number());
+		assertEquals(214, tokens.size());
+		assertEquals(TKParser.数字, tokens.get(213).type());
+		assertEquals("２", tokens.get(213).number());
     }
 
 }
