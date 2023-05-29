@@ -2,6 +2,7 @@ package saka1029.shinryo.parser;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
@@ -19,9 +20,11 @@ public class TestTKParser {
     @Test
     public void testParse() throws IOException {
         String inTxtFile = "data/04-t-kokuji.txt";
+        String outTxtFile = "data/04-t-kokuji-parsed.txt";
         Node root = new TKParser().parse(inTxtFile);
-//        root.print(logger::info);
-        root.print(OUT::println);
+        try (PrintWriter w = new PrintWriter(outTxtFile)) {
+			root.print(w::println);
+        }
     }
 
 }

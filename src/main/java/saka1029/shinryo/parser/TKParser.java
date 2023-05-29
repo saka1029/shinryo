@@ -4,22 +4,20 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
+ * 調剤告示用パーサ。
+ * 
  * 文法:
  * 調剤告示 = [ "通則" 数字 ] 節
  * 節       = { "節" ( "区分" 区分番号 | 数字 ) }
  * 数字     = { "数字" カナ 注 }
  * カナ     = { "カナ" { "括弧数字" } }
  * 区分番号 = { "区分番号" 数字 注 }
- * 注       = "注" カナ | "注１" カナ 数字
- * OR
- * 文法:
- * 調剤告示 = [ "通則" 数字 ] { "節" ( "区分" { "区分番号" 数字 注 } | 数字 ) }
- * 数字     = { "数字" カナ 注 }
- * カナ     = { "カナ" { "括弧数字" } }
- * 注       = "注" カナ | "注１" カナ 数字
+ * 注       = "注" カナ | "注１" カナ 注数字
+ * 注数字   = { "数字" カナ 注 }
  * 
  * 「注」は単一の場合には「"注" カナ」であるが、
  * 複数の注が連続する場合には「"注１" カナ」、「"２" カナ」、「"３" カナ」...となる。
+ * 「注数字」は「数字」と同一であるが、「"数字"」に対する制約が異なる。
  */
 public class TKParser extends Parser {
     static final Logger logger = Logger.getLogger(TKParser.class.getName());
@@ -50,15 +48,23 @@ public class TKParser extends Parser {
         }
     }
 
-    void 注(Node parent) {
+   void 注(Node parent) {
         if (eatChild(parent, 注)) {
             Node n = add(parent, eaten);
             カナ(n);
         } else if (eatChild(parent, 注１)) {
             Node n = add(parent, eaten);
             カナ(n);
-            数字(parent);
+            注数字(parent, n);
         }
+    }
+    
+    void 注数字(Node parent, Node tyu) { // tyuはインデント制約用
+    	while (eatChild(tyu, 数字)) {
+    		Node n = add(parent, eaten);
+    		カナ(n);
+    		注(n);
+    	}
     }
 
 	void 数字(Node parent) {
