@@ -2,8 +2,11 @@ package saka1029.shinryo.parser;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class Parser {
+	static final Logger logger = Logger.getLogger(Parser.class.getName());
+
 	List<Token> tokens;
 	int max;
 	int index = 0;
@@ -17,6 +20,12 @@ public abstract class Parser {
 		return index < max ? tokens.get(index++) : null;
 	}
 	
+	boolean is(TokenType expected) {
+		if (token == null)
+			return false;
+		return token.type() == expected;
+	}
+
 	boolean eat(TokenType expected) {
 		if (token == null)
 			return false;
@@ -54,6 +63,8 @@ public abstract class Parser {
 		this.token = get();
 		Node root = new Node(null);
 		parse(root);
+	    if (token != null)
+            logger.warning("未処理のトークン: " + tokens.get(index - 1));
 		return root;
 	}
 	

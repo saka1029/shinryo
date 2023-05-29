@@ -2,7 +2,7 @@ package saka1029.shinryo.parser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public record Node(
     Token token,
@@ -12,30 +12,13 @@ public record Node(
         this(token, new ArrayList<>());
     }
 
-    public void print(Consumer<String> callback) {
-        new Object() {
-            void print(Node node, int level) {
-                if (node.token() == null)
-                    callback.accept("ROOT");
-                else
-                    callback.accept("  ".repeat(level)
-                    	+ node.token.number() + " " + node.token.header());
-                for (Node child : node.children())
-                    print(child, level + 1);
-            }
-        }.print(this, 0);
-
-    }
-    public void debug(Consumer<String> callback) {
-        new Object() {
-            void print(Node node, int level) {
-                if (node.token() == null)
-                    callback.accept("ROOT");
-                else
-                    callback.accept("  ".repeat(level) + node.token());
-                for (Node child : node.children())
-                    print(child, level + 1);
-            }
-        }.print(this, 0);
+    public void visit(BiConsumer<Node, Integer> callback) {
+    	new Object() {
+    		void visit(Node node, int level) {
+    			callback.accept(node, level);
+    			for (Node child : node.children)
+    				visit(child, level + 1);
+    		}
+    	}.visit(this, 0);
     }
 }

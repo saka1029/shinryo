@@ -15,7 +15,8 @@ public class Pat {
 	    + "サシスセソタチツテト"
 	    + "ナニヌネノハヒフヘホ"
 	    + "マミムメモヤユヨ"
-	    + "ラリルレロワヰヱヲン";
+	    + "ラリルレロワヰヱヲン"
+	    + "へ"; // ひらがなの「へ」調剤通知区分１０の３
     public static final String カナ = "[" + アイウ + "]";
     public static final String 括弧カナ = paren(カナ);
     public static final String 漢字数字 = "一二三四五六七八九十";
@@ -23,7 +24,14 @@ public class Pat {
     public static final String 漢数字の = repeat(漢数字, "の", 漢数字);
     public static final String 括弧漢数字 = paren(漢数字);
     public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[-ー－‐]", 数字);
-    public static final String 調剤区分番号 = repeat("[０-９]{2}", "の", 数字);
+    public static final String 調剤告示区分番号 = repeat("[０-９]{2}", "の", 数字);
+    public static final String 調剤通知区分番号 = repeat("区分[０-９]{2}", "の", 数字);
+    public static final String 丸数 = "①②③④⑤⑥⑦⑧⑨⑩"
+    		+ "⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"
+    		+ "㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚"
+    		+ "㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵"
+    		+ "㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
+    public static final String 丸数字 = "[" + 丸数 + "]";
 
     public static String numberHeader(String number) {
         return "\\s*(?<N>" + number + ")\\s+(?<H>.*)\\s*";
