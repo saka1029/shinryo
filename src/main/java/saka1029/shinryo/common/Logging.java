@@ -24,13 +24,15 @@ public class Logging {
         }
     };
 
-    /**
-     * デバッグ用のログ出力
-     */
     public static void init() {
         init(Level.INFO);
     }
 
+    /**
+     * デバッグ用のログ出力です。
+     * JUnitでテストするときに呼び出します。
+     * アプリケーションの中で呼んではいけません。
+     */
     public static void init(Level level) {
         Logger root = Logger.getLogger("");
         for (Handler h : root.getHandlers())
