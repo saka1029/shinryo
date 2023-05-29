@@ -5,9 +5,7 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -19,16 +17,9 @@ public record Node(
         this(token, new ArrayList<>());
     }
 
-    public void visit(BiConsumer<Node, Integer> callback) {
-    	new Object() {
-    		void visit(Node node, int level) {
-    			callback.accept(node, level);
-    			for (Node child : node.children)
-    				visit(child, level + 1);
-    		}
-    	}.visit(this, 0);
-    }
-
+    /**
+     * 自分自身とすべての子（さらにその子も含む）を深さ優先探索で返します。
+     */
     @Override
     public Iterator<NodeLevel> iterator() {
         Deque<NodeLevel> stack = new LinkedList<>();
