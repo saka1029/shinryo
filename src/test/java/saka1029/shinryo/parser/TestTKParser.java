@@ -23,11 +23,10 @@ public class TestTKParser {
         String outTxtFile = "data/04tk-tree.txt";
         Node root = new TKParser().parse(inTxtFile);
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
-			root.visit((node, level) -> {
-				Token token = node.token();
-				if (token != null)
-					w.printf("%s%s %s%n", "  ".repeat(level), token.number(), token.header());
-			});
+            for (NodeLevel e : root)
+				if (e.node().token() != null)
+					w.printf("%s%s %s%n", "  ".repeat(e.level()),
+					    e.node().token().number(), e.node().token().header());
         }
     }
 
