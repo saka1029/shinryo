@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  * 「注」は単一の場合には「"注" カナ」であるが、
  * 複数の注が連続する場合には「"注１" カナ」、「"２" カナ」、「"３" カナ」...となる。
  * 「注数字」は「数字」と同一であるが、「"数字"」に対する制約が異なる。
+ * 「注数字」における「数字」は「注１」よりも右になければならない。
  */
 public class TKParser extends Parser {
     static final Logger logger = Logger.getLogger(TKParser.class.getName());
@@ -26,8 +27,7 @@ public class TKParser extends Parser {
 	static final TokenType 数字 = new TokenType("数字", Pat.numberHeader(Pat.数字));
 	static final TokenType 節 = new TokenType("節", Pat.numberHeader("第" + Pat.数字 + "節"));
 	static final TokenType 区分 = new TokenType("区分", Pat.number("区分"));
-	static final TokenType 区分番号 = new TokenType("区分番号",
-		Pat.numberHeader(Pat.fromTo(Pat.repeat("[０-９]{2}", "の", Pat.数字))));
+	static final TokenType 区分番号 = new TokenType("区分番号", Pat.numberHeader(Pat.fromTo(Pat.調剤区分番号)));
 	static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ));
 	static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"));
 	static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"));

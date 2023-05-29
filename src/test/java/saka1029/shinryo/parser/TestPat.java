@@ -18,7 +18,7 @@ public class TestPat {
 
     @Test
     public void testのからまで() {
-        String s = Pat.numberHeader(Pat.fromTo(Pat.repeat(Pat.数字, "の")));
+        String s = Pat.numberHeader(Pat.fromTo(Pat.repeat(Pat.数字, "の", Pat.数字)));
         Pattern pattern = Pattern.compile(s);
         Matcher m = pattern.matcher("１の２の３から１の３の４まで 削除");
 //        logger.info(s);
@@ -29,7 +29,7 @@ public class TestPat {
 
     @Test
     public void test別表第漢字() {
-        String s = Pat.numberHeader("別表第" + Pat.repeat(Pat.漢数字, "の"));
+        String s = Pat.numberHeader(Pat.repeat("別表第" + Pat.漢数字, "の", Pat.漢数字));
         Pattern pattern = Pattern.compile(s);
         Matcher m = pattern.matcher("別表第十五の二の三 ある届出");
 //        logger.info(s);
