@@ -28,6 +28,10 @@ public class TestTTParser {
 					w.printf("%s%s %s%n", "  ".repeat(e.level()),
 					    e.node().token().number(), e.node().token().header());
         }
+        root.stream()
+            .filter(e -> e.node().token() != null)
+            .filter(e -> e.node().token().type() == TTParser.区分番号)
+            .forEach(e -> OUT.println(e.level() + " " + e.node().token().number() + " " + e.node().token().header()));
     }
 
 }
