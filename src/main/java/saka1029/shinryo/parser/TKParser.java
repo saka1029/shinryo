@@ -26,7 +26,8 @@ public class TKParser extends Parser {
 	static final TokenType 数字 = new TokenType("数字", Pat.numberHeader(Pat.数字));
 	static final TokenType 節 = new TokenType("節", Pat.numberHeader("第" + Pat.数字 + "節"));
 	static final TokenType 区分 = new TokenType("区分", Pat.number("区分"));
-	static final TokenType 区分番号 = new TokenType("区分番号", Pat.numberHeader(Pat.repeat("[０-９]{2}", "の", Pat.数字)));
+	static final TokenType 区分番号 = new TokenType("区分番号",
+		Pat.numberHeader(Pat.fromTo(Pat.repeat("[０-９]{2}", "の", Pat.数字))));
 	static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ));
 	static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"));
 	static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"));

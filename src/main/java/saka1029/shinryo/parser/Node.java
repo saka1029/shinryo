@@ -18,6 +18,20 @@ public record Node(
                 if (node.token() == null)
                     callback.accept("ROOT");
                 else
+                    callback.accept("  ".repeat(level)
+                    	+ node.token.number() + " " + node.token.header());
+                for (Node child : node.children())
+                    print(child, level + 1);
+            }
+        }.print(this, 0);
+
+    }
+    public void debug(Consumer<String> callback) {
+        new Object() {
+            void print(Node node, int level) {
+                if (node.token() == null)
+                    callback.accept("ROOT");
+                else
                     callback.accept("  ".repeat(level) + node.token());
                 for (Node child : node.children())
                     print(child, level + 1);
