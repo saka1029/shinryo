@@ -30,8 +30,10 @@ public class TTParser extends Parser {
 	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.アイウid);
 	public static final TokenType 括弧カナ = new TokenType("括弧カナ", Pat.numberHeader(Pat.括弧カナ), Pat.イロハid);
 	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
+	public static final TokenType 別表 = new TokenType("別表", Pat.number("別表" + Pat.数字), s -> "b" + Pat.正規化(s));
+	public static final TokenType 丸 = new TokenType("丸", Pat.numberHeader("○"), Pat.固定値id("m"));
 
-	static final List<TokenType> TYPES = List.of(通則, 節, 区分番号, 数字, 括弧数字, カナ, 括弧カナ, 丸数字);
+	static final List<TokenType> TYPES = List.of(通則, 節, 区分番号, 数字, 括弧数字, カナ, 括弧カナ, 丸数字, 別表, 丸);
 	
 	@Override
     public List<TokenType> types() {
@@ -105,6 +107,15 @@ public class TTParser extends Parser {
 	        数字(a);
 	    }
 	    節(parent);
+	    while (eat(別表)) {
+	        Node a = add(parent, eaten);
+	        while (eat(括弧数字)) {
+                add(a, eaten);
+	        }
+	        while (eat(丸)) {
+                add(a, eaten);
+	        }
+	    }
 	}
 
 }

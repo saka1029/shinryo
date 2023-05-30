@@ -75,8 +75,8 @@ public class Node implements Iterable<NodeLevel> {
             for (NodeLevel e : this)
 				if (e.node.token != null) {
 					Token t = e.node.token;
-					w.printf("%s%s%s %s : %s:%d:%d:%d%n", e.node.path(), "  ".repeat(e.level),
-					    t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent);
+					w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", e.node.path(), "  ".repeat(e.level),
+					    t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
 				}
         }
     }

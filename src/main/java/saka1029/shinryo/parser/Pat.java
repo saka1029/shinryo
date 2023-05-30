@@ -54,7 +54,7 @@ public class Pat {
     }
         
     public static String 正規化(String s) {
-        s = s.replaceAll("[()（）]|まで|区分|第|章|節", "");
+        s = s.replaceAll("[()（）]|まで|区分|別表|第|章|節", "");
         s = s.replaceAll("[のー－‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び", "+");
