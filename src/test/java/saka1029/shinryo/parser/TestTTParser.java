@@ -25,13 +25,25 @@ public class TestTTParser {
     }
     
     @Test
-    public void testNodeStream() throws IOException {
+    public void testTKNodeStream() throws IOException {
+        String inTxtFile = "data/04tk.txt";
+        logger.info("04調剤告示: " + inTxtFile);
+        Node root = new TKParser().parse(inTxtFile);
+        root.stream()
+            .filter(e -> e.node.token != null)
+            .filter(e -> e.node.token.type == TKParser.区分番号)
+            .forEach(e -> logger.info(e.level + " " + e.node.token.number + " " + e.node.token.header));
+    }
+    
+    @Test
+    public void testTTNodeStream() throws IOException {
         String inTxtFile = "data/04tt.txt";
+        logger.info("04調剤通知: " + inTxtFile);
         Node root = new TTParser().parse(inTxtFile);
         root.stream()
             .filter(e -> e.node.token != null)
             .filter(e -> e.node.token.type == TTParser.区分番号)
-            .forEach(e -> OUT.println(e.level + " " + e.node.token.number + " " + e.node.token.header));
+            .forEach(e -> logger.info(e.level + " " + e.node.token.number + " " + e.node.token.header));
     }
 
 }

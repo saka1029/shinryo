@@ -79,6 +79,5 @@ public class Node implements Iterable<NodeLevel> {
 					    t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent);
 				}
         }
-    	
     }
 }
