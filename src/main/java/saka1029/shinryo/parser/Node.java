@@ -12,43 +12,47 @@ import java.util.Spliterators;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class Node implements Iterable<NodeLevel> {
+public class Node implements Iterable<Node> {
 	public final Node parent;
     public final Token token;
+    public final String id;
+    public final String path;
+    public final int level;
     public final List<Node> children;
 
-    private Node(Node parent, Token token) {
+    private Node(Node parent, Token token, String id, String path, int level) {
     	this.parent = parent;
     	this.token = token;
+    	this.id = id;
+    	this.path = path;
+    	this.level = level;
         this.children = new ArrayList<>();
     }
     
     public static Node root() {
-    	return new Node(null, null);
+    	return new Node(null, null, null, null, 0);
+    }
+    
+    public boolean isRoot() {
+        return parent == null;
     }
     
     public Node addChild(Token token) {
     	Objects.requireNonNull(token, "token");
-    	Node child = new Node(this, token);
+    	String childId = token.id;
+    	String childPath = isRoot() ? childId : path + "." + childId;
+    	Node child = new Node(this, token, childId, childPath, level + 1);
     	children.add(child);
     	return child;
-    }
-    
-    public String id() {
-        return token == null ? null : token.id;
-    }
-    
-    public String path() {
-    	return parent == null ?  null : parent.parent == null ? id() : parent.path() + "." + id();
     }
     
     /**
      * 自分自身とすべての子（さらにその子も含む）を深さ優先探索で返します。
      */
     @Override
-    public Iterator<NodeLevel> iterator() {
-        Deque<NodeLevel> stack = new LinkedList<>();
-        stack.push(new NodeLevel(this, 0));
+    public Iterator<Node> iterator() {
+        Deque<Node> stack = new LinkedList<>();
+        stack.push(this);
         return new Iterator<>() {
 
             @Override
@@ -57,25 +61,25 @@ public class Node implements Iterable<NodeLevel> {
             }
 
             @Override
-            public NodeLevel next() {
-                NodeLevel next = stack.pop();
-                for (int i = next.node.children.size() - 1; i >= 0; --i)
-                    stack.push(new NodeLevel(next.node.children.get(i), next.level + 1));
+            public Node next() {
+                Node next = stack.pop();
+                for (int i = next.children.size() - 1; i >= 0; --i)
+                    stack.push(next.children.get(i));
                 return next;
             }
         };
     }
     
-    public Stream<NodeLevel> stream() {
+    public Stream<Node> stream() {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), 0), false);
     }
     
     public void summary(String outTxtFile) throws IOException {
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
-            for (NodeLevel e : this)
-				if (e.node.token != null) {
-					Token t = e.node.token;
-					w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", e.node.path(), "  ".repeat(e.level),
+            for (Node node : this)
+				if (!node.isRoot()) {
+					Token t = node.token;
+					w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", node.path, "  ".repeat(node.level),
 					    t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
 				}
         }

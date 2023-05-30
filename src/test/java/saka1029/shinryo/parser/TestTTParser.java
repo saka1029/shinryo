@@ -30,9 +30,9 @@ public class TestTTParser {
         logger.info("04調剤告示: " + inTxtFile);
         Node root = new TKParser().parse(inTxtFile);
         root.stream()
-            .filter(e -> e.node.token != null)
-            .filter(e -> e.node.token.type == TKParser.区分番号)
-            .forEach(e -> logger.info(e.level + " " + e.node.token.number + " " + e.node.token.header));
+            .filter(node -> node.token != null)
+            .filter(node -> node.token.type == TKParser.区分番号)
+            .forEach(node -> logger.info(node.level + " " + node.token.number + " " + node.token.header));
     }
     
     @Test
@@ -41,9 +41,9 @@ public class TestTTParser {
         logger.info("04調剤通知: " + inTxtFile);
         Node root = new TTParser().parse(inTxtFile);
         root.stream()
-            .filter(e -> e.node.token != null)
-            .filter(e -> e.node.token.type == TTParser.区分番号)
-            .forEach(e -> logger.info(e.level + " " + e.node.token.number + " " + e.node.token.header));
+            .filter(node -> node.token != null)
+            .filter(node -> node.token.type == TTParser.区分番号)
+            .forEach(node -> logger.info(node.level + " " + node.token.number + " " + node.token.header));
     }
 
 }
