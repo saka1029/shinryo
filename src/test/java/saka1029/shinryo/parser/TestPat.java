@@ -54,7 +54,6 @@ public class TestPat {
         String s = Pat.numberHeader(Pat.区分番号);
         Pattern pattern = Pattern.compile(s);
         Matcher m = pattern.matcher("Ａ００１－２ 初診料");
-        logger.info(s);
         assertTrue(m.matches());
         assertEquals("Ａ００１－２", m.group("N"));
         assertEquals("初診料", m.group("H"));
@@ -80,6 +79,17 @@ public class TestPat {
         assertEquals("22", Pat.漢数字id.apply("（二十二）"));
         assertEquals("29", Pat.漢数字id.apply("（二十九）"));
         assertEquals("29-3-6", Pat.漢数字id.apply("（二十九の三の六）"));
+        assertEquals("2", Pat.アイウid.apply("（イ）"));
+        assertEquals("1", Pat.イロハid.apply("（イ）"));
+        assertEquals("1", Pat.アイウid.apply("（ア）"));
+        assertEquals("36", Pat.イロハid.apply("（ア）"));
+        assertEquals("29", Pat.アイウid.apply("ヘ")); // カタカナ
+        assertEquals("29", Pat.アイウid.apply("へ")); // ひらがな
+        assertEquals("1", Pat.丸数字id.apply("①"));
+        assertEquals("27", Pat.丸数字id.apply("㉗"));
+        assertEquals("10-3-6+10-8", Pat.漢数字id.apply("十の三の六から十の八まで"));
+        assertEquals("19-3-6+12-8", Pat.漢数字id.apply("十九の三の六から十二の八まで"));
+        assertEquals("19-3-6+32-12", Pat.漢数字id.apply("十九の三の六及び三十二の十二"));
     }
 
 }
