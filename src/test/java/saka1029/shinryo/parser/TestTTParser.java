@@ -2,7 +2,6 @@ package saka1029.shinryo.parser;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
@@ -23,6 +22,12 @@ public class TestTTParser {
         String outTxtFile = "data/04tt-tree.txt";
         Node root = new TTParser().parse(inTxtFile);
         root.summary(outTxtFile);
+    }
+    
+    @Test
+    public void testNodeStream() throws IOException {
+        String inTxtFile = "data/04tt.txt";
+        Node root = new TTParser().parse(inTxtFile);
         root.stream()
             .filter(e -> e.node.token != null)
             .filter(e -> e.node.token.type == TTParser.区分番号)

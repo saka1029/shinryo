@@ -2,7 +2,6 @@ package saka1029.shinryo.parser;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
