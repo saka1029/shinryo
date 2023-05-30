@@ -87,7 +87,7 @@ public class TestPat {
         assertEquals("29", Pat.アイウid.apply("へ")); // ひらがな
         assertEquals("1", Pat.丸数字id.apply("①"));
         assertEquals("27", Pat.丸数字id.apply("㉗"));
-        assertEquals("10-3-6+10-8", Pat.漢数字id.apply("十の三の六から十の八まで"));
+        assertEquals("10-3-6+10-10", Pat.漢数字id.apply("十の三の六から十の十まで"));
         assertEquals("19-3-6+12-8", Pat.漢数字id.apply("十九の三の六から十二の八まで"));
         assertEquals("19-3-6+32-12", Pat.漢数字id.apply("十九の三の六及び三十二の十二"));
     }

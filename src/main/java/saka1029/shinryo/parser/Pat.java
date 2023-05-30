@@ -51,17 +51,17 @@ public class Pat {
     public static final Function<String, String> 漢数字id = s -> 漢数字正規化(s);
         
     public static String 正規化(String s) {
-        s = s.replaceAll("[()（）]", "");
+        s = s.replaceAll("[()（）]|まで|区分", "");
         s = s.replaceAll("[のー－‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び", "+");
-        s = s.replaceAll("まで|区分", "");
         return Normalizer.normalize(s, Form.NFKC);
     }
     
     public static String 漢数字正規化(String s) {
         s = 正規化(s);
-        s = s.replaceAll("(^|[+-])十($|[+-])", "$110$2");
+        s = s.replaceAll("(^|[+-])十([+-])", "$110$2");
+        s = s.replaceAll("(^|[+-])十$", "$110");
         s = s.replaceAll("(^|[+-])十", "$11");
         s = s.replaceAll("十", "");
         s = s.replaceAll("一", "1");
