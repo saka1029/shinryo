@@ -18,44 +18,50 @@ public class TestNode {
     static final Token token(String n) {
         return new Token(T, n, "", "", 0, 0, 0);
     }
+    
+    static String number(Node node) {
+    	return node.token == null ? "root" : node.token.number;
+    }
 
     @Test
     public void testIterable() {
-        Node root = new Node(token("root"), List.of(
-            new Node(token("1"), List.of(
-                new Node(token("1.1")),
-                new Node(token("1.2"), List.of(
-                    new Node(token("1.2.1")))),
-                new Node(token("1.3")))),
-            new Node(token("2"))));
+        Node root = Node.root();
+        Node n1 = root.addChild(token("1"));
+        Node n11 = n1.addChild(token("1.1"));
+        Node n12 = n1.addChild(token("1.2"));
+        Node n121 = n12.addChild(token("1.2.1"));
+        Node n13 = n1.addChild(token("1.3"));
+        Node n2 = root.addChild(token("2"));
         Iterator<NodeLevel> it = root.iterator();
-        assertEquals(0, it.next().level());
-        assertEquals(1, it.next().level());
-        assertEquals(2, it.next().level());
-        assertEquals(2, it.next().level());
-        assertEquals(3, it.next().level());
-        assertEquals(2, it.next().level());
-        assertEquals(1, it.next().level());
+        assertEquals(0, it.next().level);
+        assertEquals(1, it.next().level);
+        assertEquals(2, it.next().level);
+        assertEquals(2, it.next().level);
+        assertEquals(3, it.next().level);
+        assertEquals(2, it.next().level);
+        assertEquals(1, it.next().level);
         Iterator<NodeLevel> iu = root.iterator();
-        assertEquals("root", iu.next().node().token().number());
-        assertEquals("1", iu.next().node().token().number());
-        assertEquals("1.1", iu.next().node().token().number());
-        assertEquals("1.2", iu.next().node().token().number());
-        assertEquals("1.2.1", iu.next().node().token().number());
-        assertEquals("1.3", iu.next().node().token().number());
-        assertEquals("2", iu.next().node().token().number());
+        assertEquals("root", number(iu.next().node));
+        assertEquals("1", number(iu.next().node));
+        assertEquals("1.1", number(iu.next().node));
+        assertEquals("1.2", number(iu.next().node));
+        assertEquals("1.2.1", number(iu.next().node));
+        assertEquals("1.3", number(iu.next().node));
+        assertEquals("2", number(iu.next().node));
     }
 
     @Test
     public void testStream() {
-        Node root = new Node(token("root"), List.of(
-            new Node(token("1"), List.of(
-                new Node(token("1.1")),
-                new Node(token("1.2"), List.of(
-                    new Node(token("1.2.1")))),
-                new Node(token("1.3")))),
-            new Node(token("2"))));
-        List<String> result = root.stream().map(e -> e.level() + ":" + e.node().token().number()).toList();
+        Node root = Node.root();
+        Node n1 = root.addChild(token("1"));
+        Node n11 = n1.addChild(token("1.1"));
+        Node n12 = n1.addChild(token("1.2"));
+        Node n121 = n12.addChild(token("1.2.1"));
+        Node n13 = n1.addChild(token("1.3"));
+        Node n2 = root.addChild(token("2"));
+        List<String> result = root.stream()
+        	.map(e -> e.level + ":" + number(e.node))
+        	.toList();
         List<String> expected = List.of("0:root", "1:1", "2:1.1", "2:1.2", "3:1.2.1", "2:1.3", "1:2");
         assertEquals(expected, result);
     }

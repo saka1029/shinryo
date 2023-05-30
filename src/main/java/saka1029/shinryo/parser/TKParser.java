@@ -1,5 +1,6 @@
 package saka1029.shinryo.parser;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -29,10 +30,12 @@ public class TKParser extends Parser {
 	public static final TokenType 区分 = new TokenType("区分", Pat.number("区分"), Pat.固定値id("k"));
 	public static final TokenType 区分番号 = new TokenType("区分番号", Pat.numberHeader(Pat.fromTo(Pat.調剤告示区分番号)), Pat.区分番号id);
 	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.イロハid);
-	public static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"), Pat.固定値id("1"));
-	public static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("1"));
+	public static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"), Pat.固定値id("tyu1"));
+	public static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("tyu1"));
 	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
+	public static final TokenType 注ルート = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("tyu"));
 
+	// 注ルートはパース時に作成するトークンなので、トークンリード時には指定しない。
 	static final List<TokenType> TYPES = List.of(通則, 区分番号, 数字, 節, 区分, カナ, 注１, 注, 括弧数字);
 	
 	@Override
@@ -49,14 +52,27 @@ public class TKParser extends Parser {
         }
     }
 
-   void 注(Node parent) {
+    /**
+     * 「注１」の場合は階層を１段追加する。
+     * 前:
+     *     注１ ＸＸＸＸＸ
+     *         イ  ＹＹＹＹＹ
+     * 後:
+     *     注
+     *         １ ＸＸＸＸＸ
+     *             イ  ＹＹＹＹＹ
+     */
+    void 注(Node parent) {
         if (eatChild(parent, 注)) {
-            Node n = add(parent, eaten);
+        	Node n = add(parent, eaten);
             カナ(n);
         } else if (eatChild(parent, 注１)) {
-            Node n = add(parent, eaten);
-            カナ(n);
-            注数字(parent, n);
+        	Token tyu = new Token(注ルート, "注", "", Collections.emptyList(), eaten);
+        	Token one = new Token(数字, "１", eaten.header, eaten.body, eaten);
+        	Node tyuNode = add(parent, tyu);
+        	Node oneNode = add(tyuNode, one);
+            カナ(oneNode);
+            注数字(tyuNode, tyuNode);
         }
     }
     

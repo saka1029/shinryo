@@ -20,8 +20,8 @@ public class TestTokenReader {
 //		for (Token t : tokens)
 //		    OUT.println(t);
 		assertEquals(214, tokens.size());
-		assertEquals(TKParser.数字, tokens.get(213).type());
-		assertEquals("２", tokens.get(213).number());
+		assertEquals(TKParser.数字, tokens.get(213).type);
+		assertEquals("２", tokens.get(213).number);
     }
 
 }

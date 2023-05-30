@@ -22,12 +22,7 @@ public class TestTKParser {
         String inTxtFile = "data/04tk.txt";
         String outTxtFile = "data/04tk-tree.txt";
         Node root = new TKParser().parse(inTxtFile);
-        try (PrintWriter w = new PrintWriter(outTxtFile)) {
-            for (NodeLevel e : root)
-				if (e.node().token() != null)
-					w.printf("%s%s%s %s%n", e.node().id(), "  ".repeat(e.level()),
-					    e.node().token().number(), e.node().token().header());
-        }
+        root.summary(outTxtFile);
     }
 
 }

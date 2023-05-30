@@ -22,16 +22,11 @@ public class TestTTParser {
         String inTxtFile = "data/04tt.txt";
         String outTxtFile = "data/04tt-tree.txt";
         Node root = new TTParser().parse(inTxtFile);
-        try (PrintWriter w = new PrintWriter(outTxtFile)) {
-            for (NodeLevel e : root)
-				if (e.node().token() != null)
-					w.printf("%s%s%s %s%n", e.node().id(), "  ".repeat(e.level()),
-					    e.node().token().number(), e.node().token().header());
-        }
+        root.summary(outTxtFile);
         root.stream()
-            .filter(e -> e.node().token() != null)
-            .filter(e -> e.node().token().type() == TTParser.区分番号)
-            .forEach(e -> OUT.println(e.level() + " " + e.node().token().number() + " " + e.node().token().header()));
+            .filter(e -> e.node.token != null)
+            .filter(e -> e.node.token.type == TTParser.区分番号)
+            .forEach(e -> OUT.println(e.level + " " + e.node.token.number + " " + e.node.token.header));
     }
 
 }

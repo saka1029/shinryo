@@ -23,13 +23,13 @@ public abstract class Parser {
 	boolean is(TokenType expected) {
 		if (token == null)
 			return false;
-		return token.type() == expected;
+		return token.type == expected;
 	}
 
 	boolean eat(TokenType expected) {
 		if (token == null)
 			return false;
-		if (token.type().equals(expected)) {
+		if (token.type.equals(expected)) {
 			eaten = token;
 			token = get();
 			return true;
@@ -40,7 +40,7 @@ public abstract class Parser {
 	boolean eatChild(Node parent, TokenType expected) {
 		if (token == null)
 			return false;
-		if (token.indent() > parent.token().indent() && token.type().equals(expected)) {
+		if (token.indent > parent.token.indent && token.type.equals(expected)) {
 			eaten = token;
 			token = get();
 			return true;
@@ -49,9 +49,7 @@ public abstract class Parser {
 	}
 	
 	Node add(Node parent, Token token) {
-		Node child = new Node(token);
-		parent.children().add(child);
-		return child;
+		return parent.addChild(token);
 	}
 	
 	public abstract List<TokenType> types();
@@ -61,7 +59,7 @@ public abstract class Parser {
 		this.tokens = tokens;
 		this.max = tokens.size();
 		this.token = get();
-		Node root = new Node(null);
+		Node root = Node.root();
 		parse(root);
 	    if (token != null)
             logger.warning("未処理のトークン: " + tokens.get(index - 1));

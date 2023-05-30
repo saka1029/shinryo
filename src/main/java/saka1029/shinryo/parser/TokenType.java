@@ -9,7 +9,7 @@ public record TokenType(
     Pattern pattern,
     Function<String, String> identifier) {
 
-    public static final TokenType ROOT = new TokenType("ROOT", "", Pat.固定値id("ROOT"));
+//    public static final TokenType ROOT = new TokenType("ROOT", "", Pat.固定値id("ROOT"));
     public static final TokenType START = new TokenType("START", "", Pat.固定値id("START"));
     
 	static final String アイウ =
