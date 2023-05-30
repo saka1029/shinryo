@@ -59,5 +59,27 @@ public class TestPat {
         assertEquals("Ａ００１－２", m.group("N"));
         assertEquals("初診料", m.group("H"));
     }
+    
+    @Test
+    public void testIdentifier() {
+        assertEquals("3", Pat.数字id.apply("３"));
+        assertEquals("3", Pat.数字id.apply("(３)"));
+        assertEquals("3", Pat.数字id.apply("（３）"));
+        assertEquals("A001-2-3", Pat.区分番号id.apply("Ａ００１－２－３"));
+        assertEquals("00-1", Pat.区分番号id.apply("区分００の１"));
+        assertEquals("1", Pat.漢数字id.apply("（一）"));
+        assertEquals("2", Pat.漢数字id.apply("（二）"));
+        assertEquals("3", Pat.漢数字id.apply("（三）"));
+        assertEquals("4", Pat.漢数字id.apply("（四）"));
+        assertEquals("5", Pat.漢数字id.apply("（五）"));
+        assertEquals("6", Pat.漢数字id.apply("（六）"));
+        assertEquals("7", Pat.漢数字id.apply("（七）"));
+        assertEquals("8", Pat.漢数字id.apply("（八）"));
+        assertEquals("10", Pat.漢数字id.apply("（十）"));
+        assertEquals("19", Pat.漢数字id.apply("（十九）"));
+        assertEquals("22", Pat.漢数字id.apply("（二十二）"));
+        assertEquals("29", Pat.漢数字id.apply("（二十九）"));
+        assertEquals("29-3-6", Pat.漢数字id.apply("（二十九の三の六）"));
+    }
 
 }

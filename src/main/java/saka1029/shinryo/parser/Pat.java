@@ -1,5 +1,9 @@
 package saka1029.shinryo.parser;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
+import java.util.function.Function;
+
 public class Pat {
 
 	private Pat() {
@@ -13,10 +17,13 @@ public class Pat {
     public static final String 括弧数字 = paren(数字);
     public static final String アイウ = "アイウエオカキクケコ"
 	    + "サシスセソタチツテト"
-	    + "ナニヌネノハヒフヘホ"
+	    + "ナニヌネノハヒフヘへホ" // ひらがなの「へ」調剤通知区分１０の３
 	    + "マミムメモヤユヨ"
-	    + "ラリルレロワヰヱヲン"
-	    + "へ"; // ひらがなの「へ」調剤通知区分１０の３
+	    + "ラリルレロワヰヱヲン";
+    public static final String イロハ = "イロハニホヘへトチリヌルヲ"
+        + "ワカヨタレソツネナラム"
+        + "ウヰノオクヤマケフコエテ"
+        + "アサキユメミシヱヒモセスン";
     public static final String カナ = "[" + アイウ + "]";
     public static final String 括弧カナ = paren(カナ);
     public static final String 漢字数字 = "一二三四五六七八九十";
@@ -32,6 +39,36 @@ public class Pat {
     		+ "㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵"
     		+ "㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
     public static final String 丸数字 = "[" + 丸数 + "]";
+
+    public static final Function<String, String> 数字id = s -> 正規化(s);
+    public static final Function<String, String> アイウid = s -> "" + (アイウ.indexOf(正規化(s)) + 1);
+    public static final Function<String, String> イロハid = s -> "" + (イロハ.indexOf(正規化(s)) + 1);
+    public static final Function<String, String> 丸数字id = s -> "" + (丸数.indexOf(正規化(s)) + 1);
+    public static final Function<String, String> 区分番号id = s -> "" + 正規化(s.replaceAll("区分", ""));
+    public static final Function<String, String> 漢数字id = s -> "" + 漢数字正規化(s);
+        
+    public static String 正規化(String s) {
+        s = s.replaceAll("[の-ー－‐]", "-");
+        s = s.replaceAll("[()（）]", "");
+        return Normalizer.normalize(s, Form.NFKC);
+    }
+    
+    public static String 漢数字正規化(String s) {
+        s = 正規化(s);
+        s = s.replaceFirst("^十$", "10");
+        s = s.replaceFirst("^十", "1");
+        s = s.replaceAll("十", "");
+        s = s.replaceAll("一", "1");
+        s = s.replaceAll("二", "2");
+        s = s.replaceAll("三", "3");
+        s = s.replaceAll("四", "4");
+        s = s.replaceAll("五", "5");
+        s = s.replaceAll("六", "6");
+        s = s.replaceAll("七", "7");
+        s = s.replaceAll("八", "8");
+        s = s.replaceAll("九", "9");
+        return s;
+    }
 
     public static String numberHeader(String number) {
         return "\\s*(?<N>" + number + ")\\s+(?<H>.*)\\s*";
