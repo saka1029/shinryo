@@ -25,7 +25,7 @@ public class TestTTParser {
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
             for (NodeLevel e : root)
 				if (e.node().token() != null)
-					w.printf("%s%s %s%n", "  ".repeat(e.level()),
+					w.printf("%s%s%s %s%n", e.node().id(), "  ".repeat(e.level()),
 					    e.node().token().number(), e.node().token().header());
         }
         root.stream()

@@ -16,7 +16,11 @@ public record Node(
     public Node(Token token) {
         this(token, new ArrayList<>());
     }
-
+    
+    public String id() {
+        return token == null ? null : token.id();
+    }
+    
     /**
      * 自分自身とすべての子（さらにその子も含む）を深さ優先探索で返します。
      */

@@ -13,7 +13,7 @@ public class TestNode {
 
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
-    static final TokenType T = new TokenType("item", "");
+    static final TokenType T = new TokenType("item", "", Pat.固定値id(""));
 
     static final Token token(String n) {
         return new Token(T, n, "", "", 0, 0, 0);

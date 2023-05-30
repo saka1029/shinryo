@@ -22,14 +22,14 @@ import java.util.logging.Logger;
 public class TTParser extends Parser {
     static final Logger logger = Logger.getLogger(TTParser.class.getName());
 
-	public static final TokenType 通則 = new TokenType("通則", Pat.number("＜通則＞"));
-	public static final TokenType 節 = new TokenType("節", Pat.numberHeader("第" + Pat.数字 + "節"));
-	public static final TokenType 区分番号 = new TokenType("区分番号", Pat.numberHeader(Pat.調剤通知区分番号));
-	public static final TokenType 数字 = new TokenType("数字", Pat.numberHeader(Pat.数字));
-	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字));
-	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ));
-	public static final TokenType 括弧カナ = new TokenType("括弧カナ", Pat.numberHeader(Pat.括弧カナ));
-	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字));
+	public static final TokenType 通則 = new TokenType("通則", Pat.number("＜通則＞"), Pat.固定値id("t"));
+	public static final TokenType 節 = new TokenType("節", Pat.numberHeader("第" + Pat.数字 + "節"), Pat.数字id);
+	public static final TokenType 区分番号 = new TokenType("区分番号", Pat.numberHeader(Pat.調剤通知区分番号), Pat.区分番号id);
+	public static final TokenType 数字 = new TokenType("数字", Pat.numberHeader(Pat.数字), Pat.数字id);
+	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
+	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.アイウid);
+	public static final TokenType 括弧カナ = new TokenType("括弧カナ", Pat.numberHeader(Pat.括弧カナ), Pat.イロハid);
+	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
 
 	static final List<TokenType> TYPES = List.of(通則, 節, 区分番号, 数字, 括弧数字, カナ, 括弧カナ, 丸数字);
 	

@@ -49,9 +49,12 @@ public class Pat {
     public static final Function<String, String> 丸数字id = s -> 正規化(s);
     public static final Function<String, String> 区分番号id = s -> 正規化(s);
     public static final Function<String, String> 漢数字id = s -> 漢数字正規化(s);
+    public static Function<String, String> 固定値id(String 固定値) {
+        return s -> 固定値;
+    }
         
     public static String 正規化(String s) {
-        s = s.replaceAll("[()（）]|まで|区分", "");
+        s = s.replaceAll("[()（）]|まで|区分|第|章|節", "");
         s = s.replaceAll("[のー－‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び", "+");

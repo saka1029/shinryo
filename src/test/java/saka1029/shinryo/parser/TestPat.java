@@ -91,5 +91,12 @@ public class TestPat {
         assertEquals("19-3-6+12-8", Pat.漢数字id.apply("十九の三の六から十二の八まで"));
         assertEquals("19-3-6+32-12", Pat.漢数字id.apply("十九の三の六及び三十二の十二"));
     }
+    
+    @Test
+    public void testRegex() {
+        String s = "123456789A";
+        assertEquals("A", s.replaceFirst("(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)", "$10"));
+        assertEquals("10", s.replaceFirst("(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)", "$1\\0"));
+    }
 
 }

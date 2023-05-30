@@ -5,6 +5,7 @@ import java.util.List;
 
 public record Token(
     TokenType type,
+    String id,
     String number,
     String header,
     String fileName,
@@ -14,7 +15,7 @@ public record Token(
     List<String> body) {
 	
     public Token(TokenType type, String number, String header, String fileName, int pageNo, int lineNo, int indent) {
-        this(type, number, header, fileName, pageNo, lineNo, indent, new ArrayList<>());
+        this(type, type.id(number), number, header, fileName, pageNo, lineNo, indent, new ArrayList<>());
     }
     
     @Override
