@@ -16,6 +16,7 @@ public class Pat {
 	private Pat() {
 	}
 
+	public static final String パス区切り = "_";
     public static final String 数 = "[0-9０-９]";
     public static final String 数字 = 数 + "+";
     public static final String 数字の = repeat(数字, "の", 数字);
@@ -56,21 +57,30 @@ public class Pat {
     public static final Function<String, String> 漢数字id = s -> 漢数字正規化(s);
     public static Function<String, String> 固定値id(String 固定値) {
         return s -> 固定値;
+//        // 固定値idをユニークにする場合 
+//        return new Function<String, String>() {
+//            int i = 0;
+//
+//            @Override
+//            public String apply(String t) {
+//                return 固定値 + (++i);
+//            }
+//        };
     }
         
     public static String 正規化(String s) {
         s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款", "");
         s = s.replaceAll("[のー－‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
-        s = s.replaceAll("から|及び", "+");
+        s = s.replaceAll("から|及び", "x");
         return Normalizer.normalize(s, Form.NFKC);
     }
     
     public static String 漢数字正規化(String s) {
         s = 正規化(s);
-        s = s.replaceAll("(^|[+-])十([+-])", "$110$2");
-        s = s.replaceAll("(^|[+-])十$", "$110");
-        s = s.replaceAll("(^|[+-])十", "$11");
+        s = s.replaceAll("(^|[+-_])十([+-_])", "$110$2");
+        s = s.replaceAll("(^|[+-_])十$", "$110");
+        s = s.replaceAll("(^|[+-_])十", "$11");
         s = s.replaceAll("十", "");
         s = s.replaceAll("一", "1");
         s = s.replaceAll("二", "2");

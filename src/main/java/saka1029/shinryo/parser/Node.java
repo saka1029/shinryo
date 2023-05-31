@@ -40,7 +40,7 @@ public class Node implements Iterable<Node> {
     public Node addChild(Token token) {
     	Objects.requireNonNull(token, "token");
     	String childId = token.id;
-    	String childPath = isRoot() ? childId : path + "." + childId;
+    	String childPath = isRoot() ? childId : path + Pat.パス区切り + childId;
     	Node child = new Node(this, token, childId, childPath, level + 1);
     	children.add(child);
     	return child;
