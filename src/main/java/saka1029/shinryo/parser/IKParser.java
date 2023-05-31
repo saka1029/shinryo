@@ -7,17 +7,26 @@ import java.util.logging.Logger;
 /**
  * 医科告示用パーサ。
  * 
+ * <pre>
  * 文法:
- * 医科告示 = [ "通則" 数字 ] 節
- * 節       = { "節" ( "区分" 区分番号 | 数字 ) }
+ * 医科告示 = { "章" ( 部 | 数字 ) }
+ * 部       = { "部" 通則 ( 節 | 数字 ) }
+ * 節       = { "節" 通則 ( 区分 | 区分番号 | 款 | 数字 ) }
+ * 款       = { "款" 通則 ( 区分 | 数字 ) }
+ * 通則     = { "通則" 数字 }
+ * 区分     = { "区分" ( 区分分類 | 区分番号 ) }
+ * 区分分類 = { "区分分類" 通則 区分番号 }
+ * 区分番号 = { "区分番号" 数字 注 }
  * 数字     = { "数字" カナ 注 }
  * カナ     = { "カナ" { "括弧数字" } }
  * 区分番号 = { "区分番号" 数字 注 }
  * 注       = "注" カナ | "注１" カナ 注数字
  * 注数字   = { "数字" カナ 注 }
+ * </pre>
  * 
  * 「注」は単一の場合には「"注" カナ」であるが、
  * 複数の注が連続する場合には「"注１" カナ」、「"２" カナ」、「"３" カナ」...となる。
+ * 「注 = "注" カナ | "注１" カナ 注数字」は「"注" カナ | "注ルート" "数字" カナ 注数字」に置換する。
  * 「注数字」は「数字」と同一であるが、「"数字"」に対する制約が異なる。
  * 「注数字」における「数字」は「注１」よりも右になければならない。
  */
@@ -47,18 +56,17 @@ public class IKParser extends Parser {
         return TYPES;
     }
 
-    void カナ(Node parent) {
-        while (eat(カナ)) {
-            Node n = add(parent, eaten);
-            while (eat(括弧数字)) {
-                add(n, eaten);
-            }
-            注(n);
-        }
+    void 注数字(Node parent, Node tyu) { // tyuはインデント制約用
+    	while (eatChild(tyu, 数字)) {
+    		Node n = add(parent, eaten);
+    		カナ(n);
+    		注(n);
+    	}
     }
 
     /**
      * 「注１」の場合は階層を１段追加する。
+     * (「注」の場合はそのまま）
      * 前:
      *     注１ ＸＸＸＸＸ
      *         イ  ＹＹＹＹＹ
@@ -80,13 +88,15 @@ public class IKParser extends Parser {
             注数字(tyuNode, tyuNode);
         }
     }
-    
-    void 注数字(Node parent, Node tyu) { // tyuはインデント制約用
-    	while (eatChild(tyu, 数字)) {
-    		Node n = add(parent, eaten);
-    		カナ(n);
-    		注(n);
-    	}
+
+    void カナ(Node parent) {
+        while (eat(カナ)) {
+            Node n = add(parent, eaten);
+            while (eat(括弧数字)) {
+                add(n, eaten);
+            }
+            注(n);
+        }
     }
 
 	void 数字(Node parent) {
@@ -99,9 +109,9 @@ public class IKParser extends Parser {
 	
 	void 区分番号(Node parent) {
         while (eat(区分番号)) {
-            Node n = add(parent, eaten);
-            数字(n);
-            注(n);
+            Node kubunBango = add(parent, eaten);
+            数字(kubunBango);
+            注(kubunBango);
         }
 	}
 	
@@ -123,47 +133,58 @@ public class IKParser extends Parser {
 		}
 	}
 
+	void 通則(Node parent) {
+		while (eat(通則)) {
+			Node tusoku = add(parent, eaten);
+			数字(tusoku);
+		}
+	}
+
 	void 款(Node parent) {
 		while (eat(款)) {
 			Node kan = add(parent, eaten);
 			通則(kan);
-			if (is(区分)) {
+			if (is(区分))
 				区分(kan);
-			} else {
+			else
 				数字(kan);
-			}
 		}
 	}
-
+	
 	void 節(Node parent) {
         while (eat(節)) {
             Node setu = add(parent, eaten);
             通則(setu);
-            if (is(区分)) {
+            if (is(区分))
                 区分(setu);
-            } if (is(款)) {
+            else if (is(区分番号))
+                区分番号(setu);
+            if (is(款))
             	款(setu);
-            } else {
+            else
                 数字(setu);
-            }
         }
 	}
 
-	void 通則(Node parent) {
-		while (eat(通則)) {
-			Node n = add(parent, eaten);
-			数字(n);
-		}
+	public void 部(Node parent) {
+        while (eat(部)) {
+            Node bu = add(parent, eaten);
+            通則(bu);
+            if (is(節))
+                節(bu);
+            else
+                数字(bu);
+        }
 	}
+
 	@Override
 	public void parse(Node parent) {
 		while (eat(章)) {
-			Node a = add(parent, eaten);
-			while (eat(部)) {
-				Node b = add(a, eaten);
-				通則(b);
-				節(b);
-			}
+			Node sho = add(parent, eaten);
+			if (is(部))
+			    部(sho);
+			else
+			    数字(sho);
 		}
 	}
 }

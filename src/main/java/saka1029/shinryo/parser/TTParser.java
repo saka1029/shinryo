@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 /**
  * 調剤通知用パーサ。
+ * 
  * <pre>
  * 文法:
  * 調剤通知    = [ "通則" 数字 ] 節

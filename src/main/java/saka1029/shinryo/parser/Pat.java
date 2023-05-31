@@ -5,6 +5,10 @@ import java.text.Normalizer.Form;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
+/**
+ * 文字定数としての正規表現を集めたクラスです。
+ * 正規表現を組み合わせて新たな正規表現を作る関数もあります。
+ */
 public class Pat {
 
     static final Logger logger = Logger.getLogger(Pat.class.getName());
