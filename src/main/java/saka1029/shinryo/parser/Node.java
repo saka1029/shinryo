@@ -84,4 +84,9 @@ public class Node implements Iterable<Node> {
 				}
         }
     }
+    
+    @Override
+    public String toString() {
+        return "Node[path=%s, token=%s]".formatted(path, token);
+    }
 }
