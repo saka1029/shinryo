@@ -27,13 +27,14 @@ public class Pat {
         + "ワカヨタレソツネナラム"
         + "ウヰノオクヤマケフコエテ"
         + "アサキユメミシヱヒモセスン";
-    public static final String カナ = "[" + アイウ + "へ]";  // ひらがなの「へ」を追加。
+    public static final String カナ = "[" + アイウ + "へ]{1,2}";  // ひらがなの「へ」を追加。
     public static final String 括弧カナ = paren(カナ);
     public static final String 漢字数字 = "一二三四五六七八九十";
     public static final String 漢数字 = "[" + 漢字数字 + "]+";
     public static final String 漢数字の = repeat(漢数字, "の", 漢数字);
     public static final String 括弧漢数字 = paren(漢数字);
     public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[ー－‐-]", 数字);
+    public static final String 区分分類 = 左括弧 + "[^0-9０-９)）][^0-9)）]*"+ 右括弧;
     public static final String 調剤告示区分番号 = repeat("[０-９]{2}", "の", 数字);
     public static final String 調剤通知区分番号 = repeat("区分[０-９]{2}", "の", 数字);
     public static final String 丸数 = "①②③④⑤⑥⑦⑧⑨⑩"
@@ -44,8 +45,8 @@ public class Pat {
     public static final String 丸数字 = "[" + 丸数 + "]";
 
     public static final Function<String, String> 数字id = s -> 正規化(s);
-    public static final Function<String, String> アイウid = s -> indexOf(アイウ, 正規化(s));
-    public static final Function<String, String> イロハid = s -> indexOf(イロハ, 正規化(s));
+    public static final Function<String, String> アイウid = s -> カナ正規化(アイウ, s);
+    public static final Function<String, String> イロハid = s -> カナ正規化(イロハ, s);
     public static final Function<String, String> 丸数字id = s -> 正規化(s);
     public static final Function<String, String> 区分番号id = s -> 正規化(s);
     public static final Function<String, String> 漢数字id = s -> 漢数字正規化(s);
@@ -54,7 +55,7 @@ public class Pat {
     }
         
     public static String 正規化(String s) {
-        s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節", "");
+        s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款", "");
         s = s.replaceAll("[のー－‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び", "+");
@@ -79,6 +80,29 @@ public class Pat {
         return s;
     }
     
+    /**
+     * カナ2文字の場合、先頭は「ア」(アイウのとき)または「イ」(イロハのとき)に限る。
+     * アイウの場合:
+     * ア   → 1
+     * イ   → 2
+     * ウ   → 3
+     *   .....
+     * ン   → 48
+     * アア → 49
+     * アイ → 50
+     */
+    public static String カナ正規化(String set, String s) {
+    	int base = set.length();
+    	s = 正規化(s);
+    	int length = s.length();
+    	if (length > 2 || length == 2 && s.charAt(0) != set.charAt(0))
+			throw new RuntimeException("「" + s + "」は変換できません");
+    	int index = set.indexOf(s.charAt(length - 1));
+    	if (length == 2)
+    		index += base;
+    	return Integer.toString(index + 1);
+    }
+
     public static String indexOf(String list, String s) {
         int index = list.indexOf(s);
         if (index < 0)

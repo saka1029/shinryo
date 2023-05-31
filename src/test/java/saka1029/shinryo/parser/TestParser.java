@@ -9,18 +9,34 @@ import org.junit.Test;
 
 import saka1029.shinryo.common.Logging;
 
-public class TestTKParser {
+public class TestParser {
 
     static { Logging.init(); } 
-    static final Logger logger = Logger.getLogger(TestTKParser.class.getSimpleName());
+    static final Logger logger = Logger.getLogger(TestParser.class.getSimpleName());
     
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
     @Test
-    public void testParse() throws IOException {
+    public void testTKParser() throws IOException {
         String inTxtFile = "data/04tk.txt";
         String outTxtFile = "data/04tk-tree.txt";
         Node root = new TKParser().parse(inTxtFile);
+        root.summary(outTxtFile);
+    }
+
+    @Test
+    public void testTTParser() throws IOException {
+        String inTxtFile = "data/04tt.txt";
+        String outTxtFile = "data/04tt-tree.txt";
+        Node root = new TTParser().parse(inTxtFile);
+        root.summary(outTxtFile);
+    }
+
+    @Test
+    public void testIKParser() throws IOException {
+        String inTxtFile = "data/04ik.txt";
+        String outTxtFile = "data/04ik-tree.txt";
+        Node root = new IKParser().parse(inTxtFile);
         root.summary(outTxtFile);
     }
     

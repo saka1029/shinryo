@@ -82,7 +82,12 @@ public class TestPat {
         assertEquals("2", Pat.アイウid.apply("（イ）"));
         assertEquals("1", Pat.イロハid.apply("（イ）"));
         assertEquals("1", Pat.アイウid.apply("（ア）"));
-        assertEquals("36", Pat.イロハid.apply("（ア）"));
+        assertEquals("48", Pat.アイウid.apply("ン"));
+        assertEquals("49", Pat.アイウid.apply("アア"));
+        assertEquals("50", Pat.アイウid.apply("アイ"));
+        assertEquals("48", Pat.イロハid.apply("ン"));
+        assertEquals("49", Pat.イロハid.apply("イイ"));
+        assertEquals("50", Pat.イロハid.apply("イロ"));
         assertEquals("29", Pat.アイウid.apply("ヘ")); // カタカナ
         assertEquals("29", Pat.アイウid.apply("へ")); // ひらがな
         assertEquals("1", Pat.丸数字id.apply("①"));
