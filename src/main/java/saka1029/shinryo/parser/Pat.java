@@ -31,7 +31,7 @@ public class Pat {
         + "ワカヨタレソツネナラム"
         + "ウヰノオクヤマケフコエテ"
         + "アサキユメミシヱヒモセスン";
-    public static final String カナ = "[" + アイウ + "へ]{1,2}";  // ひらがなの「へ」を追加。
+    public static final String カナ = "[" + アイウ + "へ]{1,2}";  // ひらがなの「へ」を追加。２桁対応。
     public static final String 括弧カナ = paren(カナ);
     public static final String 漢字数字 = "一二三四五六七八九十";
     public static final String 漢数字 = "[" + 漢字数字 + "]+";
@@ -85,7 +85,7 @@ public class Pat {
     }
     
     /**
-     * カナ2文字の場合、先頭は「ア」(アイウのとき)または「イ」(イロハのとき)に限る。
+     * カナ2文字の場合、先頭は「ア」(アイウのとき)または「イ」(イロハのとき)に限ります。
      * アイウの場合:
      * ア   → 1
      * イ   → 2
