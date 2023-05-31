@@ -78,9 +78,9 @@ public class Pat {
     
     public static String 漢数字正規化(String s) {
         s = 正規化(s);
-        s = s.replaceAll("(^|[+-_])十([+-_])", "$110$2");
-        s = s.replaceAll("(^|[+-_])十$", "$110");
-        s = s.replaceAll("(^|[+-_])十", "$11");
+        s = s.replaceAll("(^|[+-_x])十([+-_x])", "$110$2");
+        s = s.replaceAll("(^|[+-_x])十$", "$110");
+        s = s.replaceAll("(^|[+-_x])十", "$11");
         s = s.replaceAll("十", "");
         s = s.replaceAll("一", "1");
         s = s.replaceAll("二", "2");
