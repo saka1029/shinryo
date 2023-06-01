@@ -7,12 +7,12 @@ import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.TKParser;
 import saka1029.shinryo.parser.Token;
 
-public class KRenderer extends Renderer {
-        public KRenderer(String outDir) throws IOException {
+public class TRenderer extends Renderer {
+        public TRenderer(String outDir) throws IOException {
             super(outDir);
         }
 
-        void link(Node node, int level, TextWriter writer) throws IOException {
+        void linkKubun(Node node, int level, TextWriter writer) throws IOException {
             Token t = node.token;
             String fileName = node.id + ".html";
             writeLink(node, level, fileName, writer);
@@ -28,7 +28,7 @@ public class KRenderer extends Renderer {
         @Override
         void render(Node node, int level, TextWriter w) throws IOException {
             if (node.token.type == TKParser.区分番号 && node.children.size() > 0)
-                link(node, level, w);
+                linkKubun(node, level, w);
             else
                 line(node, level, w);
         }

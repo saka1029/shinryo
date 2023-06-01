@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
+import saka1029.shinryo.parser.TokenType;
 
 public abstract class Renderer {
         final String outDir;
@@ -23,6 +25,11 @@ public abstract class Renderer {
                 .sum() + 1) / 2.0F;
             return "style='margin-left:%sem;text-indent:%sem'".formatted(
                 indent * 2 + width, -width);
+        }
+        
+        boolean childContainsAny(Node node, TokenType... types) {
+            return node.children.stream()
+                .anyMatch(n -> Stream.of(types).anyMatch(t -> n.token.type == t));
         }
         
         void writeLink(Node node, int level, String fileName, TextWriter writer) throws IOException {
