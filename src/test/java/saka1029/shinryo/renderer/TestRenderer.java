@@ -1,13 +1,17 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 
+import saka1029.shinryo.common.Logging;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.TKParser;
 
 public class TestRenderer {
+    static { Logging.init(); } 
+    static final Logger logger = Logger.getLogger(TestRenderer.class.getSimpleName());
 
     @Test
     public void testKRenderer() throws IOException {
