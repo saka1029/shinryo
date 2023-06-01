@@ -64,8 +64,8 @@ public class KRenderer {
                 w.println("<title>%s</title>", title);
                 w.println("</head>");
                 w.println("<body style='font-family:monospace'>");
-//                        w.println("<body>");
                 w.println("<h1>%s</h1>", title);
+                // root自体はrender()しない点に注意する。
                 for (Node child : root.children)
                     render(child, 0, w);
                 w.println("</body>");
