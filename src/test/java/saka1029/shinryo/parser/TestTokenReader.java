@@ -15,7 +15,7 @@ public class TestTokenReader {
 
     @Test
     public void testRead() throws IOException {
-		String inFile = "data/04tk.txt";
+		String inFile = "in/04/t/txt/ke.txt";
 		List<Token> tokens = TokenReader.read(TKParser.TYPES, inFile);
 //		for (Token t : tokens)
 //		    OUT.println(t);

@@ -11,8 +11,8 @@ public class TestRenderer {
 
     @Test
     public void testKRenderer() throws IOException {
-        String inTxtFile = "data/04tk.txt";
-        String outDir = "data/04/t";
+        String inTxtFile = "in/04/t/txt/ke.txt";
+        String outDir = "data/out/04/t";
         String title = "令和04年調剤点数表";
         String outHtmlFile = "index.html";
         Node root = new TKParser().parse(inTxtFile);

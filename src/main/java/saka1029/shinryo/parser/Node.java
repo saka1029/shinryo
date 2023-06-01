@@ -2,6 +2,8 @@ package saka1029.shinryo.parser;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
@@ -75,6 +77,7 @@ public class Node implements Iterable<Node> {
     }
     
     public void summary(String outTxtFile) throws IOException {
+        Files.createDirectories(Path.of(outTxtFile).getParent());
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
             for (Node node : this)
 				if (!node.isRoot()) {
