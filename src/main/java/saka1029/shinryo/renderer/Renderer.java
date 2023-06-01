@@ -60,7 +60,7 @@ public abstract class Renderer {
                 writer.println("<meta charset='utf-8'>");
                 writer.println("<title>%s</title>", title);
                 if (!node.isRoot())
-                    writer.println("<!-- %s:%d:%d -->", node.token.fileName, node.token.pageNo, node.token.lineNo);
+                    writer.println("<!-- file:%s page:%d line:%d -->", node.token.fileName, node.token.pageNo, node.token.lineNo);
                 writer.println("</head>");
                 writer.println("<body style='font-family:monospace'>");
                 writer.println("<h1>%s</h1>", title);
