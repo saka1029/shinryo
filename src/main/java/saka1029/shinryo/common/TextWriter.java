@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 public class TextWriter implements Closeable {
     
@@ -12,6 +13,10 @@ public class TextWriter implements Closeable {
 
     public TextWriter(String outTxtFile) throws IOException {
         this.writer = new PrintWriter(outTxtFile, StandardCharsets.UTF_8);
+    }
+    
+    public TextWriter(Path outTxtFile) throws IOException {
+        this(outTxtFile.toString());
     }
     
     public void println(String format, Object... args) {
