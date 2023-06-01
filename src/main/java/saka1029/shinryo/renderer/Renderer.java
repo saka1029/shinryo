@@ -52,18 +52,20 @@ public abstract class Renderer {
         
         abstract void render(Node node, int level, TextWriter writer) throws IOException;
 
-        public void render(Node root, String title, String fileName) throws IOException {
+        public void render(Node node, String title, String fileName) throws IOException {
             try (TextWriter writer = new TextWriter(Path.of(outDir, fileName))) {
                 writer.println("<!DOCTYPE html>");
                 writer.println("<html lang='ja'>");
                 writer.println("<head>");
                 writer.println("<meta charset='utf-8'>");
                 writer.println("<title>%s</title>", title);
+                if (!node.isRoot())
+                    writer.println("<!-- %s:%d:%d -->", node.token.fileName, node.token.pageNo, node.token.lineNo);
                 writer.println("</head>");
                 writer.println("<body style='font-family:monospace'>");
                 writer.println("<h1>%s</h1>", title);
                 // root自体はrender()しない点に注意する。
-                for (Node child : root.children)
+                for (Node child : node.children)
                     render(child, 0, writer);
                 writer.println("</body>");
                 writer.println("</html>");
