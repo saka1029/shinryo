@@ -67,17 +67,24 @@ public abstract class 本文 {
 			logger.severe("ファイル「" + fileName + "」が重複しています");
 		fileNames.add(fileName);
 		try (TextWriter writer = new TextWriter(Path.of(outDir, fileName))) {
+			String[] titleSplit = title.split("\\s+", 3);
+			String titleHead = titleSplit.length < 2 ? titleSplit[0] : titleSplit[0] + " " + titleSplit[1];
+			String titleRest = titleSplit.length < 3 ? "" : titleSplit[2];
 			writer.println("<!DOCTYPE html>");
 			writer.println("<html lang='ja'>");
 			writer.println("<head>");
 			writer.println("<meta charset='utf-8'>");
-			writer.println("<title>%s</title>", title);
+			writer.println("<title>%s</title>", titleHead);
 			if (!node.isRoot())
 				writer.println("<!-- file:%s page:%d line:%d -->", node.token.fileName, node.token.pageNo,
 						node.token.lineNo);
 			writer.println("</head>");
 			writer.println("<body style='font-family:monospace'>");
-			writer.println("<h1>%s</h1>", title);
+			writer.println("<h1>%s</h1>", titleHead);
+			if (!titleRest.isEmpty())
+				writer.println("<p>%s</p>", titleRest);
+			if (!node.isRoot() && node.token.body.size() > 0)
+				writer.println("<p>%s</p>", node.token.body.stream().collect(Collectors.joining()));
 			// root自体はrender()しない点に注意する。
 			for (Node child : node.children)
 				render(child, 0, writer);

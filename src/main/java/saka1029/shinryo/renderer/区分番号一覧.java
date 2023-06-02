@@ -41,7 +41,7 @@ public class 区分番号一覧 {
             writer.println("<ul>");
             for (Node kubun : list) {
                 Token t = kubun.token;
-                String header = t.header.replaceFirst("\\s*[\\d,\\s]+点", "");
+                String header = t.header.replaceFirst("\\s+.*", "");
                 if (header.equals("削除"))
                     writer.println("<li>%s %s</li>", t.number, header);
                 else
