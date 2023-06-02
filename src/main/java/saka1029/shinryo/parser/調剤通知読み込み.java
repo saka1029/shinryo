@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  * 「数字」は基本的に「{ "数字" { "括弧数字" { "カナ" { "括弧カナ" { "丸数字" } } } } }」であるが、
  * 途中のレベルを中抜きしていることがあるので、このような文法となる。
  */
-public class TTParser extends Parser {
-    static final Logger logger = Logger.getLogger(TTParser.class.getName());
+public class 調剤通知読み込み extends Parser {
+    static final Logger logger = Logger.getLogger(調剤通知読み込み.class.getName());
 
 	public static final TokenType 通則 = new TokenType("通則", Pat.number("＜通則＞"), Pat.固定値id("t"));
 	public static final TokenType 節 = new TokenType("節", Pat.numberHeader("第" + Pat.数字 + "節"), Pat.数字id);

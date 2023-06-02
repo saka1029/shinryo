@@ -17,26 +17,26 @@ public class TestParser {
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
     @Test
-    public void testTKParser() throws IOException {
+    public void test調剤告示読み込み() throws IOException {
         String inTxtFile = "in/04/t/txt/ke.txt";
         String outTxtFile = "debug/out/04/t/k-tree.txt";
-        Node root = new TKParser().parse(inTxtFile);
+        Node root = new 調剤告示読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
 
     @Test
-    public void testTTParser() throws IOException {
+    public void test調剤通知読み込み() throws IOException {
         String inTxtFile = "in/04/t/txt/te.txt";
         String outTxtFile = "debug/out/04/t/t-tree.txt";
-        Node root = new TTParser().parse(inTxtFile);
+        Node root = new 調剤通知読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
 
     @Test
-    public void testIKParser() throws IOException {
+    public void test医科告示読み込み() throws IOException {
         String inTxtFile = "in/04/i/txt/ke.txt";
         String outTxtFile = "debug/out/04/i/k-tree.txt";
-        Node root = new IKParser().parse(inTxtFile);
+        Node root = new 医科告示読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
     

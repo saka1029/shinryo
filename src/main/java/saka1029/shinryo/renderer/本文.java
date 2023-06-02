@@ -14,12 +14,12 @@ import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 import saka1029.shinryo.parser.TokenType;
 
-public abstract class Renderer {
-	static final Logger logger = Logger.getLogger(Renderer.class.getName());
+public abstract class 本文 {
+	static final Logger logger = Logger.getLogger(本文.class.getName());
 	final String outDir;
 	final Set<String> fileNames = new HashSet<>();
 
-	public Renderer(String outDir) throws IOException {
+	public 本文(String outDir) throws IOException {
 		Files.createDirectories(Path.of(outDir));
 		this.outDir = outDir;
 	}

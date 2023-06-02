@@ -57,6 +57,6 @@ public class Token {
     @Override
     public String toString() {
         return "Token(%s, %s, %s, %s:%s:%s:%s, %s)".formatted(
-            type.name(), number, header, fileName, pageNo, lineNo, indent, body);
+            type.name, number, header, fileName, pageNo, lineNo, indent, body);
     }
 }
