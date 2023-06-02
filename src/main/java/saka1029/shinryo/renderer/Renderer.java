@@ -27,6 +27,10 @@ public abstract class Renderer {
                 indent * 2 + width, -width);
         }
         
+        boolean isAny(Node node, TokenType... types) {
+        	return Stream.of(types).anyMatch(t -> node.token.type == t);
+        }
+
         boolean childContainsAny(Node node, TokenType... types) {
             return node.children.stream()
                 .anyMatch(n -> Stream.of(types).anyMatch(t -> n.token.type == t));
@@ -39,6 +43,14 @@ public abstract class Renderer {
                 t.number, t.header,
                 t.body.size() > 0 ? "<br>" : "",
                 t.body.stream().collect(Collectors.joining()));
+            render(node, t.number + " " + t.header, fileName);
+        }
+        
+        void writeLink(Node node, int level, TextWriter writer) throws IOException {
+        	writeLink(node, level, node.path + ".html", writer);
+        }
+        void writeLinkKubun(Node node, int level, TextWriter writer) throws IOException {
+        	writeLink(node, level, node.id + ".html", writer);
         }
 
         void writeLine(Node node, int level, TextWriter writer) throws IOException {
@@ -48,6 +60,8 @@ public abstract class Renderer {
                 t.number, t.header,
                 t.body.size() > 0 ? "<br>" : "",
                 t.body.stream().collect(Collectors.joining()));
+            for (Node child : node.children)
+                render(child, level + 1, writer);
         }
         
         abstract void render(Node node, int level, TextWriter writer) throws IOException;
