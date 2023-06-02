@@ -2,7 +2,10 @@ package saka1029.shinryo.parser;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public abstract class Parser {
 	static final Logger logger = Logger.getLogger(Parser.class.getName());
@@ -66,8 +69,34 @@ public abstract class Parser {
 		return root;
 	}
 	
+    static void makeUniqId(Node node) {
+    	// 子のidで子をグループ化します。
+    	Map<String, List<Node>> map = node.children.stream()
+    		.collect(Collectors.groupingBy(n -> n.id));
+    	// 同一idの子のidに連番を付与してユニークにします。
+    	for (Entry<String, List<Node>> e : map.entrySet()) {
+    		if (e.getValue().size() <= 1)
+    			continue;
+    		List<Node> list = e.getValue();
+    		for (int i = 0, size = list.size(); i < size; ++i)
+    			list.get(i).id += i;
+    	}
+    	for (Node child : node.children)
+    		makeUniqId(child);
+    }
+    
+    static void makeUniqPath(Node node) {
+    	for (Node child : node.children) {
+    		child.path = node.isRoot() ? child.id : node.path + "_" + child.id;
+    		makeUniqPath(child);
+    	}
+    }
+
 	public Node parse(String inTxtFile) throws IOException {
 	    List<Token> tokens = TokenReader.read(types(), inTxtFile);
-	    return parse(tokens);
+	    Node root = parse(tokens);
+	    makeUniqId(root);	// Nodeのidをユニークにします。
+	    makeUniqPath(root);	// Nodeのpathをユニークにします。
+	    return root;
 	}
 }

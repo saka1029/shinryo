@@ -65,6 +65,7 @@ public class 医科告示読み込み extends Parser {
     }
 
     /**
+     * <pre>
      * 「注１」の場合は階層を１段追加する。
      * (「注」の場合はそのまま）
      * 前:
@@ -74,6 +75,7 @@ public class 医科告示読み込み extends Parser {
      *     注
      *         １ ＸＸＸＸＸ
      *             イ  ＹＹＹＹＹ
+     * </pre>
      */
     void 注(Node parent) {
         if (eatChild(parent, 注)) {

@@ -38,7 +38,7 @@ public class Pat {
     public static final String 漢数字 = "[" + 漢字数字 + "]+";
     public static final String 漢数字の = repeat(漢数字, "の", 漢数字);
     public static final String 括弧漢数字 = paren(漢数字);
-    public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[ー－‐-]", 数字);
+    public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[ー－―‐-]", 数字);
     public static final String 区分分類 = 左括弧 + "[^0-9０-９)）][^0-9)）]*"+ 右括弧;
     public static final String 調剤告示区分番号 = repeat("[０-９]{2}", "の", 数字);
     public static final String 調剤通知区分番号 = repeat("区分[０-９]{2}", "の", 数字);
@@ -57,20 +57,11 @@ public class Pat {
     public static final Function<String, String> 漢数字id = s -> 漢数字正規化(s);
     public static Function<String, String> 固定値id(String 固定値) {
         return s -> 固定値;
-//        // 固定値idをユニークにする場合 
-//        return new Function<String, String>() {
-//            int i = 0;
-//
-//            @Override
-//            public String apply(String t) {
-//                return 固定値 + (++i);
-//            }
-//        };
     }
         
     public static String 正規化(String s) {
         s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款", "");
-        s = s.replaceAll("[のー－‐-]", "-");
+        s = s.replaceAll("[のー－―‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び", "x");
         return Normalizer.normalize(s, Form.NFKC);
@@ -95,7 +86,7 @@ public class Pat {
     }
     
     /**
-     * カナ2文字の場合、先頭は「ア」(アイウのとき)または「イ」(イロハのとき)に限ります。
+     * <pre>
      * アイウの場合:
      * ア   → 1
      * イ   → 2
@@ -104,17 +95,27 @@ public class Pat {
      * ン   → 48
      * アア → 49
      * アイ → 50
+     * 
+     * イロハの場合:
+     * イ   → 1
+     * ロ   → 2
+     * ハ   → 3
+     *   .....
+     * ン   → 48
+     * イイ → 49
+     * イロ → 50
+     * </pre>
      */
     public static String カナ正規化(String set, String s) {
-    	int base = set.length();
     	s = 正規化(s);
-    	int length = s.length();
-    	if (length > 2 || length == 2 && s.charAt(0) != set.charAt(0))
-			throw new RuntimeException("「" + s + "」は変換できません");
-    	int index = set.indexOf(s.charAt(length - 1));
-    	if (length == 2)
-    		index += base;
-    	return Integer.toString(index + 1);
+    	int base = set.length(), n = 0;
+        for (int i = 0, size = s.length(); i < size; ++i) {
+        	int index = set.indexOf(s.charAt(i));
+        	if (index < 0)
+				throw new RuntimeException("「" + s + "」は「" + set.substring(0, 3) + "」の中にない文字を含みます");
+            n = n * base + index + 1;
+        }
+        return Integer.toString(n);
     }
 
     public static String indexOf(String list, String s) {

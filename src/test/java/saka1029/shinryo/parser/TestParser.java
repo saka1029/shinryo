@@ -3,7 +3,11 @@ package saka1029.shinryo.parser;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -40,23 +44,36 @@ public class TestParser {
         root.summary(outTxtFile);
     }
     
-//    static void print(Node node) {
-//        logger.info(node.level + "  ".repeat(node.level) + node.token.number + " " + node.token.header);
-//    }
-//
-//    @Test
-//    public void test目次() throws IOException {
-//        String inTxtFile = "in/04/t/txt/ke.txt";
-//        logger.info("04調剤目次: " + inTxtFile);
-//        Node root = new TKParser().parse(inTxtFile);
-//        for (Node node : root.children) {
-//            print(node);
-//            if (node.children.stream().anyMatch(e -> e.token.type == TKParser.区分))
-//                for (Node child : node.children) {
-//                    print(child);
-//                    for (Node grandChild : child.children)
-//                        print(grandChild);
-//                }
-//        }
-//    }
+    static void makeUniqId(Node node) {
+    	// 子のidで子をグループ化します。
+    	Map<String, List<Node>> map = node.children.stream()
+    		.collect(Collectors.groupingBy(n -> n.id));
+    	// 同一idの子のidに連番を付与してユニークにします。
+    	for (Entry<String, List<Node>> e : map.entrySet()) {
+    		if (e.getValue().size() <= 1)
+    			continue;
+    		List<Node> list = e.getValue();
+    		for (int i = 0, size = list.size(); i < size; ++i)
+    			list.get(i).id += i;
+    	}
+    	for (Node child : node.children)
+    		makeUniqId(child);
+    }
+    
+    static void makeUniqPath(Node node) {
+    	for (Node child : node.children) {
+    		child.path = node.isRoot() ? child.id : node.path + "_" + child.id;
+    		makeUniqPath(child);
+    	}
+    }
+
+    @Test
+    public void test医科告示ユニークid() throws IOException {
+        String inTxtFile = "in/04/i/txt/ke.txt";
+        String outTxtFile = "debug/out/04/i/k-tree-uniq.txt";
+        Node root = new 医科告示読み込み().parse(inTxtFile);
+        makeUniqId(root);
+        makeUniqPath(root);
+        root.summary(outTxtFile);
+    }
 }

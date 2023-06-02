@@ -17,8 +17,11 @@ import java.util.stream.StreamSupport;
 public class Node implements Iterable<Node> {
 	public final Node parent;
     public final Token token;
-    public final String id;
-    public final String path;
+    /**
+     * id, pathはパース後にユニークにするための更新を行うためfinalではありません。
+     */
+    public String id;
+    public String path;
     public final int level;
     public final List<Node> children;
 
@@ -41,6 +44,7 @@ public class Node implements Iterable<Node> {
     
     public Node addChild(Token token) {
     	Objects.requireNonNull(token, "token");
+    	// id, pathはパース後にユニーク化するために更新する点に注意する。
     	String childId = token.id;
     	String childPath = isRoot() ? childId : path + Pat.パス区切り + childId;
     	Node child = new Node(this, token, childId, childPath, level + 1);
