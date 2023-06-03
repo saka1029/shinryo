@@ -49,6 +49,7 @@ public class Pat {
     		+ "㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵"
     		+ "㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
     public static final String 丸数字 = "[" + 丸数 + "]";
+    public static final String 例 = "例" + 数字;
 
     public static final Function<String, String> 数字id = s -> 正規化(s);
     public static final Function<String, String> アイウid = s -> カナ正規化(アイウ, s);
@@ -61,7 +62,7 @@ public class Pat {
     }
         
     public static String 正規化(String s) {
-        s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款", "");
+        s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款|例", "");
         s = s.replaceAll("[のー－―‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び", "x");

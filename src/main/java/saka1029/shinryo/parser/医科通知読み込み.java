@@ -18,10 +18,11 @@ import java.util.logging.Logger;
  * 区分分類    = { "区分分類" 数字 区分番号 }
  * 区分番号    = { "区分番号" ( 括弧数字 | カナ | 数字 ) } 
  * 数字        = { "数字" ( カナ | 括弧数字 ) }
- * 括弧数字    = { "括弧数字" ( カナ | 丸数字 | 括弧カナ ) }
+ * 括弧数字    = { "括弧数字" ( カナ | 丸数字 | 括弧カナ | 例 ) }
  * カナ        = { "カナ" ( 括弧カナ | 数字 | 丸数字 ) }
- * 括弧カナ    = { "括弧カナ" { 丸数字 } }
+ * 括弧カナ    = { "括弧カナ" ( 丸数字 | 例 ) }
  * 丸数字      = { "丸数字" 括弧カナ }
+ * 例          = { "例" ( カナ | 丸数字 ) }
  * </pre>
  * 
  * 「区分大分類」は全体の中で一度しか登場しないので、コメントアウトして文法から除外する。
@@ -42,8 +43,9 @@ public class 医科通知読み込み extends Parser {
 	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.アイウid);
 	public static final TokenType 括弧カナ = new TokenType("括弧カナ", Pat.numberHeader(Pat.括弧カナ), Pat.イロハid);
 	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
+	public static final TokenType 例 = new TokenType("例", Pat.numberHeader(Pat.例), Pat.数字id);
 
-	static final List<TokenType> TYPES = List.of(通則, 章, 部, 款, 節, /*区分大分類,*/ 区分分類, 区分番号, 数字, 括弧数字, カナ, 括弧カナ, 丸数字);
+	static final List<TokenType> TYPES = List.of(通則, 章, 部, 款, 節, /*区分大分類,*/ 区分分類, 区分番号, 数字, 括弧数字, カナ, 括弧カナ, 丸数字, 例);
 	
 	@Override
     public List<TokenType> types() {
@@ -57,10 +59,23 @@ public class 医科通知読み込み extends Parser {
 	    }
 	}
 
+	void 例(Node parent) {
+	    while (eat(例)) {
+	        Node rei = add(parent, eaten);
+	        if (is(カナ))
+	            カナ(rei);
+	        else
+                丸数字(rei);
+	    }
+	}
+
 	void 括弧カナ(Node parent) {
 		while (eat(括弧カナ)) {
 			Node kkana = add(parent, eaten);
-			丸数字(kkana);
+			if (is(例))
+			    例(kkana);
+			else
+                丸数字(kkana);
 		}
 	}
 
@@ -83,6 +98,8 @@ public class 医科通知読み込み extends Parser {
                 カナ(ksuji);
     		else if (is(丸数字))
     		    丸数字(ksuji);
+    		else if (is(例))
+    		    例(ksuji);
     		else
     		    括弧カナ(ksuji);
     	}
