@@ -24,8 +24,7 @@ import java.util.logging.Logger;
  * 丸数字      = { "丸数字" 括弧カナ }
  * </pre>
  * 
- * 「区分大分類」は全体の中で一度しか登場しないので、コメントアウトして文法から除外しても良いかもしれない。
- * 「（文字列）」のパターンは多く登場するので
+ * 「区分大分類」は全体の中で一度しか登場しないので、コメントアウトして文法から除外する。
  */
 public class 医科通知読み込み extends Parser {
     static final Logger logger = Logger.getLogger(医科通知読み込み.class.getName());
