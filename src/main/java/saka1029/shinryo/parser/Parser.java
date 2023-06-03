@@ -28,11 +28,17 @@ public abstract class Parser {
 			return false;
 		return token.type == expected;
 	}
+	
+	boolean isChild(Node parent, TokenType expected) {
+		if (token == null)
+			return false;
+		return token.indent > parent.token.indent && token.type == expected;
+	}
 
 	boolean eat(TokenType expected) {
 		if (token == null)
 			return false;
-		if (token.type.equals(expected)) {
+		if (token.type == expected) {
 			eaten = token;
 			token = get();
 			return true;
@@ -43,7 +49,7 @@ public abstract class Parser {
 	boolean eatChild(Node parent, TokenType expected) {
 		if (token == null)
 			return false;
-		if (token.indent > parent.token.indent && token.type.equals(expected)) {
+		if (token.indent > parent.token.indent && token.type == expected) {
 			eaten = token;
 			token = get();
 			return true;

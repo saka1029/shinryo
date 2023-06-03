@@ -51,10 +51,30 @@ public class 医科通知読み込み extends Parser {
         return TYPES;
     }
 
+	/**
+	 * 丸数字の下に括弧カナが来るケース。
+	 * <pre>
+	 *        Ｄ３１３  大腸内視鏡検査
+     *          (１)  「１」のファイバースコピーによるものについては、関連する学会の消化器内視鏡に関
+     *              するガイドラインを参考に消化器内視鏡の洗浄消毒を実施していることが望ましい。
+     *          (２)  「２」のカプセル型内視鏡によるものは以下のいずれかに該当する場合に限り算定する。
+     *              ア  大腸内視鏡検査が必要であり、大腸ファイバースコピーを実施したが、腹腔内の癒着
+     *                 等により回盲部まで到達できなかった患者に用いた場合
+     *              イ  大腸内視鏡検査が必要であるが、腹部手術歴があり癒着が想定される場合等、器質的
+     *                 異常により大腸ファイバースコピーが実施困難であると判断された患者に用いた場合
+     *              ウ  大腸内視鏡検査が必要であるが、以下のいずれかに該当し、身体的負担により大腸フ
+     *                 ァイバースコピーが実施困難であると判断された患者に用いた場合
+     *                 ①  以下の(イ)から(ニ)のいずれかに該当する場合
+     *                   (イ)  ３剤の異なる降圧剤を用いても血圧コントロールが不良の高血圧症（収縮期血
+     *                       圧160mmHg以上）
+     *                   (ロ)  慢性閉塞性肺疾患（１秒率  70％未満）
+	 * </pre>
+	 */
 	void 丸数字(Node parent) {
 	    while (eat(丸数字)) {
 	        Node msuji = add(parent, eaten);
-	        括弧カナ(msuji);
+	        if (isChild(msuji, 括弧カナ))
+				括弧カナ(msuji);
 	    }
 	}
 
@@ -71,10 +91,10 @@ public class 医科通知読み込み extends Parser {
 	void 括弧カナ(Node parent) {
 		while (eat(括弧カナ)) {
 			Node kkana = add(parent, eaten);
-			if (is(例))
-			    例(kkana);
-			else
+			if (isChild(kkana, 丸数字))
                 丸数字(kkana);
+			else
+			    例(kkana);
 		}
 	}
 
@@ -83,7 +103,7 @@ public class 医科通知読み込み extends Parser {
     		Node kana = add(parent, eaten);
     		if (is(括弧カナ))
                 括弧カナ(kana);
-    		else if (is(数字))
+    		else if (isChild(kana, 数字))
     		    数字(kana);
     		else
     		    丸数字(kana);
