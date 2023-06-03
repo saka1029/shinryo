@@ -1,6 +1,7 @@
 package saka1029.shinryo.parser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
@@ -102,6 +103,13 @@ public class TestPat {
         String s = "123456789A";
         assertEquals("A", s.replaceFirst("(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)", "$10"));
         assertEquals("10", s.replaceFirst("(.)(.)(.)(.)(.)(.)(.)(.)(.)(.)", "$1\\0"));
+    }
+    
+    @Test
+    public void testRegex除外() {
+        Pattern pat = Pattern.compile("＜(?!通則).*＞");
+        assertFalse(pat.matcher("＜通則＞").matches());
+        assertTrue(pat.matcher("＜処置料＞").matches());
     }
 
 }

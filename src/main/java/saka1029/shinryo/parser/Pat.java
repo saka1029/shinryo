@@ -39,6 +39,7 @@ public class Pat {
     public static final String 漢数字の = repeat(漢数字, "の", 漢数字);
     public static final String 括弧漢数字 = paren(漢数字);
     public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[ー－―‐-]", 数字);
+    public static final String 区分大分類 = "＜(?!通則).*＞";
     public static final String 区分分類 = 左括弧 + "[^0-9０-９)）][^0-9)）]*"+ 右括弧;
     public static final String 調剤告示区分番号 = repeat("[０-９]{2}", "の", 数字);
     public static final String 調剤通知区分番号 = repeat("区分[０-９]{2}", "の", 数字);
