@@ -78,6 +78,7 @@ public abstract class Parser {
     static void makeUniqId(Node node) {
     	// 子のidで子をグループ化します。
     	Map<String, List<Node>> map = node.children.stream()
+    	    .filter(n -> !n.id.matches("\\d+"))    // 数字のみのidは対象外です。
     		.collect(Collectors.groupingBy(n -> n.id));
     	// 同一idの子のidに連番を付与してユニークにします。
     	for (Entry<String, List<Node>> e : map.entrySet()) {
@@ -98,11 +99,31 @@ public abstract class Parser {
     	}
     }
 
+    static final List<String> NO_CHECK_TYPES = List.of("区分番号", "注");
+
+    void check(Node root) {
+//        Node prevNode = null;
+        int prevId = 0;
+        for (Node child : root.children) {
+            if (!NO_CHECK_TYPES.contains(child.token.type.name)) {
+                String d = child.id.replaceAll("\\D", "");
+                if (!d.isEmpty()) {
+                    int id = Integer.parseInt(d);
+                    if (id != prevId + 1)
+                        logger.warning("順序誤り: " + child.path + " " + child.token.toString());
+//                    prevNode = child;
+                    prevId = id;
+                }
+            }
+            check(child);
+        }
+    }
 	public Node parse(String inTxtFile) throws IOException {
 	    List<Token> tokens = TokenReader.read(types(), inTxtFile);
 	    Node root = parse(tokens);
 	    makeUniqId(root);	// Nodeのidをユニークにします。
 	    makeUniqPath(root);	// Nodeのpathをユニークにします。
+	    check(root);        // Nodeのidの順序をチェックします。
 	    return root;
 	}
 }

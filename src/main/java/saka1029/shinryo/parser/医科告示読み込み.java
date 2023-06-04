@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * カナ     = { "カナ" { "括弧数字" } }
  * 区分番号 = { "区分番号" 数字 注 }
  * 注       = "注" カナ | "注１" カナ 注数字
- * 注数字   = { "数字" カナ 注 }
+ * 注数字   = { "数字" カナ }
  * </pre>
  * 
  * 「注」は単一の場合には「"注" カナ」であるが、
@@ -59,8 +59,8 @@ public class 医科告示読み込み extends Parser {
     void 注数字(Node parent, Node tyu) { // tyuはインデント制約用
     	while (eatChild(tyu, 数字)) {
     		Node n = add(parent, eaten);
-    		カナ(n);
-    		注(n);
+    		if (isChild(n, カナ))
+                カナ(n);
     	}
     }
 
@@ -79,25 +79,33 @@ public class 医科告示読み込み extends Parser {
      */
     void 注(Node parent) {
         if (eatChild(parent, 注)) {
-        	Node n = add(parent, eaten);
-            カナ(n);
+        	Node tyu = add(parent, eaten);
+        	if (isChild(tyu, カナ))
+                カナ(tyu);
         } else if (eatChild(parent, 注１)) {
         	Token tyu = new Token(注ルート, "注", "", Collections.emptyList(), eaten);
         	Token one = new Token(数字, "１", eaten.header, eaten.body, eaten);
         	Node tyuNode = add(parent, tyu);
         	Node oneNode = add(tyuNode, one);
-            カナ(oneNode);
+        	if (isChild(tyuNode, カナ))
+                カナ(oneNode);
             注数字(tyuNode, tyuNode);
+        }
+    }
+
+    void 括弧数字(Node parent) {
+        while (eat(括弧数字)) {
+            add(parent, eaten);
         }
     }
 
     void カナ(Node parent) {
         while (eat(カナ)) {
-            Node n = add(parent, eaten);
-            while (eat(括弧数字)) {
-                add(n, eaten);
-            }
-            注(n);
+            Node kana = add(parent, eaten);
+            if (isChild(kana, 括弧数字))
+                括弧数字(kana);
+            else
+                注(kana);
         }
     }
 

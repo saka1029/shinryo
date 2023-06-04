@@ -144,7 +144,7 @@ public class Pat {
     }
     
     public static String fromTo(String body) {
-        return "(" + body + ")(から(" + body + ")まで|及び(" + body + "))?";
+        return "(" + body + ")(から(" + body + ")まで|及び(" + body + ")|、(" + body + "))?";
     }
 
 }
