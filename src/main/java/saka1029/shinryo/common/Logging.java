@@ -48,4 +48,9 @@ public class Logging {
         root.setLevel(level);
         handler.setLevel(level);
     }
+    
+    public static String methodName() {
+        StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+        return elements[2].getMethodName();
+    }
 }

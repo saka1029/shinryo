@@ -9,50 +9,50 @@ import org.junit.Test;
 
 import saka1029.shinryo.common.Logging;
 
-public class TestParser {
+public class TestSequenceChecker {
 
     static { Logging.init(); } 
-    static final Logger logger = Logger.getLogger(TestParser.class.getSimpleName());
-    
+    static final Logger logger = Logger.getLogger(TestSequenceChecker.class.getSimpleName());
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
-    
+
     static final String NENDO = "04";
     static final String IN_DIR = "in/" + NENDO + "/";
     static final String OUT_DIR = "debug/out/" + NENDO + "/";
 
     @Test
-    public void test調剤告示読み込み() throws IOException {
+    public void test調剤告示() throws IOException {
         logger.info(Logging.methodName());
         String inTxtFile = IN_DIR + "t/txt/ke.txt";
-        String outTxtFile = OUT_DIR + "tk-tree.txt";
+//        String outTxtFile = OUT_DIR + "tk-tree.txt";
         Node root = new 調剤告示読み込み().parse(inTxtFile);
-        root.summary(outTxtFile);
+        new SequenceChecker().check(root, logger::info);
     }
 
     @Test
-    public void test調剤通知読み込み() throws IOException {
+    public void test調剤通知() throws IOException {
         logger.info(Logging.methodName());
         String inTxtFile = IN_DIR + "t/txt/te.txt";
-        String outTxtFile = OUT_DIR + "tt-tree.txt";
+//        String outTxtFile = OUT_DIR + "tk-tree.txt";
         Node root = new 調剤通知読み込み().parse(inTxtFile);
-        root.summary(outTxtFile);
+        new SequenceChecker().check(root, logger::info);
     }
 
     @Test
-    public void test医科告示読み込み() throws IOException {
+    public void test医科告示() throws IOException {
         logger.info(Logging.methodName());
         String inTxtFile = IN_DIR + "i/txt/ke.txt";
-        String outTxtFile = OUT_DIR + "ik-tree.txt";
+//        String outTxtFile = OUT_DIR + "tk-tree.txt";
         Node root = new 医科告示読み込み().parse(inTxtFile);
-        root.summary(outTxtFile);
+        new SequenceChecker().check(root, logger::info);
     }
 
     @Test
-    public void test医科通知読み込み() throws IOException {
+    public void test医科通知() throws IOException {
         logger.info(Logging.methodName());
         String inTxtFile = IN_DIR + "i/txt/te.txt";
-        String outTxtFile = OUT_DIR + "it-tree.txt";
+//        String outTxtFile = OUT_DIR + "tk-tree.txt";
         Node root = new 医科通知読み込み().parse(inTxtFile);
-        root.summary(outTxtFile);
+        new SequenceChecker().check(root, logger::info);
     }
+
 }
