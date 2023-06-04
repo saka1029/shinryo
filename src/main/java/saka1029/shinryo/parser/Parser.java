@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class Parser {
-	static final Logger logger = Logger.getLogger(Parser.class.getName());
+	static final Logger logger = Logger.getLogger(Parser.class.getSimpleName());
 
 	List<Token> tokens;
 	int max;
