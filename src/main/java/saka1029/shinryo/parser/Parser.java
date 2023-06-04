@@ -46,17 +46,6 @@ public abstract class Parser {
 		return false;
 	}
 	
-	boolean eatChild(Node parent, TokenType expected) {
-		if (token == null)
-			return false;
-		if (token.indent > parent.token.indent && token.type == expected) {
-			eaten = token;
-			token = get();
-			return true;
-		}
-		return false;
-	}
-	
 	Node add(Node parent, Token token) {
 		return parent.addChild(token);
 	}

@@ -65,21 +65,21 @@ public class 調剤告示読み込み extends Parser {
      *             イ  ＹＹＹＹＹ
      */
     void 注(Node parent) {
-        if (eatChild(parent, 注)) {
+        if (isChild(parent, 注) && eat(注)) {
         	Node n = add(parent, eaten);
             カナ(n);
-        } else if (eatChild(parent, 注１)) {
+        } else if (isChild(parent, 注１) && eat(注１)) {
         	Token tyu = new Token(注ルート, "注", "", Collections.emptyList(), eaten);
         	Token one = new Token(数字, "１", eaten.header, eaten.body, eaten);
         	Node tyuNode = add(parent, tyu);
         	Node oneNode = add(tyuNode, one);
             カナ(oneNode);
-            注数字(tyuNode, tyuNode);
+            注数字(tyuNode);
         }
     }
     
-    void 注数字(Node parent, Node tyu) { // tyuはインデント制約用
-    	while (eatChild(tyu, 数字)) {
+    void 注数字(Node parent) {
+    	while (isChild(parent, 数字) && eat(数字)) {
     		Node n = add(parent, eaten);
     		カナ(n);
     		注(n);
