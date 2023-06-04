@@ -16,8 +16,9 @@ public class TestParser {
     
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     
-    static final String IN_DIR = "in/04/";
-    static final String OUT_DIR = "debug/out/04/";
+    static final String NENDO = "04";
+    static final String IN_DIR = "in/" + NENDO + "/";
+    static final String OUT_DIR = "debug/out/" + NENDO + "/";
 
     @Test
     public void test調剤告示読み込み() throws IOException {

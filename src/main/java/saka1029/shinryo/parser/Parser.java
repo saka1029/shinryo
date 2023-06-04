@@ -85,7 +85,7 @@ public abstract class Parser {
     			continue;
     		List<Node> list = e.getValue();
     		for (int i = 0, size = list.size(); i < size; ++i)
-    			list.get(i).id += i;
+    			list.get(i).id += i + 1;
     	}
     	for (Node child : node.children)
     		makeUniqId(child);
