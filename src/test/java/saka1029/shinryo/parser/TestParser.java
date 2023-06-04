@@ -22,7 +22,7 @@ public class TestParser {
     @Test
     public void test調剤告示読み込み() throws IOException {
         String inTxtFile = IN_DIR + "t/txt/ke.txt";
-        String outTxtFile = OUT_DIR + "t/k-tree.txt";
+        String outTxtFile = OUT_DIR + "tk-tree.txt";
         Node root = new 調剤告示読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
@@ -30,7 +30,7 @@ public class TestParser {
     @Test
     public void test調剤通知読み込み() throws IOException {
         String inTxtFile = IN_DIR + "t/txt/te.txt";
-        String outTxtFile = OUT_DIR + "t/t-tree.txt";
+        String outTxtFile = OUT_DIR + "tt-tree.txt";
         Node root = new 調剤通知読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
@@ -38,7 +38,7 @@ public class TestParser {
     @Test
     public void test医科告示読み込み() throws IOException {
         String inTxtFile = IN_DIR + "i/txt/ke.txt";
-        String outTxtFile = OUT_DIR + "i/k-tree.txt";
+        String outTxtFile = OUT_DIR + "ik-tree.txt";
         Node root = new 医科告示読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
@@ -46,7 +46,7 @@ public class TestParser {
     @Test
     public void test医科通知読み込み() throws IOException {
         String inTxtFile = IN_DIR + "i/txt/te.txt";
-        String outTxtFile = OUT_DIR + "i/t-tree.txt";
+        String outTxtFile = OUT_DIR + "it-tree.txt";
         Node root = new 医科通知読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
