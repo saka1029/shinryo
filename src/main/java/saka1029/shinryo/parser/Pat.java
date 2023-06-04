@@ -65,7 +65,7 @@ public class Pat {
         s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款|例", "");
         s = s.replaceAll("[のー－―‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
-        s = s.replaceAll("から|及び", "x");
+        s = s.replaceAll("から|及び|、", "x");
         return Normalizer.normalize(s, Form.NFKC);
     }
     
