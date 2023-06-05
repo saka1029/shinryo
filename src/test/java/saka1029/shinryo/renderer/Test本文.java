@@ -5,15 +5,15 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import saka1029.shinryo.common.Logging;
+import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.医科告示読み込み;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.調剤告示読み込み;
 
 public class Test本文 {
-    static { Logging.init(); } 
-    static final Logger logger = Logger.getLogger(Test本文.class.getSimpleName());
+
+    static final Logger logger = Common.logger(Test本文.class);
     
     static final Param param = Param.of("in", "debug/out", "04");
 

@@ -10,12 +10,11 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import saka1029.shinryo.common.Logging;
+import saka1029.shinryo.common.Common;
 
 public class TestPat {
 
-    static { Logging.init(); } 
-    static final Logger logger = Logger.getLogger(TestPat.class.getSimpleName());
+    static final Logger logger = Common.logger(TestPat.class);
 
     @Test
     public void testのからまで() {

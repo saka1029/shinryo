@@ -1,19 +1,22 @@
 package saka1029.shinryo.common;
 
-import static org.junit.Assert.*;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 
-public class TestLogging {
+public class TestCommon {
     
-    static { Logging.init(Level.FINEST); }
-    static Logger logger = Logger.getLogger(TestLogging.class.getSimpleName());
+    static Logger logger = Common.logger(TestCommon.class);
+
+    @Test
+    public void testInEclipse() {
+        logger.info("in eclipse: " + Common.inEclipse());
+    }
 
     @Test
     public void testLogging() {
+        logger.setLevel(Level.FINEST);
         logger.finest("日本語を出力");
         logger.fine("日本語を出力");
         logger.info("日本語を出力");

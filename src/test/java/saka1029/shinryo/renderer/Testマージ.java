@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import saka1029.shinryo.common.Logging;
+import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.調剤告示読み込み;
@@ -20,9 +20,7 @@ import saka1029.shinryo.parser.調剤通知読み込み;
 
 public class Testマージ {
 
-    static { Logging.init(); } 
-    static final Logger logger = Logger.getLogger(Testマージ.class.getSimpleName());
-    static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
+    static final Logger logger = Common.logger(Testマージ.class);
     
     static final Param param = Param.of("in", "debug/out", "04");
 
@@ -68,7 +66,7 @@ public class Testマージ {
 
 	@Test
 	public void test調剤マージ() throws IOException {
-        logger.info(Logging.methodName());
+        logger.info(Common.methodName());
         Node kroot = new 調剤告示読み込み().parse(param.txt("t", "ke"));
         Map<String, Node> kmap = map(kroot);
         logger.info("*** 調剤告示マップ:");

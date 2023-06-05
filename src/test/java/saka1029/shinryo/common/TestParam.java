@@ -3,8 +3,6 @@ package saka1029.shinryo.common;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
@@ -14,8 +12,7 @@ import saka1029.shinryo.parser.TestNode;
 
 public class TestParam {
 
-    static { Logging.init(); } 
-    static final Logger logger = Logger.getLogger(TestNode.class.getSimpleName());
+    static final Logger logger = Common.logger(TestNode.class);
 
     @Test
     public void testFiles() throws IOException {
@@ -51,14 +48,5 @@ public class TestParam {
         assertEquals(Path.of("IN/04/i/txt/y.txt"), Path.of(p.txt("i", "y")));
         assertEquals(Path.of("OUT/04/i"), Path.of(p.outDir("i")));
         assertEquals(Path.of("OUT/04/i/index.html"), Path.of(p.outFile("i", "index.html")));
-    }
-    
-    @Test
-    public void testErr() {
-        logger.info(System.getProperty("file.encoding"));
-        logger.info(System.getProperty("stderr.encoding"));
-        System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
-        logger.info(System.out.charset().toString());
-        System.out.println("こんにちは");
     }
 }
