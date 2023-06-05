@@ -23,6 +23,7 @@ public class Node implements Iterable<Node> {
     public String id;
     public String path;
     public final int level;
+    public Node tuti;
     public final List<Node> children;
 
     private Node(Node parent, Token token, String id, String path, int level) {
