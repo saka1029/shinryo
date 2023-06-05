@@ -3,20 +3,74 @@ package saka1029.shinryo.common;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import com.google.gson.Gson;
+import java.util.Comparator;
+import java.util.Map;
 
 public class Param {
-    public String 元号;
-    public String 年度;
-    public String 旧元号;
-    public String 旧年度;
-    
-    public static Param 年度(String nendo) throws IOException {
-        return read("in/%s/param.json".formatted(nendo));
+
+    record Nendo(String 元号, String 年度, String 旧元号, String 旧年度) {
     }
 
-    public static Param read(String inJsonFile) throws IOException {
-        return new Gson().fromJson(Files.readString(Path.of(inJsonFile)), Param.class);
+    public static Map<String, Nendo> ALL = Map.of(
+        "30", new Nendo("平成", "30", "平成", "28"),
+        "01", new Nendo("令和", "01", "平成", "30"),
+        "02", new Nendo("令和", "02", "令和", "01"),
+        "04", new Nendo("令和", "04", "令和", "02"),
+        "06", new Nendo("令和", "06", "令和", "04"),
+        "08", new Nendo("令和", "08", "令和", "06"));
+
+    public final String inDir, outDir;
+    public final String 元号;
+    public final String 年度;
+    public final String 旧元号;
+    public final String 旧年度;
+    
+    Param(String inDir, String outDir, Nendo n) {
+        this.inDir = inDir;
+        this.outDir = outDir;
+        this.元号 = n.元号;
+        this.年度 = n.年度;
+        this.旧元号 = n.旧元号;
+        this.旧年度 = n.旧年度;
+    }
+    
+    public static Param of(String inDir, String outDir, String 年度) {
+        return new Param(inDir, outDir, ALL.get(年度));
+    }
+    
+    public static Param of(String 年度) {
+        return of("in", "out", 年度);
+    }
+    
+    public static String[] files(Path dir, String ext) throws IOException {
+        return Files.walk(dir, 1)
+            .filter(p -> p.getFileName().toString().toLowerCase().endsWith(ext))
+            .sorted(Comparator.comparing(Path::getFileName))
+            .map(p -> p.toString())
+            .toArray(String[]::new);
+    }
+
+    public String[] pdf(String 点数表, String type) throws IOException {
+        return files(Path.of(inDir, 年度, 点数表, "pdf", type), ".pdf");
+    }
+
+    public String txt(String 点数表, String name) {
+        return Path.of(inDir, 年度, 点数表, "txt", name + ".txt").toString();
+    }
+
+    public String outDir() {
+        return Path.of(outDir, 年度).toString();
+    }
+
+    public String outFile(String fileName) {
+        return Path.of(outDir(), fileName).toString();
+    }
+
+    public String outDir(String 点数表) {
+        return Path.of(outDir, 年度, 点数表).toString();
+    }
+
+    public String outFile(String 点数表, String fileName) {
+        return Path.of(outDir(点数表), fileName).toString();
     }
 }

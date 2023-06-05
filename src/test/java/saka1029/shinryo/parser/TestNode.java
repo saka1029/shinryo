@@ -3,14 +3,19 @@ package saka1029.shinryo.parser;
 import static org.junit.Assert.assertEquals;
 
 import java.io.PrintStream;
+import java.util.logging.Logger;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Test;
 
+import saka1029.shinryo.common.Logging;
+
 public class TestNode {
 
+    static { Logging.init(); } 
+    static final Logger logger = Logger.getLogger(TestNode.class.getSimpleName());
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
 
     static final TokenType T = new TokenType("item", "", Pat.固定値id(""));

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 
 import saka1029.shinryo.common.Logging;
+import saka1029.shinryo.common.Param;
 
 public class TestParser {
 
@@ -16,15 +17,13 @@ public class TestParser {
     
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     
-    static final String NENDO = "04";
-    static final String IN_DIR = "in/" + NENDO + "/";
-    static final String OUT_DIR = "debug/out/" + NENDO + "/";
+    static final Param param = Param.of("in", "debug/out", "04");
 
     @Test
     public void test調剤告示読み込み() throws IOException {
         logger.info(Logging.methodName());
-        String inTxtFile = IN_DIR + "t/txt/ke.txt";
-        String outTxtFile = OUT_DIR + "tk-tree.txt";
+        String inTxtFile = param.txt("t", "ke");
+        String outTxtFile = param.outDir("tk-tree.txt");
         Node root = new 調剤告示読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
@@ -32,8 +31,8 @@ public class TestParser {
     @Test
     public void test調剤通知読み込み() throws IOException {
         logger.info(Logging.methodName());
-        String inTxtFile = IN_DIR + "t/txt/te.txt";
-        String outTxtFile = OUT_DIR + "tt-tree.txt";
+        String inTxtFile = param.txt("t", "te");
+        String outTxtFile = param.outDir("tt-tree.txt");
         Node root = new 調剤通知読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
@@ -41,8 +40,8 @@ public class TestParser {
     @Test
     public void test医科告示読み込み() throws IOException {
         logger.info(Logging.methodName());
-        String inTxtFile = IN_DIR + "i/txt/ke.txt";
-        String outTxtFile = OUT_DIR + "ik-tree.txt";
+        String inTxtFile = param.txt("i", "ke");
+        String outTxtFile = param.outDir("ik-tree.txt");
         Node root = new 医科告示読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
@@ -50,8 +49,8 @@ public class TestParser {
     @Test
     public void test医科通知読み込み() throws IOException {
         logger.info(Logging.methodName());
-        String inTxtFile = IN_DIR + "i/txt/te.txt";
-        String outTxtFile = OUT_DIR + "it-tree.txt";
+        String inTxtFile = param.txt("i", "te");
+        String outTxtFile = param.outDir("it-tree.txt");
         Node root = new 医科通知読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }

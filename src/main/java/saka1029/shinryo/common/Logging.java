@@ -11,6 +11,7 @@ import java.util.logging.StreamHandler;
 
 public class Logging {
 
+    static boolean INIT = false;
     
     static final Formatter MY_FORMATTER = new Formatter() {
         @Override
@@ -34,6 +35,9 @@ public class Logging {
      * アプリケーションの中で呼んではいけません。
      */
     public static void init(Level level) {
+        if (INIT)
+            return;
+        INIT = true;
         Logger root = Logger.getLogger("");
         for (Handler h : root.getHandlers())
             root.removeHandler(h);
