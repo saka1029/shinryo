@@ -27,13 +27,25 @@ public class Common {
         return Logger.getLogger(clazz.getSimpleName());
     }
     
+    /**
+     * このメソッドを呼んでもレベルは設定できない。
+     */
     public static Logger logger(Class<?> clazz, Level level) {
         Logger logger = logger(clazz);
         logger.setLevel(level);
         return logger;
     }
 
-    static void initLogger() {
+    /**
+     * System.out, System.errの文字セットをUTF-8に変更する。
+     * すべてのロガーのフォーマットをMY_FORMATに変更する。
+     * 
+     * System.out, System.errのデフォルト文字セットは
+     * (1)コマンドプロンプトの場合はコードページに依存する。
+     * （コードページ932のときMS932、65001のときUTF-8）
+     * (2)Eclipseの場合はwindows-31jとなる。
+     */
+    public static void initLogger() {
         if (!System.out.charset().equals(StandardCharsets.UTF_8))
             System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
         if (!System.err.charset().equals(StandardCharsets.UTF_8))
