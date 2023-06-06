@@ -8,11 +8,9 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 
-import saka1029.shinryo.parser.TestNode;
-
 public class TestParam {
 
-    static final Logger logger = Common.logger(TestNode.class);
+    static final Logger logger = Common.logger(TestParam.class);
 
     @Test
     public void testFiles() throws IOException {

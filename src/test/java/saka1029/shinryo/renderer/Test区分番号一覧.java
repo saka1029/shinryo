@@ -7,13 +7,12 @@ import org.junit.Test;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.parser.Node;
-import saka1029.shinryo.parser.TestNode;
 import saka1029.shinryo.parser.医科告示読み込み;
 import saka1029.shinryo.parser.調剤告示読み込み;
 
 public class Test区分番号一覧 {
 
-    static final Logger logger = Common.logger(TestNode.class);
+    static final Logger logger = Common.logger(Test区分番号一覧.class);
 
     @Test
     public void test医科区分番号一覧() throws IOException {

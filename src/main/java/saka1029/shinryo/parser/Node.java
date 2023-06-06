@@ -5,16 +5,10 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Spliterators;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-public class Node implements Iterable<Node> {
+public class Node {
 	public final Node parent;
     public final Token token;
     /**
@@ -53,43 +47,20 @@ public class Node implements Iterable<Node> {
     	return child;
     }
     
-    /**
-     * 自分自身とすべての子（さらにその子も含む）を深さ優先探索で返します。
-     */
-    @Override
-    public Iterator<Node> iterator() {
-        Deque<Node> stack = new LinkedList<>();
-        stack.push(this);
-        return new Iterator<>() {
-
-            @Override
-            public boolean hasNext() {
-                return !stack.isEmpty();
-            }
-
-            @Override
-            public Node next() {
-                Node next = stack.pop();
-                for (int i = next.children.size() - 1; i >= 0; --i)
-                    stack.push(next.children.get(i));
-                return next;
-            }
-        };
+    void summary(PrintWriter w) {
+		if (!isRoot() && token != null) {
+			Token t = token;
+			w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", path, "  ".repeat(level),
+				t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
+		}
+		for (Node child : children)
+			child.summary(w);
     }
-    
-    public Stream<Node> stream() {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), 0), false);
-    }
-    
+
     public void summary(String outTxtFile) throws IOException {
         Files.createDirectories(Path.of(outTxtFile).getParent());
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
-            for (Node node : this)
-				if (!node.isRoot()) {
-					Token t = node.token;
-					w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", node.path, "  ".repeat(node.level),
-					    t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
-				}
+        	summary(w);
         }
     }
     
