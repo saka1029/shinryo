@@ -9,16 +9,33 @@ import java.util.List;
 import java.util.Objects;
 
 public class Node {
+    /**
+     * ルートの場合nullです。それ以外の場合はnot nullです。
+     */
 	public final Node parent;
+	/**
+	 * ルート(parent == null)のときは常にnullです。
+	 * マージで追加されたNodeの場合もnullです。
+	 * それ以外の場合はnot nullです。
+	 */
     public final Token token;
     /**
-     * id, pathはパース後にユニークにするための更新を行うためfinalではありません。
+     * idはパース後にユニークにするための更新を行うためfinalではありません。
      */
     public String id;
+    /**
+     * pathはパース後にユニークにするための更新を行うためfinalではありません。
+     */
     public String path;
     public final int level;
+    /**
+     * パース後は常にnullです。マージ後にnot nullになることがあります。
+     */
     public Node tuti;
-    public final List<Node> children;
+    /**
+     * 常にnot nullです。
+     */
+    public final List<Node> children = new ArrayList<>();
 
     private Node(Node parent, Token token, String id, String path, int level) {
     	this.parent = parent;
@@ -26,7 +43,6 @@ public class Node {
     	this.id = id;
     	this.path = path;
     	this.level = level;
-        this.children = new ArrayList<>();
     }
     
     public static Node root() {
