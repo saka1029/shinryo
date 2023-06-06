@@ -32,6 +32,8 @@ public class TestParam {
         assertEquals(Path.of("in/04/i/txt/y.txt"), Path.of(p.txt("i", "y")));
         assertEquals(Path.of("out/04/i"), Path.of(p.outDir("i")));
         assertEquals(Path.of("out/04/i/index.html"), Path.of(p.outFile("i", "index.html")));
+        assertEquals(Path.of("out/04"), Path.of(p.outDir()));
+        assertEquals(Path.of("out/04/index.html"), Path.of(p.outFile("index.html")));
     }
 
     @Test
@@ -46,5 +48,7 @@ public class TestParam {
         assertEquals(Path.of("IN/04/i/txt/y.txt"), Path.of(p.txt("i", "y")));
         assertEquals(Path.of("OUT/04/i"), Path.of(p.outDir("i")));
         assertEquals(Path.of("OUT/04/i/index.html"), Path.of(p.outFile("i", "index.html")));
+        assertEquals(Path.of("OUT/04"), Path.of(p.outDir()));
+        assertEquals(Path.of("OUT/04/index.html"), Path.of(p.outFile("index.html")));
     }
 }
