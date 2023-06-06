@@ -14,6 +14,15 @@ public abstract class Parser {
 	int max;
 	int index = 0;
 	Token token, eaten = null;
+	/**
+	 * パース後にcheckSequence()を行うかどうかを指定します。
+	 */
+	public boolean check = true;
+	
+	public static Node parse(Parser parser, boolean check, String inTxtFile) throws IOException {
+		parser.check = check;
+		return parser.parse(inTxtFile);
+	}
 
 	ParseException error(String format, Object... args) {
 		return new ParseException(format.formatted(args));
@@ -90,7 +99,7 @@ public abstract class Parser {
 
     static final List<String> NO_CHECK_TYPES = List.of("区分番号", "注");
 
-    void check(Node root) {
+    void checkSequence(Node root) {
 //        Node prevNode = null;
         int prevId = 0;
         for (Node child : root.children) {
@@ -104,7 +113,7 @@ public abstract class Parser {
                     prevId = id;
                 }
             }
-            check(child);
+            checkSequence(child);
         }
     }
 	public Node parse(String inTxtFile) throws IOException {
@@ -112,7 +121,8 @@ public abstract class Parser {
 	    Node root = parse(tokens);
 	    makeUniqId(root);	// Nodeのidをユニークにします。
 	    makeUniqPath(root);	// Nodeのpathをユニークにします。
-	    check(root);        // Nodeのidの順序をチェックします。
+	    if (check)
+			checkSequence(root);        // Nodeのidの順序をチェックします。
 	    return root;
 	}
 }
