@@ -102,12 +102,12 @@ public class Merger {
         });
     }
 
-    public static void print(Node node, Consumer<String> visitor) {
-        if (!node.isRoot() && node.tuti != null)
-            visitor.accept(node.tuti.token.type.name + " " + node.path + ":" + node.tuti.path);
-        for (Node child : node.children)
-            print(child, visitor);
-    }
+//    public static void print(Node node, Consumer<String> visitor) {
+//        if (!node.isRoot() && node.tuti != null)
+//            visitor.accept(node.tuti.token.type.name + " " + node.path + ":" + node.tuti.path);
+//        for (Node child : node.children)
+//            print(child, visitor);
+//    }
 
     public static void merge(Node kRoot, Node tRoot) {
         Map<String, Node> kMap = map(kRoot);

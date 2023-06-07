@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class Node {
     /**
@@ -74,20 +75,29 @@ public class Node {
         return child;
     }
 
-    void summary(PrintWriter w) {
-        if (!isRoot() && token != null) {
-            Token t = token;
-            w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", path, "  ".repeat(level),
-                t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
+    /**
+     * Nodeを深さ優先でたどりながら以下の情報を出力します。
+     * path, number, header, PDFファイル名, ページ番号, テキストファイル行番号, indent, 通知あり
+     */
+    public void summary(Consumer<String> consumer) {
+        Node node = this;
+        if (!node.isRoot()) {
+            // マージで追加されたNodeの場合、通知Nodeに置き換える。
+            if (node.token == null)
+                node = tuti;
+            Token t = node.token;
+            consumer.accept("%s%s%s %s : %s:%d:%d:%d:%d%s".formatted(path, "  ".repeat(node.level),
+                t.number, t.header,
+                t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size(), node.tuti == null ? "" : ":通知"));
         }
-        for (Node child : children)
-            child.summary(w);
+        for (Node child : node.children)
+            child.summary(consumer);
     }
 
     public void summary(String outTxtFile) throws IOException {
         Files.createDirectories(Path.of(outTxtFile).getParent());
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
-            summary(w);
+            summary(w::println);
         }
     }
 
