@@ -12,12 +12,10 @@ public class Node {
     /**
      * ルートの場合nullです。それ以外の場合はnot nullです。
      */
-	public final Node parent;
-	/**
-	 * ルート(parent == null)のときは常にnullです。
-	 * マージで追加されたNodeの場合もnullです。
-	 * それ以外の場合はnot nullです。
-	 */
+    public final Node parent;
+    /**
+     * ルート(parent == null)のときは常にnullです。 マージで追加されたNodeの場合もnullです。 それ以外の場合はnot nullです。
+     */
     public final Token token;
     /**
      * idはパース後にユニークにするための更新を行うためfinalではありません。
@@ -38,48 +36,61 @@ public class Node {
     public final List<Node> children = new ArrayList<>();
 
     private Node(Node parent, Token token, String id, String path, int level) {
-    	this.parent = parent;
-    	this.token = token;
-    	this.id = id;
-    	this.path = path;
-    	this.level = level;
+        this.parent = parent;
+        this.token = token;
+        this.id = id;
+        this.path = path;
+        this.level = level;
     }
-    
+
     public static Node root() {
-    	return new Node(null, null, null, null, 0);
+        return new Node(null, null, null, null, 0);
     }
-    
+
     public boolean isRoot() {
         return parent == null;
     }
-    
+
     public Node addChild(Token token) {
-    	Objects.requireNonNull(token, "token");
-    	// id, pathはパース後にユニーク化するために更新する点に注意する。
-    	String childId = token.id;
-    	String childPath = isRoot() ? childId : path + Pat.パス区切り + childId;
-    	Node child = new Node(this, token, childId, childPath, level + 1);
-    	children.add(child);
-    	return child;
+        Objects.requireNonNull(token, "token");
+        // id, pathはパース後にユニーク化するために更新する点に注意する。
+        String childId = token.id;
+        String childPath = isRoot() ? childId : path + Pat.パス区切り + childId;
+        Node child = new Node(this, token, childId, childPath, level + 1);
+        children.add(child);
+        return child;
     }
     
+    /**
+     * マージで通知Nodeに対応する告示Nodeが存在しないときに対応する
+     * 告示Nodeを追加するために使用します。
+     * 追加された告示Nodeのtokenはnullとなる点に注意してください。
+     * 追加位置が不明なため、children.add(child)を実行していない点に注意してください。
+     * childrenへの追加は呼び出し元で行う必要があります。
+     */
+    public Node addChild(String id, String path, Node tuti) {
+        Node child = new Node(this, null, id, path, level + 1);
+        child.tuti = tuti;
+        return child;
+    }
+
     void summary(PrintWriter w) {
-		if (!isRoot() && token != null) {
-			Token t = token;
-			w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", path, "  ".repeat(level),
-				t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
-		}
-		for (Node child : children)
-			child.summary(w);
+        if (!isRoot() && token != null) {
+            Token t = token;
+            w.printf("%s%s%s %s : %s:%d:%d:%d:%d%n", path, "  ".repeat(level),
+                t.number, t.header, t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size());
+        }
+        for (Node child : children)
+            child.summary(w);
     }
 
     public void summary(String outTxtFile) throws IOException {
         Files.createDirectories(Path.of(outTxtFile).getParent());
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
-        	summary(w);
+            summary(w);
         }
     }
-    
+
     @Override
     public String toString() {
         return "Node[path=%s, token=%s]".formatted(path, token);

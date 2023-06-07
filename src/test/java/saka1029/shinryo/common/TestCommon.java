@@ -17,6 +17,7 @@ public class TestCommon {
     @Test
     public void testInitLogger() {
         System.out.println("標準出力");
+        System.out.println("stdout.encoding=" + System.getProperty("stdout.encoding"));
         System.err.println("標準エラー出力");
     }
 
