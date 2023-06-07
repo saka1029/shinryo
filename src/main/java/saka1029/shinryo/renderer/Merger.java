@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
@@ -74,8 +73,8 @@ public class Merger {
                 return;
             }
         }
+        // 親の適切な位置に子を追加します。
         kParent.children.add(index, kNode);
-//        logger.warning("マージ先なし: " + id);
     }
 
     /**
@@ -90,13 +89,11 @@ public class Merger {
                         Node kn = kMap.get(k);
                         if (kn == null)
                             newNode(kMap, k, node);
-//                                logger.warning("マージ先なし: " + k);
                         else
                             kn.tuti = node;
                     }
                 } else
                     newNode(kMap, id, node);
-//                        logger.warning("マージ先なし: " + id);
             } else
                 kNode.tuti = node;
         });

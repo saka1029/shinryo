@@ -77,7 +77,7 @@ public class Node {
 
     /**
      * Nodeを深さ優先でたどりながら以下の情報を出力します。
-     * path, number, header, PDFファイル名, ページ番号, テキストファイル行番号, indent, 通知あり
+     * path, number, header, PDFファイル名, ページ番号, テキストファイル行番号, indent, bodyの行数, 通知あり
      */
     public void summary(Consumer<String> consumer) {
         Node node = this;
