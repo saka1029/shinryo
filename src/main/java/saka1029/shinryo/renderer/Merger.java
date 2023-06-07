@@ -52,10 +52,11 @@ public class Merger {
      * </pre>
      */
     static void newNode(Map<String, Node> kMap, String id, Node tNode) {
+        logger.info("通知パス「" + tNode.path + "」に対応する告示Nodeを追加します。");
         Node tParent = tNode.parent;
         Node kParent = tParent.isRoot() ? kMap.get("") : kMap.get(tParent.path);
         if (kParent == null) {
-            logger.warning("告示の親「" + tNode.path + "」が見つかりません");
+            logger.warning("通知パス「" + tNode.path + "」に対応する告示の親が見つかりません");
             return;
         }
         // 告示の親Nodeに子を追加します。
