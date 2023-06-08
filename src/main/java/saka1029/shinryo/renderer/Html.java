@@ -46,6 +46,13 @@ public class Html {
             token.pdfFileName, token.pageNo, token.lineNo);
         for (Node child : node.children)
             render(child, level + 1, writer, links);
+//        // 通知ノードのレンダリング
+//        if (node.tuti != null) {
+//            writer.println("<div id='tuti' style='border:none;background-color:#e0e0e0;padding:0.25em;'>");
+//            for (Node child : node.tuti.children)
+//                render(child, 0, writer, links);
+//            writer.println("</div>");
+//        }
     }
 
     public void render(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
@@ -81,8 +88,10 @@ public class Html {
                     writer.println("<p>%s</p>", token.body.stream().collect(Collectors.joining()));
 			}
 			links.push(new Link(outHtmlFile, title));
+			// 子ノードのレンダリング
 			for (Node child : node.children)
 			    render(child, 0, writer, links);
+			// 通知ノードのレンダリング
 			if (node.tuti != null) {
 			    writer.println("<div id='tuti' style='border:none;background-color:#e0e0e0;padding:0.25em;'>");
 			    for (Node child : node.tuti.children)
