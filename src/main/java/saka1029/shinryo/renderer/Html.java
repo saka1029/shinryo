@@ -83,6 +83,12 @@ public class Html {
 			links.push(new Link(outHtmlFile, title));
 			for (Node child : node.children)
 			    render(child, 0, writer, links);
+			if (node.tuti != null) {
+			    writer.println("<div id='tuti' style='border:none;background-color:#e0e0e0;padding:0.25em;'>");
+			    for (Node child : node.tuti.children)
+                    render(child, 0, writer, links);
+			    writer.println("</div>");
+			}
 			links.pop();
             writer.println("</body>");
             writer.println("</html>");
