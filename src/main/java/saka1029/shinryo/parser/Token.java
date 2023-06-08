@@ -18,34 +18,36 @@ public class Token {
     public final String id; // 兄弟ノードを識別する識別子。[a-zA-z0-9+-]*
     public final String number;
     public final String header;
-    public final String fileName;
+    public final String pdfFileName;
+    public final String txtFileName;
     public final int pageNo;
     public final int lineNo;
     public final int indent;
     public final List<String> body;
 
-    public Token(TokenType type, String number, String header, String fileName, int pageNo, int lineNo, int indent,
+    public Token(TokenType type, String number, String header, String pdfFileName, String txtFileName, int pageNo, int lineNo, int indent,
         List<String> body) {
         this.type = type;
         this.id = type.id(number);
         this.number = number;
         this.header = header;
-        this.fileName = fileName;
+        this.pdfFileName = pdfFileName;
+        this.txtFileName = txtFileName;
         this.pageNo = pageNo;
         this.lineNo = lineNo;
         this.indent = indent;
         this.body = body;
     }
 
-    public Token(TokenType type, String number, String header, String fileName, int pageNo, int lineNo, int indent) {
-        this(type, number, header, fileName, pageNo, lineNo, indent, new ArrayList<>());
+    public Token(TokenType type, String number, String header, String pdfFileName, String txtFileName, int pageNo, int lineNo, int indent) {
+        this(type, number, header, pdfFileName, txtFileName, pageNo, lineNo, indent, new ArrayList<>());
     }
 
     /**
      * Token orgを複製する。 ただしtype, number, header, bodyは変更する。
      */
     public Token(TokenType type, String number, String header, List<String> body, Token org) {
-        this(type, number, header, org.fileName, org.pageNo, org.lineNo, org.indent, body);
+        this(type, number, header, org.pdfFileName, org.txtFileName, org.pageNo, org.lineNo, org.indent, body);
     }
 
     /**
@@ -79,6 +81,6 @@ public class Token {
     @Override
     public String toString() {
         return "Token(%s, %s, %s, %s:%s:%s:%s, %s)".formatted(
-            type.name, number, header, fileName, pageNo, lineNo, indent, body);
+            type.name, number, header, pdfFileName, pageNo, lineNo, indent, body);
     }
 }

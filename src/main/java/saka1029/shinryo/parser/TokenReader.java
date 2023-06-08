@@ -15,7 +15,8 @@ public class TokenReader {
     
     public static List<Token> read(List<TokenType> types, String inTxtFile) throws IOException {
         Token token = null;
-        String fileName = null;
+        String txtFileName = Path.of(inTxtFile).getFileName().toString();
+        String pdfFileName = null;
         int pageNo = -1, lineNo = 0;
         List<Token> result = new ArrayList<>();
         try (BufferedReader reader = Files.newBufferedReader(Path.of(inTxtFile))) {
@@ -24,13 +25,13 @@ public class TokenReader {
                 ++lineNo;
                 Matcher matcher = FILE_DIRECTIVE.matcher(line);
                 if (matcher.matches()) {
-                    fileName = matcher.group("F");
+                    pdfFileName = matcher.group("F");
                     pageNo = Integer.parseInt(matcher.group("P"));
                 } else if (COMMENT.matcher(line).matches()) {
                     continue L;
                 } else {
                     for (TokenType type : types) {
-                        Token t = type.match(line, fileName, pageNo, lineNo);
+                        Token t = type.match(line, pdfFileName, txtFileName, pageNo, lineNo);
                         if (t != null) {
                             if (token != null)
                                 result.add(token);
@@ -39,7 +40,7 @@ public class TokenReader {
                         }
                     }
                     if (token == null)
-                        token = new Token(TokenType.START, null, null, fileName, pageNo, lineNo, 0);
+                        token = new Token(TokenType.START, null, null, pdfFileName, txtFileName, pageNo, lineNo, 0);
                     token.body.add(line.trim());
                 }
             }

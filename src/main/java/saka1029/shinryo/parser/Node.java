@@ -88,7 +88,7 @@ public class Node {
             Token t = node.token;
             consumer.accept("%s%s%s %s : %s:%d:%d:%d:%d%s".formatted(path, "  ".repeat(node.level),
                 t.number, t.header,
-                t.fileName, t.pageNo, t.lineNo, t.indent, t.body.size(), node.tuti == null ? "" : ":通知"));
+                t.pdfFileName, t.pageNo, t.lineNo, t.indent, t.body.size(), node.tuti == null ? "" : ":通知"));
         }
         for (Node child : node.children)
             child.summary(consumer);

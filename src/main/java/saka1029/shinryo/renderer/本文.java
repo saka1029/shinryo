@@ -76,7 +76,7 @@ public abstract class 本文 {
 			writer.println("<meta charset='utf-8'>");
 			writer.println("<title>%s</title>", titleHead);
 			if (!node.isRoot())
-				writer.println("<!-- file:%s page:%d line:%d -->", node.token.fileName, node.token.pageNo,
+				writer.println("<!-- file:%s page:%d line:%d -->", node.token.pdfFileName, node.token.pageNo,
 						node.token.lineNo);
 			writer.println("</head>");
 			writer.println("<body style='font-family:monospace'>");

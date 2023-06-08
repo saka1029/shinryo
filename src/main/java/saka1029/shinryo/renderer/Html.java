@@ -14,10 +14,6 @@ import saka1029.shinryo.parser.Token;
 public class Html {
 
     record Link(String url, String title) {
-        @Override
-        public String toString() {
-            return "<a href='%s'>%s</a>".formatted(url, title);
-        }
     }
 
     public final String outDir;
@@ -32,18 +28,32 @@ public class Html {
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
 	}
 
+    public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+        Token token = node.token;
+        String title = "%s %s".formatted(token.number, token.header0());
+        String url = "%s.html".formatted(node.id);
+        writer.println("<p %s><a href='%s'>%s</a></p><!-- %s:%d %s:%d -->",
+            indent(level, token.number), url, title,
+            token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
+        render(node, title, url, links);
+    }
+
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         writer.println("<p %s>%s %s%s%s</p><!-- %s:%d:%d -->",
             indent(level, token.number), token.number, token.header,
             token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()),
-            token.fileName, token.pageNo, token.lineNo);
+            token.pdfFileName, token.pageNo, token.lineNo);
         for (Node child : node.children)
             render(child, level + 1, writer, links);
     }
 
     public void render(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
-        text(node, level, writer, links);
+        Token token = node.token;
+        if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
+            link(node, level, writer, links);
+        else
+            text(node, level, writer, links);
     }
 
     public void render(Node node, String title, String outHtmlFile, Deque<Link> links) throws IOException {
@@ -63,6 +73,13 @@ public class Html {
 			}
 			writer.println("</div>");
 			writer.println("<h1>%s</h1>", title);
+			if (node.token != null) {
+			    Token token = node.token;
+                if (!token.header1().isEmpty())
+                    writer.println("<p>%s</p>", token.header1());
+                if (token.body.size() > 0)
+                    writer.println("<p>%s</p>", token.body.stream().collect(Collectors.joining()));
+			}
 			links.push(new Link(outHtmlFile, title));
 			for (Node child : node.children)
 			    render(child, 0, writer, links);
