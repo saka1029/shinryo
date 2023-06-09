@@ -16,19 +16,20 @@ public class TestHtml {
 
     static final Logger logger = Common.logger(TestHtml.class);
     
-    static final Param param = Param.of("in", "debug/out/html", "04");
+    static final Param param = Param.of("in", "debug/html", "04");
 
     @Test
     public void test調剤() throws IOException {
-        String kTxt = param.txt("t", "ke");
-        String tTxt = param.txt("t", "te");
-        String outDir = param.outDir("t");
-        String title = "令和04年調剤点数表";
+        String 点数表 = "t";
+        String kTxt = param.txt(点数表, "ke");
+        String tTxt = param.txt(点数表, "te");
+        String outDir = param.outDir(点数表);
+        String title = param.title(点数表);
         String outHtmlFile = "index.html";
+        Common.copyTree(param.inHomeDir(), param.outHomeDir());
         Node kRoot = Parser.parse(new 調剤告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 調剤通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        Common.deleteDirectory(outDir);
         new Html(outDir).render(kRoot, title, outHtmlFile);
     }
 }

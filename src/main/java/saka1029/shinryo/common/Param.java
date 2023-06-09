@@ -18,6 +18,12 @@ public class Param {
         "04", new Nendo("令和", "04", "令和", "02"),
         "06", new Nendo("令和", "06", "令和", "04"),
         "08", new Nendo("令和", "08", "令和", "06"));
+    
+    public static Map<String, String> TITLES = Map.of(
+        "i", "医科診療報酬点数表",
+        "s", "歯科診療報酬点数表",
+        "t", "調剤診療報酬点数表",
+        "k", "施設基準");
 
     public final String inDir, outDir;
     public final String 元号;
@@ -58,6 +64,14 @@ public class Param {
         return Path.of(inDir, 年度, 点数表, "txt", name + ".txt").toString();
     }
 
+    public String inHomeDir() {
+        return Path.of(inDir, "home").toString();
+    }
+
+    public String outHomeDir() {
+        return outDir;
+    }
+
     public String outDir() {
         return Path.of(outDir, 年度).toString();
     }
@@ -72,5 +86,9 @@ public class Param {
 
     public String outFile(String 点数表, String fileName) {
         return Path.of(outDir(点数表), fileName).toString();
+    }
+    
+    public String title(String 点数表) {
+        return "%s%s年%s".formatted(元号, 年度, TITLES.get(点数表));
     }
 }

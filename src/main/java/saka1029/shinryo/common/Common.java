@@ -8,6 +8,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
 import java.util.logging.Formatter;
@@ -83,5 +84,23 @@ public class Common {
         Path path = Path.of(dir);
         if (Files.exists(path))
             Files.walkFileTree(path, DELETE_DIRECTORY);
+    }
+    
+    public static void copyTree(String inDir, String outDir) throws IOException {
+        Path inPath = Path.of(inDir);
+        Path outPath = Path.of(outDir);
+        Files.walkFileTree(inPath, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs) throws IOException {
+                Files.createDirectories(outPath.resolve(inPath.relativize(dir)));
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) throws IOException {
+                Files.copy(file, outPath.resolve(inPath.relativize(file)), StandardCopyOption.REPLACE_EXISTING);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
 }

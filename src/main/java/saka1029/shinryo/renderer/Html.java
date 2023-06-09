@@ -27,32 +27,29 @@ public class Html {
 		float width = (number.codePoints().map(c -> c < 256 ? 1 : 2).sum() + 1) / 2.0F;
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
 	}
+	
+	String lineDirective(Token token) {
+	    return token == null ? "<!-- -->"
+	        : "<!-- %s:%d %s:%d -->".formatted(token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
+	}
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s.html".formatted(node.id);
-        writer.println("<p %s><a href='%s'>%s</a></p><!-- %s:%d %s:%d -->",
-            indent(level, token.number), url, title,
-            token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
+        writer.println("<p %s><a href='%s'>%s</a></p>%s",
+            indent(level, token.number), url, title, lineDirective(token));
         render(node, title, url, links);
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
-        writer.println("<p %s>%s %s%s%s</p><!-- %s:%d:%d -->",
+        writer.println("<p %s>%s %s%s%s</p>%s",
             indent(level, token.number), token.number, token.header,
             token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()),
-            token.pdfFileName, token.pageNo, token.lineNo);
+            lineDirective(token));
         for (Node child : node.children)
             render(child, level + 1, writer, links);
-//        // 通知ノードのレンダリング
-//        if (node.tuti != null) {
-//            writer.println("<div id='tuti' style='border:none;background-color:#e0e0e0;padding:0.25em;'>");
-//            for (Node child : node.tuti.children)
-//                render(child, 0, writer, links);
-//            writer.println("</div>");
-//        }
     }
 
     public void render(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
@@ -69,9 +66,14 @@ public class Html {
             writer.println("<html lang='ja_JP'>");
             writer.println("<head>");
 			writer.println("<meta charset='utf-8'>");
+			writer.println("<meta name='viewport' content='initial-scale=1.0'>");
+            writer.println("<link rel='stylesheet' type='text/css' href='../../all.css'>");
 			writer.println("<title>%s</title>", title);
+            writer.println(lineDirective(node.token));
             writer.println("</head>");
-			writer.println("<body style='font-family:monospace'>");
+            writer.println("</head>");
+			writer.println("<body>");
+			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
 			String sep = "";
 			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
@@ -93,7 +95,8 @@ public class Html {
 			    render(child, 0, writer, links);
 			// 通知ノードのレンダリング
 			if (node.tuti != null) {
-			    writer.println("<div id='tuti' style='border:none;background-color:#e0e0e0;padding:0.25em;'>");
+			    writer.println("<div id='tuti'>");
+			    writer.println("<p><b>通知</b></p>");
 			    for (Node child : node.tuti.children)
                     render(child, 0, writer, links);
 			    writer.println("</div>");
@@ -105,6 +108,8 @@ public class Html {
     }
 
     public void render(Node node, String title, String outHtmlFile) throws IOException {
-        render(node, title, outHtmlFile, new LinkedList<>());
+        Deque<Link> links = new LinkedList<>();
+        links.add(new Link("../../index.html", "ホームページ"));
+        render(node, title, outHtmlFile, links);
     }
 }
