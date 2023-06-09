@@ -40,7 +40,7 @@ public class Html {
         String url = "%s.html".formatted(node.id);
         writer.println("<p %s><a href='%s'>%s</a></p>%s",
             indent(level, token.number), url, title, lineDirective(token));
-        render(node, title, url, links);
+        file(node, title, url, links);
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
@@ -50,12 +50,12 @@ public class Html {
             token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()),
             lineDirective(token));
         for (Node child : node.children)
-            render(child, level + 1, writer, links);
+            node(child, level + 1, writer, links);
     }
 
     static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号");
 
-    public void render(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+    public void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token != null ? node.token : node.tuti.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
             link(node, level, writer, links);
@@ -65,7 +65,7 @@ public class Html {
             text(node, level, writer, links);
     }
 
-    public void render(Node node, String title, String outHtmlFile, Deque<Link> links) throws IOException {
+    public void file(Node node, String title, String outHtmlFile, Deque<Link> links) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             writer.println("<!DOCTYPE html>");
             writer.println("<html lang='ja_JP'>");
@@ -97,13 +97,13 @@ public class Html {
 			links.push(new Link(outHtmlFile, title));
 			// 子ノードのレンダリング
 			for (Node child : node.children)
-			    render(child, 0, writer, links);
+			    node(child, 0, writer, links);
 			// 通知ノードのレンダリング
 			if (node.tuti != null) {
 			    writer.println("<div id='tuti'>");
 			    writer.println("<p><b>通知</b></p>");
 			    for (Node child : node.tuti.children)
-                    render(child, 0, writer, links);
+                    node(child, 0, writer, links);
 			    writer.println("</div>");
 			}
 			links.pop();
@@ -115,6 +115,6 @@ public class Html {
     public void render(Node node, String title, String outHtmlFile) throws IOException {
         Deque<Link> links = new LinkedList<>();
         links.add(new Link("../../index.html", "ホームページ"));
-        render(node, title, outHtmlFile, links);
+        file(node, title, outHtmlFile, links);
     }
 }
