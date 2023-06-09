@@ -10,6 +10,11 @@ body {
     margin: 0 auto;
     max-width: 46em;
 }
+h1 {
+	color: blue;
+	border-bottom: 5px solid blue;
+	padding-bottom: 5px;
+}
 a {
     text-decoration:none;
 }
@@ -20,8 +25,9 @@ a:hover {
     border-radius: 0.25em;
     -moz-border-radius: 0.25em;
     -webkit-border-radius: 0.25em;
-    border: 2px blue solid;
-    background-color: #f0f0ff;
+/*  border: 2px blue solid; */
+	border: none;
+    background-color: #d0f8ff;
     padding: 0.5em;
 }
 #tuti {

@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
@@ -52,9 +53,13 @@ public class Html {
             render(child, level + 1, writer, links);
     }
 
+    static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分", "区分番号");
+
     public void render(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
-        Token token = node.token;
+        Token token = node.token != null ? node.token : node.tuti.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
+            link(node, level, writer, links);
+        else if (MAIN_NODES.contains(token.type.name) && node.children.stream().anyMatch(c -> !MAIN_NODES.contains(c.token.type.name)))
             link(node, level, writer, links);
         else
             text(node, level, writer, links);
@@ -85,7 +90,7 @@ public class Html {
 			if (node.token != null) {
 			    Token token = node.token;
                 if (!token.header1().isEmpty())
-                    writer.println("<p>%s</p>", token.header1());
+                    writer.println("<p><b>%s</b></p>", token.header1());
                 if (token.body.size() > 0)
                     writer.println("<p>%s</p>", token.body.stream().collect(Collectors.joining()));
 			}
