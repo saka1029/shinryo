@@ -44,7 +44,7 @@ public class Html {
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
-        Token token = node.token;
+        Token token = node.token != null ? node.token : node.tuti.token;
         writer.println("<p %s>%s %s%s%s</p>%s",
             indent(level, token.number), token.number, token.header,
             token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()),
@@ -53,13 +53,13 @@ public class Html {
             render(child, level + 1, writer, links);
     }
 
-    static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分", "区分番号");
+    static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号");
 
     public void render(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token != null ? node.token : node.tuti.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
             link(node, level, writer, links);
-        else if (MAIN_NODES.contains(token.type.name) && node.children.stream().anyMatch(c -> !MAIN_NODES.contains(c.token.type.name)))
+        else if (MAIN_NODES.contains(token.type.name) && node.children.stream().anyMatch(c -> c.token != null && !MAIN_NODES.contains(c.token.type.name)))
             link(node, level, writer, links);
         else
             text(node, level, writer, links);
