@@ -1,17 +1,14 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
-import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
-import saka1029.shinryo.parser.Token;
 import saka1029.shinryo.parser.医科告示読み込み;
 import saka1029.shinryo.parser.医科通知読み込み;
 import saka1029.shinryo.parser.調剤告示読み込み;
@@ -50,33 +47,33 @@ public class TestMerger {
         kRoot.summary(param.outFile("t-tree-merged.txt"));
 	}
 
-	static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則");
-	static void printMainNodes(Node node, TextWriter w) {
-	    Token token = node.token;
-	    if (token != null && MAIN_NODES.contains(token.type.name)) {
-	        w.println("%s %s %s %s", token.type.name, node.path, token.number, token.header);
-	        for (String line : token.body)
-	            w.println("    %s", line);
-            for (Node child : node.children)
-                w.println("    %s %s %s %s", child.token.type.name, child.path, child.token.number, child.token.header);
-	    }
-	    for (Node child : node.children)
-	        printMainNodes(child, w);
-	}
-
-	@Test
-	public void test調剤通知の章部節款通則の下に何があるか() throws IOException {
-        Node tRoot = Parser.parse(new 調剤通知読み込み(), false, param.txt("t", "te"));
-        try (TextWriter w = new TextWriter(param.outFile("t-main-nodes.txt"))) {
-            printMainNodes(tRoot, w);
-        }
-	}
-
-	@Test
-	public void test医科通知の章部節款通則の下に何があるか() throws IOException {
-        Node tRoot = Parser.parse(new 医科通知読み込み(), false, param.txt("i", "te"));
-        try (TextWriter w = new TextWriter(param.outFile("i-main-nodes.txt"))) {
-            printMainNodes(tRoot, w);
-        }
-	}
+//	static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則");
+//	static void printMainNodes(Node node, TextWriter w) {
+//	    Token token = node.token;
+//	    if (token != null && MAIN_NODES.contains(token.type.name)) {
+//	        w.println("%s %s %s %s", token.type.name, node.path, token.number, token.header);
+//	        for (String line : token.body)
+//	            w.println("    %s", line);
+//            for (Node child : node.children)
+//                w.println("    %s %s %s %s", child.token.type.name, child.path, child.token.number, child.token.header);
+//	    }
+//	    for (Node child : node.children)
+//	        printMainNodes(child, w);
+//	}
+//
+//	@Test
+//	public void test調剤通知の章部節款通則の下に何があるか() throws IOException {
+//        Node tRoot = Parser.parse(new 調剤通知読み込み(), false, param.txt("t", "te"));
+//        try (TextWriter w = new TextWriter(param.outFile("t-main-nodes.txt"))) {
+//            printMainNodes(tRoot, w);
+//        }
+//	}
+//
+//	@Test
+//	public void test医科通知の章部節款通則の下に何があるか() throws IOException {
+//        Node tRoot = Parser.parse(new 医科通知読み込み(), false, param.txt("i", "te"));
+//        try (TextWriter w = new TextWriter(param.outFile("i-main-nodes.txt"))) {
+//            printMainNodes(tRoot, w);
+//        }
+//	}
 }

@@ -15,7 +15,7 @@ public class Node {
      */
     public final Node parent;
     /**
-     * ルート(parent == null)のときは常にnullです。 マージで追加されたNodeの場合もnullです。 それ以外の場合はnot nullです。
+     * ルート(parent == null)のときは常にnullです。それ以外の場合はnot nullです。
      */
     public final Token token;
     /**
@@ -35,6 +35,11 @@ public class Node {
      * 常にnot nullです。
      */
     public final List<Node> children = new ArrayList<>();
+    
+    /**
+     * 告示ノードツリーに追加された通知ノードの場合にtrueとなります。
+     */
+    public boolean isTuti = false;
 
     private Node(Node parent, Token token, String id, String path, int level) {
         this.parent = parent;
@@ -62,17 +67,28 @@ public class Node {
         return child;
     }
     
+//    /**
+//     * マージで通知Nodeに対応する告示Nodeが存在しないときに対応する
+//     * 告示Nodeを追加するために使用します。
+//     * 追加された告示Nodeのtokenはnullとなる点に注意してください。
+//     * 追加位置が不明なため、children.add(child)を実行していない点に注意してください。
+//     * childrenへの追加は呼び出し元で行う必要があります。
+//     */
+//    public Node addChild(String id, String path, Node tuti) {
+//        Node child = new Node(this, null, id, path, level + 1);
+//        child.tuti = tuti;
+//        return child;
+//    }
+    
     /**
-     * マージで通知Nodeに対応する告示Nodeが存在しないときに対応する
-     * 告示Nodeを追加するために使用します。
-     * 追加された告示Nodeのtokenはnullとなる点に注意してください。
-     * 追加位置が不明なため、children.add(child)を実行していない点に注意してください。
-     * childrenへの追加は呼び出し元で行う必要があります。
+     * コピーを返します。
+     * コピーは元のオブジェクトとbodyを共有します。
+     * childrenはシャローコピーです。
      */
-    public Node addChild(String id, String path, Node tuti) {
-        Node child = new Node(this, null, id, path, level + 1);
-        child.tuti = tuti;
-        return child;
+    public Node copy() {
+        Node copy = new Node(parent, token, id, path, level);
+        copy.children.addAll(children);
+        return copy;
     }
 
     /**

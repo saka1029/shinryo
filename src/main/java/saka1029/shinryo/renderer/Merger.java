@@ -1,9 +1,10 @@
 package saka1029.shinryo.renderer;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.OptionalInt;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.logging.Logger;
 import java.util.stream.IntStream;
@@ -14,7 +15,8 @@ public class Merger {
 
     static final Logger logger = Logger.getLogger(Merger.class.getSimpleName());
 
-    static final List<String> MERGE_NODE_NAME = List.of("章", "部", "節", "款", "通則", "区分番号");
+    static final Set<String> MERGE_NODE_NAME = Set.of("章", "部", "節", "款", "通則", "区分番号");
+    static final Set<String> BASE_NODE_NAME = Set.of("章", "部", "節", "款");
 
     /**
      * Nodeを再帰的にトラバースし、MERGE_NODE_NAMEに含まれるNodeを visitorに渡します。
@@ -51,8 +53,12 @@ public class Merger {
      * 3_t     kMap("3")    0
      * </pre>
      */
-    static void newNode(Map<String, Node> kMap, String id, Node tNode) {
-        logger.info("通知パス「" + tNode.path + "」に対応する告示Nodeを追加します。");
+    static void add(Map<String, Node> kMap, String id, Node tNode) {
+        if (tNode.token.type.name.equals("区分番号")) {
+            logger.severe("通知の区分番号「" + tNode.token.header + "」が告示にありません");
+            return;
+        }
+        logger.info("通知パス「" + tNode.path + "」に対応する告示Nodeを追加します");
         Node tParent = tNode.parent;
         Node kParent = tParent.isRoot() ? kMap.get("") : kMap.get(tParent.path);
         if (kParent == null) {
@@ -60,7 +66,8 @@ public class Merger {
             return;
         }
         // 告示の親Nodeに子を追加します。
-        Node kNode = kParent.addChild(tNode.id, tNode.path, tNode);
+//        Node kNode = kParent.addChild(tNode.id, tNode.path, tNode);
+        Node kNode = tNode;
         int index = 0;
         if (tNode.id.matches("\\d+")) {
             String prevId = Integer.toString(Integer.parseInt(tNode.id) - 1);
@@ -78,6 +85,23 @@ public class Merger {
         kParent.children.add(index, kNode);
     }
 
+    static void referCopy(Node kNode, Node node) {
+        Node copy = node.copy();
+        copy.isTuti = true;
+        for (Iterator<Node> it = copy.children.iterator(); it.hasNext(); )
+            if (MERGE_NODE_NAME.contains(it.next().token.type.name))
+                it.remove();
+        if (copy.token.body.size() > 0 || copy.children.size() > 0)
+            kNode.tuti = copy;
+    }
+
+    static void refer(Node kNode, Node node) {
+        if (!BASE_NODE_NAME.contains(node.token.type.name))
+            kNode.tuti = node;
+        else
+            referCopy(kNode, node);
+    }
+
     /**
      * Nodeを再帰的にトラバースし、MERGE_NODE_NAMEに含まれるNodeを マップの対応するノードに通知としてマージします。
      */
@@ -89,14 +113,14 @@ public class Merger {
                     for (String k : id.split("x")) {
                         Node kn = kMap.get(k);
                         if (kn == null)
-                            newNode(kMap, k, node);
+                            add(kMap, k, node);
                         else
-                            kn.tuti = node;
+                            refer(kn, node);
                     }
                 } else
-                    newNode(kMap, id, node);
+                    add(kMap, id, node);
             } else
-                kNode.tuti = node;
+                refer(kNode, node);
         });
     }
 
