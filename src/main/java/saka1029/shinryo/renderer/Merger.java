@@ -67,7 +67,7 @@ public class Merger {
         }
         // 告示の親Nodeに子を追加します。
 //        Node kNode = kParent.addChild(tNode.id, tNode.path, tNode);
-        Node kNode = tNode;
+//        Node kNode = tNode;
         int index = 0;
         if (tNode.id.matches("\\d+")) {
             String prevId = Integer.toString(Integer.parseInt(tNode.id) - 1);
@@ -82,7 +82,8 @@ public class Merger {
             }
         }
         // 親の適切な位置に子を追加します。
-        kParent.children.add(index, kNode);
+        kParent.children.add(index, tNode);
+        tNode.isTuti = true;
     }
 
     static void referCopy(Node kNode, Node node) {

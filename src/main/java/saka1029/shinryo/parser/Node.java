@@ -102,9 +102,9 @@ public class Node {
             if (node.token == null)
                 node = tuti;
             Token t = node.token;
-            consumer.accept("%s%s%s %s : %s:%d %s:%d indent=%d body.size=%d%s".formatted(path, "  ".repeat(node.level),
+            consumer.accept("%s%s%s %s : %s:%d %s:%d indent=%d body.size=%d%s%s".formatted(path, "  ".repeat(node.level),
                 t.number, t.header,
-                t.pdfFileName, t.pageNo, t.txtFileName, t.lineNo, t.indent, t.body.size(), node.tuti == null ? "" : ":通知"));
+                t.pdfFileName, t.pageNo, t.txtFileName, t.lineNo, t.indent, t.body.size(), node.isTuti ? ":通知" : "", node.tuti == null ? "": ":通知参照"));
         }
         for (Node child : node.children)
             child.summary(consumer);
