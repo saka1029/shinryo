@@ -34,17 +34,26 @@ public class Html {
 	        : "<!-- %s:%d %s:%d -->".formatted(token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
 	}
 
+	void beginTuti(TextWriter writer) {
+        writer.println("<div id='tuti'>");
+        writer.println("<p><b>通知</b></p>");
+	}
+	
+	void endTuti(TextWriter writer) {
+        writer.println("</div>");
+	}
+
     public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
-        String url = "%s.html".formatted(node.id);
+        String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
         writer.println("<p %s><a href='%s'>%s</a></p>%s",
             indent(level, token.number), url, title, lineDirective(token));
         file(node, title, url, links);
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
-        Token token = node.token != null ? node.token : node.tuti.token;
+        Token token = node.token;
         writer.println("<p %s>%s %s%s%s</p>%s",
             indent(level, token.number), token.number, token.header,
             token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()),
@@ -56,10 +65,10 @@ public class Html {
     static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号");
 
     public void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
-        Token token = node.token != null ? node.token : node.tuti.token;
+        Token token = node.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
             link(node, level, writer, links);
-        else if (MAIN_NODES.contains(token.type.name) && node.children.stream().anyMatch(c -> c.token != null && !MAIN_NODES.contains(c.token.type.name)))
+        else if (MAIN_NODES.contains(token.type.name) && node.children.stream().anyMatch(c -> !MAIN_NODES.contains(c.token.type.name)))
             link(node, level, writer, links);
         else
             text(node, level, writer, links);
@@ -76,7 +85,6 @@ public class Html {
 			writer.println("<title>%s</title>", title);
             writer.println(lineDirective(node.token));
             writer.println("</head>");
-            writer.println("</head>");
 			writer.println("<body>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
@@ -87,8 +95,11 @@ public class Html {
 			}
 			writer.println("</div>");
 			writer.println("<h1>%s</h1>", title);
+			if (node.isTuti)
+			    beginTuti(writer);
 			if (node.token != null) {
-			    Token token = node.token;
+			    // headerの後半とbodyの出力
+                Token token = node.token;
                 if (!token.header1().isEmpty())
                     writer.println("<p><b>%s</b></p>", token.header1());
                 if (token.body.size() > 0)
@@ -99,16 +110,19 @@ public class Html {
 			for (Node child : node.children)
 			    node(child, 0, writer, links);
 			// 通知ノードのレンダリング
-			if (node.tuti != null) {
-			    writer.println("<div id='tuti'>");
-			    writer.println("<p><b>通知</b></p>");
+			if (!node.isTuti && node.tuti != null) {
+			    beginTuti(writer);
+                writer.println("<p>%s</p>", node.tuti.token.body.stream().collect(Collectors.joining()));
+//			    node(node.tuti, 0, writer, links);
 			    for (Node child : node.tuti.children)
                     node(child, 0, writer, links);
-			    writer.println("</div>");
+			    endTuti(writer);
 			}
-			links.pop();
+			if (node.isTuti)
+			    endTuti(writer);
             writer.println("</body>");
             writer.println("</html>");
+			links.pop();
         }
     }
 

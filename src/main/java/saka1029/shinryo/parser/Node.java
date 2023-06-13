@@ -63,23 +63,11 @@ public class Node {
         // id, pathはパース後にユニーク化するために更新する点に注意する。
         String childId = token.id;
         String childPath = isRoot() ? childId : path + Pat.パス区切り + childId;
+        // isTutiは親の値を引き継ぎます。
         Node child = new Node(isTuti, this, token, childId, childPath, level + 1);
         children.add(child);
         return child;
     }
-    
-//    /**
-//     * マージで通知Nodeに対応する告示Nodeが存在しないときに対応する
-//     * 告示Nodeを追加するために使用します。
-//     * 追加された告示Nodeのtokenはnullとなる点に注意してください。
-//     * 追加位置が不明なため、children.add(child)を実行していない点に注意してください。
-//     * childrenへの追加は呼び出し元で行う必要があります。
-//     */
-//    public Node addChild(String id, String path, Node tuti) {
-//        Node child = new Node(this, null, id, path, level + 1);
-//        child.tuti = tuti;
-//        return child;
-//    }
     
     /**
      * コピーを返します。
@@ -87,6 +75,7 @@ public class Node {
      * childrenはシャローコピーです。
      */
     public Node copy() {
+        // isTutiは元のNodeの値を引き継ぎます。
         Node copy = new Node(isTuti, parent, token, id, path, level);
         copy.children.addAll(children);
         return copy;
