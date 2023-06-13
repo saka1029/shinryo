@@ -45,6 +45,10 @@ public class 調剤告示読み込み extends Parser {
         return TYPES;
     }
 
+	public 調剤告示読み込み() {
+	    super(false);
+	}
+
     void カナ(Node parent) {
         while (eat(カナ)) {
             Node n = add(parent, eaten);

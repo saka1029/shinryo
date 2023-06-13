@@ -37,11 +37,12 @@ public class Node {
     public final List<Node> children = new ArrayList<>();
     
     /**
-     * 告示ノードツリーに追加された通知ノードの場合にtrueとなります。
+     * 通知ノードの場合にtrueとなります。
      */
-    public boolean isTuti = false;
+    public final boolean isTuti;
 
-    private Node(Node parent, Token token, String id, String path, int level) {
+    private Node(boolean isTuti, Node parent, Token token, String id, String path, int level) {
+        this.isTuti = isTuti;
         this.parent = parent;
         this.token = token;
         this.id = id;
@@ -49,8 +50,8 @@ public class Node {
         this.level = level;
     }
 
-    public static Node root() {
-        return new Node(null, null, null, null, 0);
+    public static Node root(boolean isTuti) {
+        return new Node(isTuti, null, null, null, null, 0);
     }
 
     public boolean isRoot() {
@@ -62,7 +63,7 @@ public class Node {
         // id, pathはパース後にユニーク化するために更新する点に注意する。
         String childId = token.id;
         String childPath = isRoot() ? childId : path + Pat.パス区切り + childId;
-        Node child = new Node(this, token, childId, childPath, level + 1);
+        Node child = new Node(isTuti, this, token, childId, childPath, level + 1);
         children.add(child);
         return child;
     }
@@ -86,7 +87,7 @@ public class Node {
      * childrenはシャローコピーです。
      */
     public Node copy() {
-        Node copy = new Node(parent, token, id, path, level);
+        Node copy = new Node(isTuti, parent, token, id, path, level);
         copy.children.addAll(children);
         return copy;
     }

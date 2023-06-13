@@ -83,12 +83,10 @@ public class Merger {
         }
         // 親の適切な位置に子を追加します。
         kParent.children.add(index, tNode);
-        tNode.isTuti = true;
     }
 
     static void referCopy(Node kNode, Node node) {
         Node copy = node.copy();
-        copy.isTuti = true;
         for (Iterator<Node> it = copy.children.iterator(); it.hasNext(); )
             if (MERGE_NODE_NAME.contains(it.next().token.type.name))
                 it.remove();

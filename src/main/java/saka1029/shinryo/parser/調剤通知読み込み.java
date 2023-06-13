@@ -40,6 +40,10 @@ public class 調剤通知読み込み extends Parser {
     public List<TokenType> types() {
         return TYPES;
     }
+	
+	public 調剤通知読み込み() {
+	    super(true);
+	}
 
 	void 括弧カナ(Node parent) {
 		while (eat(括弧カナ)) {

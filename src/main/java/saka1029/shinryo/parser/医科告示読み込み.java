@@ -55,6 +55,10 @@ public class 医科告示読み込み extends Parser {
     public List<TokenType> types() {
         return TYPES;
     }
+	
+	public 医科告示読み込み() {
+	    super(false);
+	}
 
     void 注数字(Node parent) {
     	while (isChild(parent, 数字) && eat(数字)) {

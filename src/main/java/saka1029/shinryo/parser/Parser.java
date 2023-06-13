@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public abstract class Parser {
 	static final Logger logger = Logger.getLogger(Parser.class.getSimpleName());
 
+	final boolean isTuti;
 	List<Token> tokens;
 	int max;
 	int index = 0;
@@ -18,6 +19,13 @@ public abstract class Parser {
 	 * パース後にcheckSequence()を行うかどうかを指定します。
 	 */
 	public boolean check = true;
+	
+	/**
+	 * @param isTuti 告示パーサの場合falseを、通知パーサの場合trueを指定します。
+	 */
+	public Parser(boolean isTuti) {
+	    this.isTuti = isTuti;
+	}
 	
 	public static Node parse(Parser parser, boolean check, String inTxtFile) throws IOException {
 		parser.check = check;
@@ -66,7 +74,7 @@ public abstract class Parser {
 		this.tokens = tokens;
 		this.max = tokens.size();
 		this.token = get();
-		Node root = Node.root();
+		Node root = Node.root(isTuti);
 		parse(root);
 	    if (token != null)
             logger.warning("未処理のトークン: " + tokens.get(index - 1));

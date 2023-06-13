@@ -51,6 +51,10 @@ public class 医科通知読み込み extends Parser {
         return TYPES;
     }
 
+	public 医科通知読み込み() {
+	    super(true);
+	}
+
 	/**
 	 * 丸数字の下に括弧カナが来るケース。
 	 * <pre>
