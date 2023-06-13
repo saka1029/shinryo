@@ -47,17 +47,16 @@ public class Html {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
-        writer.println("<p %s><a href='%s'>%s</a></p>%s",
-            indent(level, token.number), url, title, lineDirective(token));
+        writer.println("%s<p %s><a href='%s'>%s</a></p>",
+            lineDirective(token), indent(level, token.number), url, title);
         file(node, title, url, links);
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
-        writer.println("<p %s>%s %s%s%s</p>%s",
-            indent(level, token.number), token.number, token.header,
-            token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()),
-            lineDirective(token));
+        writer.println("%s<p %s>%s %s%s%s</p>",
+            lineDirective(token), indent(level, token.number), token.number, token.header,
+            token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()));
         for (Node child : node.children)
             node(child, level + 1, writer, links);
     }
