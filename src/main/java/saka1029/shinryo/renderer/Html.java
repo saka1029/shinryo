@@ -52,6 +52,17 @@ public class Html {
         file(node, title, url, links);
     }
 
+    public void linkBody(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+        Token token = node.token;
+        String title = "%s %s".formatted(token.number, token.header0());
+        String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
+        writer.println("%s<p %s><a href='%s'>%s</a></p>",
+            lineDirective(token), indent(level, token.number), url, title);
+        for (Node child : node.children)
+//            if (!MAIN_TREE_NODES.contains(child.token.type.name))
+                node(child, level + 1, writer, links);
+    }
+
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
@@ -62,14 +73,20 @@ public class Html {
     }
 
     static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号");
+    static final Set<String> MAIN_TREE_NODES = Set.of("章", "部", "節", "款", "通則");
 
     public void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
             link(node, level, writer, links);
-        else if (MAIN_NODES.contains(token.type.name) && node.children.stream().anyMatch(c -> !MAIN_NODES.contains(c.token.type.name)))
-            link(node, level, writer, links);
-        else
+        else if (MAIN_NODES.contains(token.type.name)) {
+            if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
+                link(node, level, writer, links);
+            else if (node.token.body.size() > 0)
+                linkBody(node, level, writer, links);
+            else
+                text(node, level, writer, links);
+        } else
             text(node, level, writer, links);
     }
 

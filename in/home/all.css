@@ -11,9 +11,9 @@ body {
     max-width: 46em;
 }
 h1 {
-	color: blue;
+	color: darkblue;
     line-height: 120%;
-	border-bottom: 5px solid blue;
+/* 	border-bottom: 5px solid blue; */
 	padding-bottom: 5px;
 }
 a {
