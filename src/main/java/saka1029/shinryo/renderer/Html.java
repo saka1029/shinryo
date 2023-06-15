@@ -43,24 +43,16 @@ public class Html {
         writer.println("</div>");
 	}
 
-    public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+    public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
         writer.println("%s<p %s><a href='%s'>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, title);
-        file(node, title, url, links);
-    }
-
-    public void linkBody(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
-        Token token = node.token;
-        String title = "%s %s".formatted(token.number, token.header0());
-        String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
-        writer.println("%s<p %s><a href='%s'>%s</a></p>",
-            lineDirective(token), indent(level, token.number), url, title);
-        for (Node child : node.children)
-//            if (!MAIN_TREE_NODES.contains(child.token.type.name))
-                node(child, level + 1, writer, links);
+        file(node, title, url, links, bodyOnly);
+        if (bodyOnly)
+			for (Node child : node.children)
+				node(child, level + 1, writer, links);
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
@@ -78,19 +70,19 @@ public class Html {
     public void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
-            link(node, level, writer, links);
+            link(node, level, writer, links, false);
         else if (MAIN_NODES.contains(token.type.name)) {
             if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
-                link(node, level, writer, links);
+                link(node, level, writer, links, false);
             else if (node.token.body.size() > 0)
-                linkBody(node, level, writer, links);
+                link(node, level, writer, links, true);
             else
                 text(node, level, writer, links);
         } else
             text(node, level, writer, links);
     }
 
-    public void file(Node node, String title, String outHtmlFile, Deque<Link> links) throws IOException {
+    public void file(Node node, String title, String outHtmlFile, Deque<Link> links, boolean bodyOnly) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             writer.println("<!DOCTYPE html>");
             writer.println("<html lang='ja_JP'>");
@@ -122,11 +114,14 @@ public class Html {
                     writer.println("<p>%s</p>", token.body.stream().collect(Collectors.joining()));
 			}
 			links.push(new Link(outHtmlFile, title));
-			// 子ノードのレンダリング
-			for (Node child : node.children)
-			    node(child, 0, writer, links);
+			if (!bodyOnly) {
+				// 子ノードのレンダリング
+				for (Node child : node.children)
+					node(child, 0, writer, links);
+			}
 			// 通知ノードのレンダリング
-			if (!node.isTuti && node.tuti != null) {
+			if (!node.isTuti && node.tuti != null
+				&& (!node.tuti.token.body.stream().allMatch(String::isBlank) || node.tuti.children.size() > 0)) {
 			    beginTuti(writer);
                 writer.println("<p>%s</p>", node.tuti.token.body.stream().collect(Collectors.joining()));
 //			    node(node.tuti, 0, writer, links);
@@ -145,6 +140,6 @@ public class Html {
     public void render(Node node, String title, String outHtmlFile) throws IOException {
         Deque<Link> links = new LinkedList<>();
         links.add(new Link("../../index.html", "ホームページ"));
-        file(node, title, outHtmlFile, links);
+        file(node, title, outHtmlFile, links, false);
     }
 }
