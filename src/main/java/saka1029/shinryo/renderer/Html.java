@@ -3,8 +3,10 @@ package saka1029.shinryo.renderer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,23 +26,30 @@ public class Html {
         Files.createDirectories(Path.of(outDir));
     }
     
-	String indent(int indent, String number) {
+	static String indent(int indent, String number) {
 		float width = (number.codePoints().map(c -> c < 256 ? 1 : 2).sum() + 1) / 2.0F;
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
 	}
 	
-	String lineDirective(Token token) {
+	static String lineDirective(Token token) {
 	    return token == null ? "<!-- -->"
 	        : "<!-- %s:%d %s:%d -->".formatted(token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
 	}
 
-	void beginTuti(TextWriter writer) {
+	static void beginTuti(TextWriter writer) {
         writer.println("<div id='tuti'>");
         writer.println("<p><b>通知</b></p>");
 	}
 	
-	void endTuti(TextWriter writer) {
+	static void endTuti(TextWriter writer) {
         writer.println("</div>");
+	}
+	
+	static String paths(Node node) {
+	    Deque<String> list = new LinkedList<>();
+	    for (Node p = node.parent; p != null && p.token != null; p = p.parent)
+	        list.addFirst(p.token.number + " " + p.token.header0());
+	    return list.stream().collect(Collectors.joining(" &gt; "));
 	}
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {
@@ -102,7 +111,8 @@ public class Html {
 			    sep = "&gt; ";
 			}
 			writer.println("</div>");
-			writer.println("<h1>%s</h1>", title);
+			writer.println("<p class='title'>%s</p>", paths(node));
+			writer.println("<h1 class='title'>%s</h1>", title);
 			if (node.isTuti)
 			    beginTuti(writer);
 			if (node.token != null) {

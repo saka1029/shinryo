@@ -10,10 +10,11 @@ body {
     margin: 0 auto;
     max-width: 46em;
 }
-h1 {
+.title {
 	color: darkblue;
+}
+h1 {
     line-height: 120%;
-/* 	border-bottom: 5px solid blue; */
 	padding-bottom: 5px;
 }
 a {
