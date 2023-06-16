@@ -49,7 +49,7 @@ public class Html {
 	    Deque<String> list = new LinkedList<>();
 	    for (Node p = node.parent; p != null && p.token != null; p = p.parent)
 	        list.addFirst(p.token.number + " " + p.token.header0());
-	    return list.stream().collect(Collectors.joining(" &gt; "));
+	    return list.stream().collect(Collectors.joining(" / "));
 	}
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {
@@ -149,7 +149,7 @@ public class Html {
 
     public void render(Node node, String title, String outHtmlFile) throws IOException {
         Deque<Link> links = new LinkedList<>();
-        links.add(new Link("../../index.html", "ホームページ"));
+        links.add(new Link("../../index.html", "トップ"));
         file(node, title, outHtmlFile, links, false);
     }
 }
