@@ -10,6 +10,13 @@ public class Html {
 	    return token == null ? "<!-- -->"
 	        : "<!-- %s:%d %s:%d -->".formatted(token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
 	}
+	
+	static void menu(TextWriter writer) {
+		writer.println("<hr>");
+		writer.println("<a href='index.html'>本文</a>");
+		writer.println("<a href='kubun.html'>区分番号一覧</a>");
+		writer.println("<a href='yoshiki.html'>様式一覧</a>");
+	}
 
     static void head(String title, Node node, TextWriter writer) {
         writer.println("<!DOCTYPE html>");
