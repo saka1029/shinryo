@@ -49,4 +49,22 @@ public class TestParser {
         Node root = new 医科通知読み込み().parse(inTxtFile);
         root.summary(outTxtFile);
     }
+
+    @Test
+    public void test歯科告示読み込み() throws IOException {
+        logger.info(Common.methodName());
+        String inTxtFile = param.txt("s", "ke");
+        String outTxtFile = param.outDir("sk-tree.txt");
+        Node root = new 歯科告示読み込み().parse(inTxtFile);
+        root.summary(outTxtFile);
+    }
+
+    @Test
+    public void test歯科通知読み込み() throws IOException {
+        logger.info(Common.methodName());
+        String inTxtFile = param.txt("s", "te");
+        String outTxtFile = param.outDir("st-tree.txt");
+        Node root = new 歯科通知読み込み().parse(inTxtFile);
+        root.summary(outTxtFile);
+    }
 }

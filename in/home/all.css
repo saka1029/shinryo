@@ -13,6 +13,9 @@ body {
 .title {
 	color: darkblue;
 }
+.main-li {
+	display: inline-block;
+}
 h1 {
     line-height: 120%;
 	padding-bottom: 5px;

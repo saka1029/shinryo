@@ -33,6 +33,10 @@ public class 区分番号一覧 extends Html {
         try (TextWriter writer = new TextWriter(outHtmlFile)) {
             head(fullTitle, root, writer);
             writer.println("<body>");
+			// パンくずリスト
+			writer.println("<div id='breadcrumb'>");
+			writer.println("<a href='../../index.html'>トップ</a>");
+			writer.println("</div>");
             writer.println("<h1 class='title'>%s</h1>", fullTitle);
             writer.println("<ul>");
             for (Node kubun : list) {
