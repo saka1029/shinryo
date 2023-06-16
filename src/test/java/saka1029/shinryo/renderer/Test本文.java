@@ -14,9 +14,9 @@ import saka1029.shinryo.parser.医科通知読み込み;
 import saka1029.shinryo.parser.調剤告示読み込み;
 import saka1029.shinryo.parser.調剤通知読み込み;
 
-public class TestHtml {
+public class Test本文 {
 
-    static final Logger logger = Common.logger(TestHtml.class);
+    static final Logger logger = Common.logger(Test本文.class);
     
     static final Param param = Param.of("in", "debug/html", "04");
 
@@ -32,7 +32,7 @@ public class TestHtml {
         Node kRoot = Parser.parse(new 医科告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 医科通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new Html(outDir).render(kRoot, title, outHtmlFile);
+        new 本文(outDir).render(kRoot, title, outHtmlFile);
     }
 
     @Test
@@ -47,6 +47,6 @@ public class TestHtml {
         Node kRoot = Parser.parse(new 調剤告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 調剤通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new Html(outDir).render(kRoot, title, outHtmlFile);
+        new 本文(outDir).render(kRoot, title, outHtmlFile);
     }
 }

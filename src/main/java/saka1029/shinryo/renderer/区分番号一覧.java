@@ -10,7 +10,7 @@ import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 
-public class 区分番号一覧 {
+public class 区分番号一覧 extends Html {
 
     void listKubun(Node node, List<Node> list) {
         if (!node.isRoot())
@@ -27,25 +27,20 @@ public class 区分番号一覧 {
     }
 
     public void render(Node root, String title, String outHtmlFile) throws IOException {
+        String fullTitle = title + " 区分番号一覧";
         Files.createDirectories(Path.of(outHtmlFile).getParent());
         List<Node> list = listKubun(root);
         try (TextWriter writer = new TextWriter(outHtmlFile)) {
-            writer.println("<!DOCTYPE html>");
-            writer.println("<html lang='ja'>");
-            writer.println("<head>");
-            writer.println("<meta charset='utf-8'>");
-            writer.println("<title>%s</title>", title);
-            writer.println("</head>");
-            writer.println("<body style='font-family:monospace'>");
-            writer.println("<h1>%s</h1>", title);
+            head(fullTitle, root, writer);
+            writer.println("<body>");
+            writer.println("<h1 class='title'>%s</h1>", fullTitle);
             writer.println("<ul>");
             for (Node kubun : list) {
-                Token t = kubun.token;
-                String header = t.header.replaceFirst("\\s+.*", "");
-                if (header.equals("削除"))
-                    writer.println("<li>%s %s</li>", t.number, header);
+                Token token = kubun.token;
+                if (token.header.equals("削除"))
+                    writer.println("<li>%s %s</li>", token.number, token.header0());
                 else
-                    writer.println("<li><a href='%s.html'>%s %s</a></li>", kubun.id, t.number, header);
+                    writer.println("<li><a href='%s.html'>%s %s</a></li>", kubun.id, token.number, token.header0());
             }
             writer.println("</ul>");
             writer.println("</body>");
