@@ -6,17 +6,16 @@ import java.util.function.Function;
 import java.util.logging.Logger;
 
 /**
- * 文字定数としての正規表現を集めたクラスです。
- * 正規表現を組み合わせて新たな正規表現を作る関数もあります。
+ * 文字定数としての正規表現を集めたクラスです。 正規表現を組み合わせて新たな正規表現を作る関数もあります。
  */
 public class Pat {
 
     static final Logger logger = Logger.getLogger(Pat.class.getName());
 
-	private Pat() {
-	}
+    private Pat() {
+    }
 
-	public static final String パス区切り = "_";
+    public static final String パス区切り = "_";
     public static final String 数 = "[0-9０-９]";
     public static final String 数字 = 数 + "+";
     public static final String 数字の = repeat(数字, "の", 数字);
@@ -24,30 +23,30 @@ public class Pat {
     public static final String 右括弧 = "[)）]";
     public static final String 括弧数字 = paren(数字);
     public static final String アイウ = "アイウエオカキクケコ"
-	    + "サシスセソタチツテト"
-	    + "ナニヌネノハヒフヘホ" // ひらがなの「へ」調剤通知区分１０の３
-	    + "マミムメモヤユヨ"
-	    + "ラリルレロワヰヱヲン";
+        + "サシスセソタチツテト"
+        + "ナニヌネノハヒフヘホ" // ひらがなの「へ」調剤通知区分１０の３
+        + "マミムメモヤユヨ"
+        + "ラリルレロワヰヱヲン";
     public static final String イロハ = "イロハニホヘトチリヌルヲ"
         + "ワカヨタレソツネナラム"
         + "ウヰノオクヤマケフコエテ"
         + "アサキユメミシヱヒモセスン";
-    public static final String カナ = "[" + アイウ + "へ]{1,2}";  // ひらがなの「へ」を追加。２桁対応。
+    public static final String カナ = "[" + アイウ + "へ]{1,2}"; // ひらがなの「へ」を追加。２桁対応。
     public static final String 括弧カナ = paren(カナ);
     public static final String 漢字数字 = "一二三四五六七八九十";
     public static final String 漢数字 = "[" + 漢字数字 + "]+";
     public static final String 漢数字の = repeat(漢数字, "の", 漢数字);
     public static final String 括弧漢数字 = paren(漢数字);
     public static final String 区分番号 = repeat("[A-ZＡ-Ｚ][0-9０-９]{3}", "[ー－―‐-]", 数字);
-    public static final String 区分大分類 = "＜(?!通則).*＞";
-    public static final String 区分分類 = 左括弧 + "[^0-9０-９)）][^0-9)）]*"+ 右括弧;
+//    public static final String 区分大分類 = "＜(?!通則).*＞";
+    public static final String 区分分類 = 左括弧 + "[^0-9０-９)）][^0-9)）]*" + 右括弧;
     public static final String 調剤告示区分番号 = repeat("[０-９]{2}", "の", 数字);
     public static final String 調剤通知区分番号 = repeat("区分[０-９]{2}", "の", 数字);
     public static final String 丸数 = "①②③④⑤⑥⑦⑧⑨⑩"
-    		+ "⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"
-    		+ "㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚"
-    		+ "㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵"
-    		+ "㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
+        + "⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳"
+        + "㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚"
+        + "㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵"
+        + "㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
     public static final String 丸数字 = "[" + 丸数 + "]";
     public static final String 例 = "例" + 数字;
 
@@ -57,10 +56,11 @@ public class Pat {
     public static final Function<String, String> 丸数字id = s -> 正規化(s);
     public static final Function<String, String> 区分番号id = s -> 正規化(s);
     public static final Function<String, String> 漢数字id = s -> 漢数字正規化(s);
+
     public static Function<String, String> 固定値id(String 固定値) {
         return s -> 固定値;
     }
-        
+
     public static String 正規化(String s) {
         s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款|例", "");
         s = s.replaceAll("[のー－―‐-]", "-");
@@ -68,7 +68,7 @@ public class Pat {
         s = s.replaceAll("から|及び|、", "x");
         return Normalizer.normalize(s, Form.NFKC);
     }
-    
+
     public static String 漢数字正規化(String s) {
         s = 正規化(s);
         s = s.replaceAll("(^|[+-_x])十([+-_x])", "$110$2");
@@ -86,7 +86,7 @@ public class Pat {
         s = s.replaceAll("九", "9");
         return s;
     }
-    
+
     /**
      * <pre>
      * アイウの場合:
@@ -109,12 +109,12 @@ public class Pat {
      * </pre>
      */
     public static String カナ正規化(String set, String s) {
-    	s = 正規化(s);
-    	int base = set.length(), n = 0;
+        s = 正規化(s);
+        int base = set.length(), n = 0;
         for (int i = 0, size = s.length(); i < size; ++i) {
-        	int index = set.indexOf(s.charAt(i));
-        	if (index < 0)
-				throw new RuntimeException("「" + s + "」は「" + set.substring(0, 3) + "」の中にない文字を含みます");
+            int index = set.indexOf(s.charAt(i));
+            if (index < 0)
+                throw new RuntimeException("「" + s + "」は「" + set.substring(0, 3) + "」の中にない文字を含みます");
             n = n * base + index + 1;
         }
         return Integer.toString(n);
@@ -134,15 +134,15 @@ public class Pat {
     public static String number(String number) {
         return "\\s*(?<N>" + number + ")(?<H>)\\s*";
     }
-    
+
     public static String paren(String body) {
         return 左括弧 + "(" + body + ")" + 右括弧;
     }
-    
+
     public static String repeat(String body, String conj, String body2) {
-        return "(" + body + ")("  + conj + "(" + body2 + "))*";
+        return "(" + body + ")(" + conj + "(" + body2 + "))*";
     }
-    
+
     public static String fromTo(String body) {
         return "(" + body + ")(から(" + body + ")まで|及び(" + body + ")|、(" + body + "))?";
     }

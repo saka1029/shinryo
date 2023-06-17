@@ -6,10 +6,12 @@ import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
+import saka1029.shinryo.parser.Pat;
 import saka1029.shinryo.parser.Token;
 
 public class 本文 extends Html {
@@ -17,16 +19,27 @@ public class 本文 extends Html {
     record Link(String url, String title) {
     }
 
-    public final String outDir;
+    final String outDir;
+    final Pattern kubunPat;
     
-    public 本文(String outDir) throws IOException {
+    public 本文(String outDir, String kubunPat) throws IOException {
         this.outDir = outDir;
         Files.createDirectories(Path.of(outDir));
+        this.kubunPat = Pattern.compile(kubunPat);
     }
     
 	static String indent(int indent, String number) {
 		float width = (number.codePoints().map(c -> c < 256 ? 1 : 2).sum() + 1) / 2.0F;
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
+	}
+	
+	String linkText(String text) {
+	    return kubunPat.matcher(text).replaceAll(m ->
+	        "<a href='%s.html'>%s</a>".formatted(Pat.正規化(m.group()), m.group()));
+	}
+
+	String linkBodyText(Token token) {
+	    return linkText(token.body.stream().collect(Collectors.joining()));
 	}
 	
 	static void beginTuti(TextWriter writer) {
@@ -60,8 +73,8 @@ public class 本文 extends Html {
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
-            lineDirective(token), indent(level, token.number), token.number, token.header,
-            token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()));
+            lineDirective(token), indent(level, token.number), token.number, linkText(token.header),
+            token.body.size() > 0 ? "<br>" : "", linkBodyText(token));
         for (Node child : node.children)
             node(child, level + 1, writer, links);
     }
@@ -105,9 +118,9 @@ public class 本文 extends Html {
 			    // headerの後半とbodyの出力
                 Token token = node.token;
                 if (!token.header1().isEmpty())
-                    writer.println("<p><b>%s</b></p>", token.header1());
+                    writer.println("<p><b>%s</b></p>", linkText(token.header1()));
                 if (token.body.size() > 0)
-                    writer.println("<p>%s</p>", token.body.stream().collect(Collectors.joining()));
+                    writer.println("<p>%s</p>", linkBodyText(token));
 			}
 			links.push(new Link(outHtmlFile, title));
 			if (!bodyOnly) {
@@ -119,8 +132,7 @@ public class 本文 extends Html {
 			if (!node.isTuti && node.tuti != null
 				&& (!node.tuti.token.body.stream().allMatch(String::isBlank) || node.tuti.children.size() > 0)) {
 			    beginTuti(writer);
-                writer.println("<p>%s</p>", node.tuti.token.body.stream().collect(Collectors.joining()));
-//			    node(node.tuti, 0, writer, links);
+                writer.println("<p>%s</p>", linkBodyText(node.tuti.token));
 			    for (Node child : node.tuti.children)
                     node(child, 0, writer, links);
 			    endTuti(writer);
