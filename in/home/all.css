@@ -21,10 +21,17 @@ h1 {
 	padding-bottom: 5px;
 }
 a {
-/*     text-decoration:none; */
+   text-decoration: none;
+   border-bottom: 1px solid blue;
+   padding-bottom: 2px;
 }
-a:hover {
-    background-color: #c2dfea;
+a:active {
+   border-bottom: 1px solid #ff0000;
+   padding-bottom: 2px;
+}
+a:visited {
+   border-bottom: 1px solid #800080;
+   padding-bottom: 2px;
 }
 #breadcrumb {
     border-radius: 0.25em;

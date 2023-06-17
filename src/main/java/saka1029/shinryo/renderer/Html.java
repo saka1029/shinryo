@@ -24,7 +24,8 @@ public class Html {
         writer.println("<head>");
         writer.println("<meta charset='utf-8'>");
         writer.println("<meta name='viewport' content='initial-scale=1.0'>");
-        writer.println("<link rel='stylesheet' type='text/css' href='../../all.css'>");
+        writer.println("<link rel='icon' href='../../favicon.ico' />");
+        writer.println("<link rel='stylesheet' type='text/css' href='../../all.css' />");
         writer.println("<title>%s</title>", title);
         if (node.token != null)
             writer.println(lineDirective(node.token));
