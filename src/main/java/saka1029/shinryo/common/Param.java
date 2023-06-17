@@ -64,6 +64,10 @@ public class Param {
         return Path.of(inDir, 年度, 点数表, "txt", name + ".txt").toString();
     }
 
+    public String inDir(String 点数表, String dir) {
+        return Path.of(inDir, 年度, 点数表, dir).toString();
+    }
+
     public String inHomeDir() {
         return Path.of(inDir, "home").toString();
     }
@@ -80,8 +84,8 @@ public class Param {
         return Path.of(outDir(), fileName).toString();
     }
 
-    public String outDir(String 点数表) {
-        return Path.of(outDir, 年度, 点数表).toString();
+    public String outDir(String 点数表, String... dirs) {
+        return Path.of(Path.of(outDir, 年度, 点数表).toString(), dirs).toString();
     }
 
     public String outFile(String 点数表, String fileName) {

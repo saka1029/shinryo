@@ -1,6 +1,8 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -32,6 +34,8 @@ public class Test本文 {
         String title = param.title(点数表);
         String outHtmlFile = "index.html";
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        if (Files.exists(Path.of(param.inDir(点数表, "img"))))
+            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         Node kRoot = Parser.parse(new 医科告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 医科通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
@@ -47,6 +51,8 @@ public class Test本文 {
         String title = param.title(点数表);
         String outHtmlFile = "index.html";
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        if (Files.exists(Path.of(param.inDir(点数表, "img"))))
+            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         Node kRoot = Parser.parse(new 歯科告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 歯科通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
@@ -62,6 +68,8 @@ public class Test本文 {
         String title = param.title(点数表);
         String outHtmlFile = "index.html";
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        if (Files.exists(Path.of(param.inDir(点数表, "img"))))
+            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         Node kRoot = Parser.parse(new 調剤告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 調剤通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
