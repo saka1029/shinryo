@@ -43,9 +43,11 @@ public class 区分番号一覧 extends Html {
             for (Node kubun : list) {
                 Token token = kubun.token;
                 if (token.header.equals("削除"))
-                    writer.println("<li>%s %s</li>", token.number, token.header0());
+                    writer.println("%s<li>%s %s</li>",
+                        lineDirective(token), token.number, token.header0());
                 else
-                    writer.println("<li><a href='%s.html'>%s %s</a></li>", kubun.id, token.number, token.header0());
+                    writer.println("%s<li><a href='%s.html'>%s %s</a></li>",
+                        lineDirective(token), kubun.id, token.number, token.header0());
             }
             writer.println("</ul>");
             writer.println("</body>");
