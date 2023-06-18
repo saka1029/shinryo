@@ -220,53 +220,6 @@ public class PDF {
         }
     }
 
-//    public int 様式名出現最大行 = 3;
-//    public Pattern 様式IDパターン = Pattern.compile(
-//        "\\s*[（(]?(" // group1:別紙様式3の4の5
-//            + "\\s*(?:(?:別\\s*紙)?\\s*様\\s*式|別\\s*添|別\\s*紙)"
-//            + "((?:\\s*\\d)+)" // group2:3
-//            + "(?:\\s*の((?:\\s*\\d)+))?" // group3:4
-//            + "(?:\\s*の((?:\\s*\\d)+))?" // group4:5
-//            + ")\\s*[）)]?"
-//            + "(?:\\s+(.*))?"); // group5:様式名
-//
-//    public void 様式一覧変換(String outFile, String... inFiles) throws IOException {
-//        try (PrintWriter writer = new PrintWriter(outFile, 出力文字セット)) {
-//            for (String inFile : inFiles) {
-//                List<List<String>> pages = read(inFile);
-//                writer.printf("#file %s%s", inFile, 改行文字);
-//                String name = null, id = null, title = null;
-//                int startPage = -1;
-//                int i = 0;
-//                for (int pageSize = pages.size(); i < pageSize; ++i) {
-//                    List<String> page = pages.get(i);
-//                    for (int j = 0, maxLine = Math.min(様式名出現最大行, page.size()); j < maxLine; ++j) {
-//                        String line = page.get(j);
-//                        OUT.printf("%d:%d:%s%n", i + 1, j + 1, line);
-//                        String normalLine = Normalizer.normalize(line, Form.NFKD);
-//                        Matcher m = 様式IDパターン.matcher(normalLine);
-//                        if (m.matches()) {
-//                            if (name != null)
-//                                writer.printf("%s,%s,%d,%d,%s%s", name, id, startPage, i, title, 改行文字);
-//                            name = m.group(1).replaceAll("\\s+", "");
-//                            id = m.group(2);
-//                            startPage = i + 1;
-//                            for (int k = 3; k <= 5 && m.group(k) != null; ++k)
-//                                id += "_" + m.group(k);
-//                            id = id.replaceAll("\\s+", "");
-//                            title = m.group(5);
-//                            if (title == null && j + 1 < page.size())
-//                                title = page.get(j + 1);
-//                            title = title.replaceAll("\\s+", "");
-//                        }
-//                    }
-//                }
-//                if (name != null)
-//                    writer.printf("%s,%s,%d,%d,%s%s", name, id, startPage, i, title, 改行文字);
-//            }
-//        }
-//    }
-    
     public static List<様式> ページ分割(String inTextFile, String outDir) throws IOException {
         Files.createDirectories(Path.of(outDir));
         List<様式> result = new ArrayList<>();
