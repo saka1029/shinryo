@@ -150,7 +150,7 @@ public record 様式(String file, String name, String id, int startPage, int end
                             if (name != null)
                                 out.printf("%s,%s,%s,%d,%d,%s\n", inPdfFile, name, id, startPage, i, title);
                             startPage = i + 1;
-                            // 調剤は「別紙様式1」を間違えて「別添様式1」と記述している。
+                            // 調剤は「別紙様式1」を間違えて「別添様式1」と記述している。(令和4年にはない)
                             name = m.group(1).replaceAll("\\s+", "").replaceAll("添", "紙");
                             title = m.group(2);
                             if (title == null && j + 1 < lines.size())
