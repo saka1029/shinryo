@@ -33,9 +33,11 @@ import saka1029.shinryo.common.Common;
 public class PDF {
 
     static final Logger LOGGER = Common.logger(PDF.class);
-    static {
+    {
         // PDFBox関連のログを抑制します。
-        Logger.getLogger("org.apache").setLevel(Level.SEVERE);
+        Logger logger = Logger.getLogger("org.apache");
+        logger.setLevel(Level.SEVERE);
+//        Logger.getLogger("org.apache").setLevel(Level.SEVERE);
     }
     static final PrintStream OUT = new PrintStream(System.out, true, StandardCharsets.UTF_8);
     static final Charset 出力文字セット = StandardCharsets.UTF_8;

@@ -27,6 +27,7 @@ public class Test本文 {
 
     @Test
     public void test医科() throws IOException {
+    	logger.info(Common.methodName());
         String 点数表 = "i";
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
@@ -44,6 +45,7 @@ public class Test本文 {
 
     @Test
     public void test歯科() throws IOException {
+    	logger.info(Common.methodName());
         String 点数表 = "s";
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
@@ -61,6 +63,7 @@ public class Test本文 {
 
     @Test
     public void test調剤() throws IOException {
+    	logger.info(Common.methodName());
         String 点数表 = "t";
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");

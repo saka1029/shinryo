@@ -1,6 +1,6 @@
 /target/
 /debug/
-.settings/
-.classpath
-.project
+/.settings/
+/.classpath
+/.project
 .~lock*

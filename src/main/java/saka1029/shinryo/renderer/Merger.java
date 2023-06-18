@@ -13,7 +13,7 @@ import saka1029.shinryo.parser.Node;
 
 public class Merger {
 
-    static final Logger logger = Logger.getLogger(Merger.class.getSimpleName());
+    static final Logger logger = Logger.getLogger(Merger.class.getName());
 
     static final Set<String> MERGE_NODE_NAME = Set.of("章", "部", "節", "款", "通則", "区分番号");
     static final Set<String> BASE_NODE_NAME = Set.of("章", "部", "節", "款");

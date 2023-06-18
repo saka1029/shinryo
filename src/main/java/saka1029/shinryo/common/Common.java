@@ -30,7 +30,7 @@ public class Common {
 
     public static Logger logger(Class<?> clazz) {
         initLogger();
-        return Logger.getLogger(clazz.getSimpleName());
+        return Logger.getLogger(clazz.getName());
     }
 
     /**

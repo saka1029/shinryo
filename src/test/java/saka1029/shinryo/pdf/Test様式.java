@@ -1,5 +1,7 @@
 package saka1029.shinryo.pdf;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -12,6 +14,11 @@ public class Test様式 {
 
     static final Logger logger = Common.logger(Test様式.class);
     static final Param param = Param.of("in", "debug/out", "04");
+
+    @Test
+    public void testStandardPath() {
+    	assertEquals("a/b/c", 様式.standardPath("a\\b\\c"));
+    }
 
     @Test
     public void test医科() throws IOException {
