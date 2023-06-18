@@ -53,6 +53,10 @@ public record 様式(String file, String name, String id, int startPage, int end
         + "\\s*(?:の\\s*(?:(?:\\d|\\s+)+))?" // 様式番号3
         + ")\\s*[)）]?(?:\\s+(.+))?"); // 様式タイトル (group2)
 
+    static String standardPath(String path) {
+        return path.replaceAll("\\\\", "/");
+    }
+
     /**
      * 施設基準の様式PDFファイルから様式一覧を抽出してテキストファイルに出力します。
      * <p>
@@ -103,7 +107,8 @@ public record 様式(String file, String name, String id, int startPage, int end
                         Matcher m = 施設基準様式名パターン.matcher(norm);
                         if (m.matches()) {
                             if (name != null)
-                                out.printf("%s,%s,%s,%d,%d,%s\n", inPdfFile, name, id, startPage, i, title);
+                                out.printf("%s,%s,%s,%d,%d,%s\n",
+                                    inPdfFile.replaceAll("\\\\", "/"), name, id, startPage, i, title);
                             startPage = i + 1;
                             name = m.group(1).replaceAll("\\s+", "");
                             if (name.matches("別添\\d+"))

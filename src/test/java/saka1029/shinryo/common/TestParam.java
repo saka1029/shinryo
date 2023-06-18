@@ -14,10 +14,10 @@ public class TestParam {
 
     @Test
     public void testFiles() throws IOException {
-        String[] files = Param.files(Path.of("in/04/i/txt"), ".txt");
+        String[] files = Param.files(Path.of("in/04/i/pdf/y"), ".pdf");
         assertEquals(2, files.length);
-        assertEquals(Path.of("in/04/i/txt/ke.txt"), Path.of(files[0]));
-        assertEquals(Path.of("in/04/i/txt/te.txt"), Path.of(files[1]));
+        assertEquals(Path.of("in/04/i/pdf/y/000907839.pdf"), Path.of(files[0]));
+        assertEquals(Path.of("in/04/i/pdf/y/000985121.pdf"), Path.of(files[1]));
     }
 
     @Test
