@@ -3,5 +3,5 @@
 /.settings/
 /.classpath
 /.project
-/logging.*.log
+*.log
 .~lock*
