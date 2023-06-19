@@ -4,7 +4,7 @@ import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 
-public class Html {
+public class HTML {
 
 	static String lineDirective(Token token) {
 	    return token == null ? "<!-- -->"

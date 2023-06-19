@@ -1,6 +1,5 @@
 package saka1029.shinryo.pdf;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;

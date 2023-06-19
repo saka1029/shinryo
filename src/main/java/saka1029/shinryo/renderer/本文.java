@@ -13,7 +13,7 @@ import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 
-public class 本文 extends Html {
+public class 本文 extends HTML {
 
     record Link(String url, String title) {
     }

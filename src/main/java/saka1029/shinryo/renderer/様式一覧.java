@@ -10,7 +10,7 @@ import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.pdf.PDF;
 import saka1029.shinryo.pdf.様式;
 
-public class 様式一覧 extends Html {
+public class 様式一覧 extends HTML {
 
     public void render(String inCsvFile, String title, String outHtmlFile) throws IOException {
         Files.createDirectories(Path.of(outHtmlFile).getParent());

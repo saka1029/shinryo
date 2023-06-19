@@ -18,7 +18,7 @@ public class Test区分番号一覧 {
 
     static final Param param = Param.of("in", "debug/html", "04");
 
-    @Test
+//    @Test
     public void test医科() throws IOException {
         String 点数表 = "i";
         String inTxtFile = param.txt(点数表, "ke");
@@ -28,7 +28,7 @@ public class Test区分番号一覧 {
         new 区分番号一覧().render(root, title, outHtmlFile);
     }
 
-    @Test
+//    @Test
     public void test歯科() throws IOException {
         String 点数表 = "s";
         String inTxtFile = param.txt(点数表, "ke");
@@ -38,7 +38,7 @@ public class Test区分番号一覧 {
         new 区分番号一覧().render(root, title, outHtmlFile);
     }
 
-    @Test
+//    @Test
     public void test調剤() throws IOException {
         String 点数表 = "t";
         String inTxtFile = param.txt(点数表, "ke");

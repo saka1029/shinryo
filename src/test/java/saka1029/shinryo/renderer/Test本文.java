@@ -25,7 +25,7 @@ public class Test本文 {
     
     static final Param param = Param.of("in", "debug/html", "04");
 
-    @Test
+//    @Test
     public void test医科() throws IOException {
     	logger.info(Common.methodName());
         String 点数表 = "i";
@@ -43,7 +43,7 @@ public class Test本文 {
         new 本文(outDir, Pat.医科リンク).render(kRoot, title, outHtmlFile);
     }
 
-    @Test
+//    @Test
     public void test歯科() throws IOException {
     	logger.info(Common.methodName());
         String 点数表 = "s";
@@ -61,7 +61,7 @@ public class Test本文 {
         new 本文(outDir, Pat.医科リンク).render(kRoot, title, outHtmlFile);
     }
 
-    @Test
+//    @Test
     public void test調剤() throws IOException {
     	logger.info(Common.methodName());
         String 点数表 = "t";

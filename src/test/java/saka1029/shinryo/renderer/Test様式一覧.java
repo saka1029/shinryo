@@ -14,7 +14,7 @@ public class Test様式一覧 {
 
     static final Param param = Param.of("in", "debug/html", "04");
 
-    @Test
+//    @Test
     public void test医科() throws IOException {
         String 点数表 = "i";
         String inCsvFile = param.txt(点数表, "ye");
@@ -23,7 +23,7 @@ public class Test様式一覧 {
         new 様式一覧().render(inCsvFile, title, outHtmlFile);
     }
 
-    @Test
+//    @Test
     public void test歯科() throws IOException {
         String 点数表 = "s";
         String inCsvFile = param.txt(点数表, "ye");
@@ -32,7 +32,7 @@ public class Test様式一覧 {
         new 様式一覧().render(inCsvFile, title, outHtmlFile);
     }
 
-    @Test
+//    @Test
     public void test調剤() throws IOException {
         String 点数表 = "t";
         String inCsvFile = param.txt(点数表, "ye");

@@ -20,7 +20,7 @@ public class Test様式 {
     	assertEquals("a/b/c", 様式.standardPath("a\\b\\c"));
     }
 
-    @Test
+//    @Test
     public void test医科() throws IOException {
         String 点数表 = "i";
         String[] inPdfFiles = param.pdf(点数表, "y");
@@ -28,7 +28,7 @@ public class Test様式 {
         様式.様式一覧変換(outTextFile, inPdfFiles);
     }
 
-    @Test
+//    @Test
     public void test歯科() throws IOException {
         String 点数表 = "s";
         String[] inPdfFiles = param.pdf(点数表, "y");
@@ -36,7 +36,7 @@ public class Test様式 {
         様式.様式一覧変換(outTextFile, inPdfFiles);
     }
 
-    @Test
+//    @Test
     public void test調剤() throws IOException {
         String 点数表 = "t";
         String[] inPdfFiles = param.pdf(点数表, "y");

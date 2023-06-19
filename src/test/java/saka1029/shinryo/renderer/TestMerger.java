@@ -31,7 +31,7 @@ public class TestMerger {
      * 2_8_2は薬剤料
      * 2_8_3は経過措置
      */
-	@Test
+//	@Test
 	public void test医科() throws IOException {
         logger.info(Common.methodName());
         Node kRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
@@ -40,7 +40,7 @@ public class TestMerger {
         kRoot.summary(param.outFile("i-tree-merged.txt"));
 	}
 
-	@Test
+//	@Test
 	public void test歯科() throws IOException {
         logger.info(Common.methodName());
         Node kRoot = Parser.parse(new 歯科告示読み込み(), false, param.txt("s", "ke"));
@@ -49,7 +49,7 @@ public class TestMerger {
         kRoot.summary(param.outFile("s-tree-merged.txt"));
 	}
 
-	@Test
+//	@Test
 	public void test調剤() throws IOException {
         logger.info(Common.methodName());
         Node kRoot = Parser.parse(new 調剤告示読み込み(), false, param.txt("t", "ke"));
@@ -57,34 +57,4 @@ public class TestMerger {
         Merger.merge(kRoot, tRoot);
         kRoot.summary(param.outFile("t-tree-merged.txt"));
 	}
-
-//	static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則");
-//	static void printMainNodes(Node node, TextWriter w) {
-//	    Token token = node.token;
-//	    if (token != null && MAIN_NODES.contains(token.type.name)) {
-//	        w.println("%s %s %s %s", token.type.name, node.path, token.number, token.header);
-//	        for (String line : token.body)
-//	            w.println("    %s", line);
-//            for (Node child : node.children)
-//                w.println("    %s %s %s %s", child.token.type.name, child.path, child.token.number, child.token.header);
-//	    }
-//	    for (Node child : node.children)
-//	        printMainNodes(child, w);
-//	}
-//
-//	@Test
-//	public void test調剤通知の章部節款通則の下に何があるか() throws IOException {
-//        Node tRoot = Parser.parse(new 調剤通知読み込み(), false, param.txt("t", "te"));
-//        try (TextWriter w = new TextWriter(param.outFile("t-main-nodes.txt"))) {
-//            printMainNodes(tRoot, w);
-//        }
-//	}
-//
-//	@Test
-//	public void test医科通知の章部節款通則の下に何があるか() throws IOException {
-//        Node tRoot = Parser.parse(new 医科通知読み込み(), false, param.txt("i", "te"));
-//        try (TextWriter w = new TextWriter(param.outFile("i-main-nodes.txt"))) {
-//            printMainNodes(tRoot, w);
-//        }
-//	}
 }

@@ -10,7 +10,7 @@ import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 
-public class 区分番号一覧 extends Html {
+public class 区分番号一覧 extends HTML {
 
     void listKubun(Node node, List<Node> list) {
         if (!node.isRoot())
