@@ -3,7 +3,10 @@ package saka1029.shinryo.common;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Param {
@@ -11,13 +14,20 @@ public class Param {
     record Nendo(String 元号, String 年度, String 旧元号, String 旧年度) {
     }
 
-    public static Map<String, Nendo> ALL = Map.of(
-        "30", new Nendo("平成", "30", "平成", "28"),
-        "01", new Nendo("令和", "01", "平成", "30"),
-        "02", new Nendo("令和", "02", "令和", "01"),
-        "04", new Nendo("令和", "04", "令和", "02"),
-        "06", new Nendo("令和", "06", "令和", "04"),
-        "08", new Nendo("令和", "08", "令和", "06"));
+    public static List<String> ALL_YEARS = new ArrayList<>();
+    public static Map<String, Nendo> ALL = new HashMap<>();
+    static void add(String 元号, String 年度, String 旧元号, String 旧年度) {
+        ALL_YEARS.add(年度);
+        ALL.put(年度, new Nendo(元号, 年度, 旧元号, 旧年度));
+    }
+    static {
+        add("平成", "30", "平成", "28");
+        add("令和", "01", "平成", "30");
+        add("令和", "02", "令和", "01");
+        add("令和", "04", "令和", "02");
+        add("令和", "06", "令和", "04");
+        add("令和", "08", "令和", "06");
+    }
     
     public static Map<String, String> TITLES = Map.of(
         "i", "医科診療報酬点数表",
@@ -88,11 +98,15 @@ public class Param {
         return Path.of(Path.of(outDir, 年度, 点数表).toString(), dirs).toString();
     }
 
-    public String outFile(String 点数表, String fileName) {
-        return Path.of(outDir(点数表), fileName).toString();
+    public String outFile(String 点数表, String... fileNames) {
+        return Path.of(outDir(点数表), fileNames).toString();
     }
     
     public String title(String 点数表) {
         return "%s%s年%s".formatted(元号, 年度, TITLES.get(点数表));
+    }
+    
+    public Param previous() {
+        return Param.of(inDir, outDir, ALL_YEARS.get(ALL_YEARS.indexOf(年度) - 1));
     }
 }

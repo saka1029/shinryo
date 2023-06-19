@@ -51,4 +51,19 @@ public class TestParam {
         assertEquals(Path.of("OUT/04"), Path.of(p.outDir()));
         assertEquals(Path.of("OUT/04/index.html"), Path.of(p.outFile("index.html")));
     }
+    
+    @Test
+    public void testPrevious() {
+        Param p = Param.of("IN", "OUT", "04");
+        Param previous = p.previous();
+        assertEquals("02", previous.年度);
+        assertEquals("令和", previous.元号);
+        assertEquals("IN", previous.inDir);
+        assertEquals("OUT", previous.outDir);
+        Param preprepre = p.previous().previous().previous();
+        assertEquals("30", preprepre.年度);
+        assertEquals("平成", preprepre.元号);
+        assertEquals("IN", preprepre.inDir);
+        assertEquals("OUT", preprepre.outDir);
+    }
 }
