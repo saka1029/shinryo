@@ -1,9 +1,0 @@
-2023-06-19 21:28:46.546 saka1029.shinryo.main.Main 情報: 令和04年医科診療報酬点数表HTML生成 
-2023-06-19 21:28:47.938 saka1029.shinryo.renderer.Merger 情報: 通知パス「t」を告示Nodeに追加します 
-2023-06-19 21:28:47.941 saka1029.shinryo.renderer.Merger 情報: 通知パス「2_t」を告示Nodeに追加します 
-2023-06-19 21:28:47.951 saka1029.shinryo.renderer.Merger 情報: 通知パス「2_8_3」を告示Nodeに追加します 
-2023-06-19 21:28:47.960 saka1029.shinryo.renderer.Merger 情報: 通知パス「3_t」を告示Nodeに追加します 
-2023-06-19 21:28:53.041 saka1029.shinryo.main.Main 情報: 令和04年歯科診療報酬点数表HTML生成 
-2023-06-19 21:28:53.237 saka1029.shinryo.renderer.Merger 情報: 通知パス「t」を告示Nodeに追加します 
-2023-06-19 21:28:53.238 saka1029.shinryo.renderer.Merger 情報: 通知パス「2_t」を告示Nodeに追加します 
-2023-06-19 21:28:53.789 saka1029.shinryo.main.Main 情報: 令和04年調剤診療報酬点数表HTML生成 
