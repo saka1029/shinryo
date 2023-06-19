@@ -58,11 +58,11 @@ public class Merger {
             logger.severe("通知の区分番号「" + tNode.token.header + "」が告示にありません");
             return;
         }
-        logger.info("通知パス「" + tNode.path + "」に対応する告示Nodeを追加します");
+        logger.info("通知パス「" + tNode.path + "」を告示Nodeに追加します");
         Node tParent = tNode.parent;
         Node kParent = tParent.isRoot() ? kMap.get("") : kMap.get(tParent.path);
         if (kParent == null) {
-            logger.warning("通知パス「" + tNode.path + "」に対応する告示の親が見つかりません");
+            logger.severe("通知パス「" + tNode.path + "」に対応する告示の親が見つかりません");
             return;
         }
         // 告示の親Nodeに子を追加します。
@@ -77,7 +77,7 @@ public class Merger {
             if (prevIndex.isPresent())
                 index = prevIndex.getAsInt() + 1;
             else {
-                logger.warning("告示の追加位置「" + tNode.path + "」が見つかりません");
+                logger.severe("告示の追加位置「" + tNode.path + "」が見つかりません");
                 return;
             }
         }
