@@ -27,7 +27,7 @@ public class Html {
         writer.println("<link rel='icon' href='../../favicon.ico' />");
         writer.println("<link rel='stylesheet' type='text/css' href='../../all.css' />");
         writer.println("<title>%s</title>", title);
-        if (node.token != null)
+        if (node != null && node.token != null)
             writer.println(lineDirective(node.token));
         writer.println("</head>");
     }

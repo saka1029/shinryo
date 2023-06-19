@@ -4,6 +4,8 @@ import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 文字定数としての正規表現を集めたクラスです。 正規表現を組み合わせて新たな正規表現を作る関数もあります。
@@ -48,7 +50,26 @@ public class Pat {
         + "㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵"
         + "㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
     public static final String 丸数字 = "[" + 丸数 + "]";
-    public static final String 例 = "例" + 数字;
+    public static final String 例 = "例" + 数字; 
+    public static final String 様式名パターン = repeat("別[紙添]様式\\s*" + 数字, "\\s*[のー－―‐-]\\s*", 数字);
+    public static final Pattern 医科リンクパターン = Pattern.compile("(?<K>" + 区分番号 + ")|(?<Y>" + 様式名パターン + ")");
+    public static final Pattern 調剤リンクパターン = Pattern.compile("(?<K>" + 調剤告示区分番号 + ")|(?<Y>" + 様式名パターン + ")");
+    public static final String リンク = "<a href='%s.%s'>%s</a>";
+    public static String リンク(Pattern pattern, String s) {
+        StringBuilder sb = new StringBuilder();
+        Matcher m = pattern.matcher(s);
+        while (m.find()) {
+            String link = m.group();
+            if (m.group("K") != null)
+                m.appendReplacement(sb, リンク.formatted(Pat.正規化(link), "html", link));
+            else if (m.group("Y") != null)
+                m.appendReplacement(sb, リンク.formatted("pdf/" + Pat.正規化(link), "pdf", link));
+        }
+        m.appendTail(sb);
+        return sb.toString();
+    }
+    public static final Function<String, String> 医科リンク = s -> リンク(医科リンクパターン, s);
+    public static final Function<String, String> 調剤リンク = s -> リンク(調剤リンクパターン, s);
 
     public static final Function<String, String> 数字id = s -> 正規化(s);
     public static final Function<String, String> アイウid = s -> カナ正規化(アイウ, s);
@@ -62,10 +83,12 @@ public class Pat {
     }
 
     public static String 正規化(String s) {
+        s = s.replaceAll("\\s", "");
         s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款|例", "");
         s = s.replaceAll("[のー－―‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び|、", "x");
+        s = s.replaceAll("別添", "T").replaceAll("別紙", "S").replaceAll("様式", "Y");
         return Normalizer.normalize(s, Form.NFKC);
     }
 

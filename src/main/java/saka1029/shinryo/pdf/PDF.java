@@ -220,42 +220,53 @@ public class PDF {
         }
     }
 
-    public static List<様式> ページ分割(String inTextFile, String outDir) throws IOException {
-        Files.createDirectories(Path.of(outDir));
-        List<様式> result = new ArrayList<>();
-        try (BufferedReader reader = Files.newBufferedReader(Path.of(inTextFile), 出力文字セット)) {
-            PDDocument doc = null;
-            String line, curFile = null;
-            while ((line = reader.readLine()) != null) {
-                if (line.isBlank() || line.startsWith("#"))
-                    continue;
-                    String[] fields = line.split(",", 6);
-                    String file = fields[0];
-                    String name = fields[1];
-                    String id = fields[2];
-                    String outFile = /* outPdfPrefix + */ id + ".pdf";
-                    String title = fields[5];
-                    int startPage = Integer.parseInt(fields[3]);
-                    int endPage = Integer.parseInt(fields[4]);
-                    result.add(new 様式(file, name, id, startPage, endPage, title));
-                    if (!file.equals(curFile)) {
-                        if (doc != null)
-                            doc.close();
-                        doc = PDDocument.load(new File(file));
-                        curFile = file;
-                    }
-                    Splitter splitter = new Splitter();
-                    splitter.setStartPage(startPage);
-                    splitter.setEndPage(endPage);
-                    splitter.setSplitAtPage(doc.getNumberOfPages());
-                    List<PDDocument> splitted = splitter.split(doc);
-                    splitted.get(0).save(outDir + "/" + outFile);
+    public static void ページ分割(String inPdfFile, String outPdfFile, int startPage, int endPage) throws IOException {
+        Files.createDirectories(Path.of(outPdfFile).getParent());
+        try (PDDocument inPdf = PDDocument.load(new File(inPdfFile))) {
+                Splitter splitter = new Splitter();
+                splitter.setStartPage(startPage);
+                splitter.setEndPage(endPage);
+                splitter.setSplitAtPage(inPdf.getNumberOfPages());
+                List<PDDocument> splitted = splitter.split(inPdf);
+                try {
+                    splitted.get(0).save(outPdfFile);
+                } finally {
                     for (PDDocument d : splitted)
                         d.close();
-            }
-            if (doc != null)
-                doc.close();
+                }
         }
-        return result;
     }
+
+//    public static List<様式> ページ分割(String inTextFile, String outDir) throws IOException {
+//        Files.createDirectories(Path.of(outDir));
+//        List<様式> result = new ArrayList<>();
+//        try (BufferedReader reader = Files.newBufferedReader(Path.of(inTextFile), 出力文字セット)) {
+//            PDDocument doc = null;
+//            String line, curFile = null;
+//            while ((line = reader.readLine()) != null) {
+//                if (line.isBlank() || line.startsWith("\\s*#"))
+//                    continue;
+//                様式 e = new 様式(line);
+//                String outFile = e.id + ".pdf";
+//                result.add(e);
+//                if (!e.file.equals(curFile)) {
+//                    if (doc != null)
+//                        doc.close();
+//                    doc = PDDocument.load(new File(e.file));
+//                    curFile = e.file;
+//                }
+//                Splitter splitter = new Splitter();
+//                splitter.setStartPage(e.startPage);
+//                splitter.setEndPage(e.endPage);
+//                splitter.setSplitAtPage(doc.getNumberOfPages());
+//                List<PDDocument> splitted = splitter.split(doc);
+//                splitted.get(0).save(outDir + "/" + outFile);
+//                for (PDDocument d : splitted)
+//                    d.close();
+//            }
+//            if (doc != null)
+//                doc.close();
+//        }
+//        return result;
+//    }
 }

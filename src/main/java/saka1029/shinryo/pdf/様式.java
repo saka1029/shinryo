@@ -30,7 +30,29 @@ import java.util.regex.Pattern;
  * @param endPage 終了ページ。ex.「124」
  * @param title 様式タイトル。ex.「退院証明書」
  */
-public record 様式(String file, String name, String id, int startPage, int endPage, String title) {
+public class 様式 {
+    public final String file, name, id;
+    public final int startPage, endPage;
+    public final String title;
+    
+    public 様式(String file, String name, String id, int startPage, int endPage, String title) {
+        this.file = file;
+        this.name = name;
+        this.id = id;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.title = title;
+    }
+
+    public 様式(String line) {
+        String[] f = line.split(",", 6);
+        this.file = f[0];
+        this.name = f[1];
+        this.id = f[2];
+        this.startPage = Integer.parseInt(f[3]);
+        this.endPage = Integer.parseInt(f[4]);
+        this.title = f[5];
+    }
 
 	static final Logger logger = Logger.getLogger(様式.class.getName());
     static final int 様式名出現最大行 = 3;

@@ -6,12 +6,11 @@ import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
-import saka1029.shinryo.parser.Pat;
 import saka1029.shinryo.parser.Token;
 
 public class 本文 extends Html {
@@ -20,12 +19,12 @@ public class 本文 extends Html {
     }
 
     final String outDir;
-    final Pattern kubunPat;
+    final Function<String, String> linker;
     
-    public 本文(String outDir, String kubunPat) throws IOException {
+    public 本文(String outDir, Function<String, String> linker) throws IOException {
         this.outDir = outDir;
         Files.createDirectories(Path.of(outDir));
-        this.kubunPat = Pattern.compile(kubunPat);
+        this.linker = linker;
     }
     
 	static String indent(int indent, String number) {
@@ -34,8 +33,7 @@ public class 本文 extends Html {
 	}
 	
 	String linkText(String text) {
-	    return kubunPat.matcher(text).replaceAll(m ->
-	        "<a href='%s.html'>%s</a>".formatted(Pat.正規化(m.group()), m.group()));
+	    return linker.apply(text);
 	}
 
 	String linkBodyText(Token token) {
