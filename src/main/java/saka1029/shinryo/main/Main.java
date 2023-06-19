@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
+import java.util.logging.Logger;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
@@ -25,22 +26,27 @@ import saka1029.shinryo.renderer.様式一覧;
 
 public class Main {
 
+	static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+	
     static RuntimeException usage(String message) {
         System.err.println("usage: java saka1029.shinryo.main.Main [-i inDir] [-o outDir] 年度 STEP...");
         return new IllegalArgumentException(message);
     }
     
     static void PDF変換(Param param, String 点数表) throws IOException {
+    	LOGGER.info(param.title(点数表) + "PDF変換");
         new PDF(true).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
         new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
         様式.様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
     }
 
     static void 様式生成(Param param, String 点数表) throws IOException {
+    	LOGGER.info(param.title(点数表) + "様式生成");
         new 様式一覧().render(param.txt(点数表, "ye"), param.title(点数表), param.outFile(点数表, "yoshiki.html"));
     }
 
     static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link) throws IOException {
+    	LOGGER.info(param.title(点数表) + "HTML生成");
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
         String outDir = param.outDir(点数表);
