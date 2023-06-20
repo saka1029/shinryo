@@ -38,7 +38,7 @@ public class Test本文 {
         Node kRoot = Parser.parse(new 医科告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 医科通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, Pat.医科リンク).render(kRoot, title, outHtmlFile);
+        new 本文(outDir, false, Pat.医科リンク).render(kRoot, title, outHtmlFile);
     }
 
 //    @Test
@@ -56,7 +56,7 @@ public class Test本文 {
         Node kRoot = Parser.parse(new 歯科告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 歯科通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, Pat.医科リンク).render(kRoot, title, outHtmlFile);
+        new 本文(outDir, true, Pat.医科リンク).render(kRoot, title, outHtmlFile);
     }
 
 //    @Test
@@ -74,6 +74,6 @@ public class Test本文 {
         Node kRoot = Parser.parse(new 調剤告示読み込み(), false, kTxt);
         Node tRoot = Parser.parse(new 調剤通知読み込み(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, Pat.調剤リンク).render(kRoot, title, outHtmlFile);
+        new 本文(outDir, false, Pat.調剤リンク).render(kRoot, title, outHtmlFile);
     }
 }

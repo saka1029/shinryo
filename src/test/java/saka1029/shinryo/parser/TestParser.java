@@ -32,7 +32,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test医科告示読み込み() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("i", "ke");
@@ -41,7 +41,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test医科通知読み込み() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("i", "te");

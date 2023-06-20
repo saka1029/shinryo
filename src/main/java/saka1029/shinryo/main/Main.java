@@ -60,7 +60,7 @@ public class Main {
         Node kRoot = Parser.parse(kParser, false, kTxt);
         Node tRoot = Parser.parse(tParser, false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, link).render(kRoot, title, "index.html");
+        new 本文(outDir, 点数表.equals("s"), link).render(kRoot, title, "index.html");
         new 区分番号一覧().render(kRoot, title, param.outFile(点数表, "kubun.html"));
     }
 

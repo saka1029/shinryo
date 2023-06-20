@@ -19,10 +19,12 @@ public class 本文 extends HTML {
     }
 
     final String outDir;
+    final boolean sika;
     final Function<String, String> linker;
     
-    public 本文(String outDir, Function<String, String> linker) throws IOException {
+    public 本文(String outDir, boolean sika, Function<String, String> linker) throws IOException {
         this.outDir = outDir;
+        this.sika = sika;
         Files.createDirectories(Path.of(outDir));
         this.linker = linker;
     }
@@ -121,6 +123,10 @@ public class 本文 extends HTML {
                     writer.println("<p>%s</p>", linkBodyText(token));
 			}
 			links.push(new Link(outHtmlFile, title));
+			// 歯科の区分番号で記述が空の場合、医科の区分番号へリンクする
+			if (sika && node.token != null && node.token.type.name.equals("区分番号")
+				&& node.token.body.isEmpty() && node.children.isEmpty())
+				writer.println("<p>医科点数表<a href='../i/%s.html'>%s</a></p>", node.id, node.token.number);
 			if (!bodyOnly) {
 				// 子ノードのレンダリング
 				for (Node child : node.children)
