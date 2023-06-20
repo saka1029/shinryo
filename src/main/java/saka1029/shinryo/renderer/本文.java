@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
@@ -15,20 +18,37 @@ import saka1029.shinryo.parser.Token;
 
 public class 本文 extends HTML {
 
+	static final Logger LOGGER = Logger.getLogger(本文.class.getName());
+
     record Link(String url, String title) {
     }
 
     final String outDir;
-    final boolean sika;
+    final Map<String, String> kubunMap;
     final Function<String, String> linker;
     
-    public 本文(String outDir, boolean sika, Function<String, String> linker) throws IOException {
+    public 本文(String outDir, Map<String, String> kubunMap, Function<String, String> linker) throws IOException {
         this.outDir = outDir;
-        this.sika = sika;
+        this.kubunMap = kubunMap;
         Files.createDirectories(Path.of(outDir));
         this.linker = linker;
     }
     
+    static final String 区分末尾の括弧 = "[(（][^()（）]*[)）]$";
+
+    public static void 区分名称マップ(Node node, Map<String, String> map) {
+    	if (node.token != null && node.token.type.name.equals("区分番号"))
+    		map.put(node.token.header0().replaceFirst(区分末尾の括弧, ""), node.id);
+    	for (Node child : node.children)
+			区分名称マップ(child, map);
+    }
+
+    public static Map<String, String> 区分名称マップ(Node root) {
+    	Map<String, String> map = new HashMap<>();
+    	区分名称マップ(root, map);
+    	return map;
+    }
+
 	static String indent(int indent, String number) {
 		float width = (number.codePoints().map(c -> c < 256 ? 1 : 2).sum() + 1) / 2.0F;
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
@@ -124,9 +144,15 @@ public class 本文 extends HTML {
 			}
 			links.push(new Link(outHtmlFile, title));
 			// 歯科の区分番号で記述が空の場合、医科の区分番号へリンクする
-			if (sika && node.token != null && node.token.type.name.equals("区分番号")
-				&& node.token.body.isEmpty() && node.children.isEmpty())
-				writer.println("<p>医科点数表<a href='../i/%s.html'>%s</a></p>", node.id, node.token.number);
+			if (kubunMap != null && node.token != null && node.token.type.name.equals("区分番号")
+				&& node.token.header1().isBlank() && node.token.body.isEmpty() && node.children.isEmpty()) {
+				String name = node.token.header0().replaceFirst(区分末尾の括弧, "");
+				String ikaId = kubunMap.get(name);
+				if (ikaId == null)
+					LOGGER.warning("区分「" + node.token.number + " " + name + "」は医科にありません");
+				else
+					writer.println("<p>医科点数表 区分 <a href='../i/%s.html'>%s %s</a></p>", ikaId, ikaId, name);
+			}
 			if (!bodyOnly) {
 				// 子ノードのレンダリング
 				for (Node child : node.children)

@@ -3,6 +3,7 @@ package saka1029.shinryo.main;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
@@ -54,13 +55,18 @@ public class Main {
         String tTxt = param.txt(点数表, "te");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
+        Map<String, String> kubunMap = null;
+        if (点数表.equals("s")) {
+        	Node ikaRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
+        	kubunMap = 本文.区分名称マップ(ikaRoot);
+        }
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
         if (Files.exists(Path.of(param.inDir(点数表, "img"))))
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         Node kRoot = Parser.parse(kParser, false, kTxt);
         Node tRoot = Parser.parse(tParser, false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, 点数表.equals("s"), link).render(kRoot, title, "index.html");
+        new 本文(outDir, kubunMap, link).render(kRoot, title, "index.html");
         new 区分番号一覧().render(kRoot, title, param.outFile(点数表, "kubun.html"));
     }
 
