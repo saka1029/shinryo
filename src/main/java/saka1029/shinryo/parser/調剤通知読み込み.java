@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * 途中のレベルを中抜きしていることがあるので、このような文法となる。
  */
 public class 調剤通知読み込み extends Parser {
-    static final Logger logger = Logger.getLogger(調剤通知読み込み.class.getName());
+    static final Logger LOGGER = Logger.getLogger(調剤通知読み込み.class.getName());
 
 	public static final TokenType 通則 = new TokenType("通則", Pat.number("＜通則＞"), Pat.固定値id("t"));
 	public static final TokenType 節 = new TokenType("節", Pat.numberHeader("第" + Pat.数字 + "節"), Pat.数字id);

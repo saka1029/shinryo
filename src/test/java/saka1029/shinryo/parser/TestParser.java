@@ -3,6 +3,8 @@ package saka1029.shinryo.parser;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.junit.Test;
+
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 
@@ -10,7 +12,7 @@ public class TestParser {
 
     static final Logger logger = Common.logger(TestParser.class);
     
-    static final Param param = Param.of("in", "debug/out", "04");
+    static final Param param = Param.of("in", "debug/out", "02");
 
 //    @Test
     public void test調剤告示読み込み() throws IOException {
@@ -30,7 +32,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-//    @Test
+    @Test
     public void test医科告示読み込み() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("i", "ke");
@@ -39,7 +41,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-//    @Test
+    @Test
     public void test医科通知読み込み() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("i", "te");

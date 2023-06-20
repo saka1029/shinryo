@@ -55,7 +55,7 @@ public class Merger {
      */
     static void add(Map<String, Node> kMap, String id, Node tNode) {
         if (tNode.token.type.name.equals("区分番号")) {
-            logger.severe("通知の区分番号「" + tNode.token.header + "」が告示にありません");
+            logger.severe("通知の区分番号「" + tNode.token.number + "」が告示にありません");
             return;
         }
         logger.info("通知パス「" + tNode.path + "」を告示Nodeに追加します");
