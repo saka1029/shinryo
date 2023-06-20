@@ -12,16 +12,12 @@ import saka1029.shinryo.parser.Token;
 
 public class 区分番号一覧 extends HTML {
 
-    void listKubun(Node node, List<Node> list) {
-        if (!node.isRoot())
-            if (node.token.type.name.equals("区分番号"))
-                list.add(node);
-        for (Node child : node.children)
-            listKubun(child, list);
-    }
-
     List<Node> listKubun(Node root) {
         List<Node> list = new ArrayList<>();
+        root.visit(node -> {
+        	if (node.token != null && node.token.type.name.equals("区分番号"))
+        		list.add(node);
+        });
         listKubun(root, list);
         return list;
     }
