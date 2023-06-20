@@ -30,6 +30,9 @@ public class Main {
 	
     static RuntimeException usage(String message) {
         System.err.println("usage: java saka1029.shinryo.main.Main [-i inDir] [-o outDir] 年度 STEP...");
+        System.err.println("STEP: [ist][012]");
+        System.err.println("   i:医科, s:歯科, t:調剤, 0:PDF変換, 1:様式生成, 2:HTML生成");
+        System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
         return new IllegalArgumentException(message);
     }
     
@@ -87,6 +90,8 @@ public class Main {
                     break L;
             }
         }
+        if (年度 == null)
+            throw usage("年度の指定がありません");
         if (i >= size)
             throw usage("STEPの指定がありません");
         Param param = Param.of(inDir, outDir, 年度);
