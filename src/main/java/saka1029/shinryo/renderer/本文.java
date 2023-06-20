@@ -52,6 +52,10 @@ public class 本文 extends HTML {
 			区分名称マップ(child, map);
     }
 
+    /**
+     * 歯科の区分番号から医科の区分番号へのリンクを実現するために、
+     * 医科の区分名称から医科の区分番号へのマップを作製します。
+     */
     public static Map<String, String> 区分名称マップ(Node root) {
     	Map<String, String> map = new HashMap<>();
     	区分名称マップ(root, map);
