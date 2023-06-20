@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  */
 public class Pat {
 
-    static final Logger logger = Logger.getLogger(Pat.class.getName());
+    static final Logger LOGGER = Logger.getLogger(Pat.class.getName());
 
     private Pat() {
     }

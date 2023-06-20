@@ -22,6 +22,7 @@ public class TokenReader {
         try (BufferedReader reader = Files.newBufferedReader(Path.of(inTxtFile))) {
             String line = null;
             L: while ((line = reader.readLine()) != null) {
+                line = line.replaceFirst("\\s+$", "");
                 ++lineNo;
                 Matcher matcher = FILE_DIRECTIVE.matcher(line);
                 if (matcher.matches()) {

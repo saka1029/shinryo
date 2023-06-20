@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * 「注数字」における「数字」は「注１」よりも右になければならない。
  */
 public class 調剤告示読み込み extends Parser {
-    static final Logger logger = Logger.getLogger(調剤告示読み込み.class.getName());
+    static final Logger LOGGER = Logger.getLogger(調剤告示読み込み.class.getName());
 
 	public static final TokenType 通則 = new TokenType("通則", Pat.number("通則"), Pat.固定値id("t"));
 	public static final TokenType 数字 = new TokenType("数字", Pat.numberHeader(Pat.数字), Pat.数字id);

@@ -80,7 +80,7 @@ public class Token {
 
     @Override
     public String toString() {
-        return "Token(%s, %s, %s, %s:%s, %s:%s, %s, %s)".formatted(
-            type.name, number, header, pdfFileName, pageNo, txtFileName, lineNo, indent, body);
+        return "Token(%s:%s, %s:%s, %s, %s, %s, %s, %s)".formatted(
+            pdfFileName, pageNo, txtFileName, lineNo, type.name, number, header, indent, body);
     }
 }

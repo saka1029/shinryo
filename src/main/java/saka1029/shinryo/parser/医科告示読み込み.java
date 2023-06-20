@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * <pre>
  * 文法:
  * 医科告示 = { "章" ( 部 | 数字 ) }
- * 部       = { "部" 通則 ( 節 | 数字 ) }
+ * 部       = { "部" 通則 ( 区分 | 節 | 数字 ) }
  * 節       = { "節" 通則 ( 区分 | 区分番号 | 款 | 数字 ) }
  * 款       = { "款" 通則 ( 区分 | 数字 ) }
  * 通則     = { "通則" 数字 }
@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * 「注数字」における「数字」は「注１」よりも右になければならない。
  */
 public class 医科告示読み込み extends Parser {
-    static final Logger logger = Logger.getLogger(医科告示読み込み.class.getName());
+    static final Logger LOGGER = Logger.getLogger(医科告示読み込み.class.getName());
 
 	public static final TokenType 通則 = new TokenType("通則", Pat.number("通則"), Pat.固定値id("t"));
 	public static final TokenType 章 = new TokenType("章", Pat.numberHeader("第" + Pat.数字 + "章"), Pat.数字id);
@@ -184,7 +184,9 @@ public class 医科告示読み込み extends Parser {
         while (eat(部)) {
             Node bu = add(parent, eaten);
             通則(bu);
-            if (is(節))
+            if (is(区分))
+                区分(bu);
+            else if (is(節))
                 節(bu);
             else
                 数字(bu);
