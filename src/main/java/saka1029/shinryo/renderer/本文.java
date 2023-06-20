@@ -28,6 +28,14 @@ public class 本文 extends HTML {
     final Map<String, String> kubunMap;
     final Function<String, String> linker;
     
+    /**
+     * 
+     * @param outDir
+     * @param kubunMap 歯科の場合、医科の区分名称マップを指定します。
+     * 				   医科、調剤の場合はnullを指定します。
+     * @param linker
+     * @throws IOException
+     */
     public 本文(String outDir, Map<String, String> kubunMap, Function<String, String> linker) throws IOException {
         this.outDir = outDir;
         this.kubunMap = kubunMap;
