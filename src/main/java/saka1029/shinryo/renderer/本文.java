@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
+import saka1029.shinryo.parser.Pat;
 import saka1029.shinryo.parser.Token;
 
 public class 本文 extends HTML {
@@ -38,7 +39,7 @@ public class 本文 extends HTML {
 
     public static void 区分名称マップ(Node node, Map<String, String> map) {
     	if (node.token != null && node.token.type.name.equals("区分番号"))
-    		map.put(node.token.header0().replaceFirst(区分末尾の括弧, ""), node.id);
+    		map.put(node.token.header0().replaceFirst(区分末尾の括弧, ""), node.token.number);
     	for (Node child : node.children)
 			区分名称マップ(child, map);
     }
@@ -151,7 +152,7 @@ public class 本文 extends HTML {
 				if (ikaId == null)
 					LOGGER.warning("区分「" + node.token.number + " " + name + "」は医科にありません");
 				else
-					writer.println("<p>医科点数表 区分 <a href='../i/%s.html'>%s %s</a></p>", ikaId, ikaId, name);
+					writer.println("<p>医科点数表 区分 <a href='../i/%s.html'>%s %s</a></p>", Pat.正規化(ikaId), ikaId, name);
 			}
 			if (!bodyOnly) {
 				// 子ノードのレンダリング
