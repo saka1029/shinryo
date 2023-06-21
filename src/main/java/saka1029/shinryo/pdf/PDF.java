@@ -27,11 +27,9 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
 
-import saka1029.shinryo.common.Common;
-
 public class PDF {
 
-    static final Logger LOGGER = Common.logger(PDF.class);
+    static final Logger LOGGER = Logger.getLogger(PDF.class.getName());
     {
         // PDFBox関連のログを抑制します。
         Logger logger = Logger.getLogger("org.apache");

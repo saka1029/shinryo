@@ -27,8 +27,8 @@ import saka1029.shinryo.renderer.様式一覧;
 
 public class Main {
 
-	static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-	
+    static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+
     static RuntimeException usage(String message) {
         System.err.println("usage: java saka1029.shinryo.main.Main [-i inDir] [-o outDir] 年度 STEP...");
         System.err.println("STEP: [ist][012]");
@@ -36,20 +36,24 @@ public class Main {
         System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
         return new IllegalArgumentException(message);
     }
-    
+
     static void PDF変換(Param param, String 点数表) throws IOException {
-    	LOGGER.info(param.title(点数表) + "PDF変換");
+        LOGGER.info(param.title(点数表) + "PDF変換");
+        LOGGER.info("告示PDF変換");
         new PDF(true).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
+        LOGGER.info("通知PDF変換");
         new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
+        LOGGER.info("様式PDF変換");
         様式.様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
     }
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
-    	LOGGER.info(param.title(点数表) + "様式一覧生成");
+        LOGGER.info(param.title(点数表) + "様式一覧生成");
         new 様式一覧().render(param.txt(点数表, "ye"), param.title(点数表), param.outFile(点数表, "yoshiki.html"));
     }
 
-    static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link) throws IOException {
+    static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link)
+        throws IOException {
         LOGGER.info(param.title(点数表) + "HTML生成");
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
@@ -57,20 +61,23 @@ public class Main {
         String title = param.title(点数表);
         Map<String, String> kubunMap = null;
         if (点数表.equals("s")) {
-        	Node ikaRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
-        	kubunMap = 本文.区分名称マップ(ikaRoot);
+            Node ikaRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
+            kubunMap = 本文.区分名称マップ(ikaRoot);
         }
+        LOGGER.info("ホームファイルコピー");
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
-        if (Files.exists(Path.of(param.inDir(点数表, "img"))))
+        if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
+            LOGGER.info("イメージコピー");
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
+        }
         Node kRoot = Parser.parse(kParser, false, kTxt);
         Node tRoot = Parser.parse(tParser, false, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, kubunMap, link).render(kRoot, title, "index.html");
         Param prev = param.previous();
-        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ?
-            Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
-        LOGGER.info(param.title(点数表) + "区分番号一覧生成");
+        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ? Parser.parse(kParser, false, prev.txt(点数表, "ke"))
+            : null;
+        LOGGER.info("区分番号一覧生成");
         new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
     }
 
@@ -79,7 +86,7 @@ public class Main {
         String outDir = "debug/html";
         String 年度 = null;
         int i = 0, size = args.length;
-        L: for ( ; i < size; ++i) {
+        L: for (; i < size; ++i) {
             switch (args[i]) {
                 case "-i":
                     if (i + 1 >= size)
@@ -116,8 +123,8 @@ public class Main {
                 case "t0": PDF変換(param, "t"); break;
                 case "t1": 様式一覧生成(param, "t"); break;
                 case "t2": HTML生成(param, "t", new 調剤告示読み込み(), new 調剤通知読み込み(), Pat.調剤リンク); break;
-                default:
-                    throw usage("不明なSTEPです(" + args[i] + ")");
+                default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
+        LOGGER.info("終了");
     }
 }
