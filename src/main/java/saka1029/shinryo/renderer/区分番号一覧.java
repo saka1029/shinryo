@@ -20,6 +20,18 @@ public class 区分番号一覧 extends HTML {
         return list;
     }
 
+    /**
+     * 
+     * @param oldRoot 旧年度のルートノードを指定します。
+     *                  旧年度のデータがない場合はnullを指定します。
+     * @param newRoot ルートノードを指定します。
+     * @param title
+     * @param 点数表 点数表を"i"(医科)、"s"(歯科)、"t"(調剤)で指定します。
+     * @param 年度 年度、例えば"04"を指定します。
+     * @param 旧年度 旧年度、例えば"02"を指定します。
+     * @param outHtmlFile
+     * @throws IOException
+     */
     public void render(Node oldRoot, Node newRoot, String title, String 点数表, String 年度, String 旧年度, String outHtmlFile) throws IOException {
 		String fullTitle = title + " 区分番号一覧";
 		List<Node> oldList = listKubun(oldRoot);
