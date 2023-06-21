@@ -3,6 +3,7 @@
 /.settings/
 /.classpath
 /.project
+*.lck
 *.log
 .~lock*
 /bin/
