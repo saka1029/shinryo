@@ -7,6 +7,7 @@ import java.util.List;
 
 import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
+import saka1029.shinryo.parser.Pat;
 
 public class 区分番号一覧 extends HTML {
 
@@ -80,7 +81,7 @@ public class 区分番号一覧 extends HTML {
                     Node o = next(oi);
                     Node n = next(ni);
                     while (o != null && n != null) {
-                        int c = o.id.compareTo(n.id);
+                        int c = Pat.区分順序化(o.id).compareTo(Pat.区分順序化(n.id));
                         if (c == 0) {
                             print(o, n);
                             o = next(oi);

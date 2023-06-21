@@ -143,6 +143,21 @@ public class Pat {
         return Integer.toString(n);
     }
 
+    static final Pattern 数字列 = Pattern.compile("\\d+");
+
+    /**
+     * 区分番号の順序を比較するための正規化
+     * 単純に比較すると"B001-2" > "B001-12"であるが、
+     * "B001-2" < "B001-12"とするため、
+     * それぞれ"B00001-00002"および"B00001-00012"に変換する。
+     */
+    public static String 区分順序化(String kubun) {
+        return 数字列.matcher(正規化(kubun)).replaceAll(m -> {
+            String n = m.group();
+            return "0".repeat(5 - n.length()) + n;
+        });
+    }
+
     public static String indexOf(String list, String s) {
         int index = list.indexOf(s);
         if (index < 0)

@@ -111,4 +111,12 @@ public class TestPat {
         assertTrue(pat.matcher("＜処置料＞").matches());
     }
 
+    @Test
+    public void test区分順序化() {
+        assertEquals("B00001-00001", Pat.区分順序化("B001-1"));
+        assertEquals("B00001-00001", Pat.区分順序化("Ｂ００１－１"));
+        assertEquals("B00001-00012", Pat.区分順序化("Ｂ００１－１２"));
+        assertTrue("B001-2".compareTo("B001-12") > 0);
+        assertTrue(Pat.区分順序化("B001-2").compareTo(Pat.区分順序化("B001-12")) < 0);
+    }
 }
