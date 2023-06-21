@@ -12,17 +12,19 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import saka1029.shinryo.parser.Pat;
+
 /**
  * 様式名から様式IDへの変換規則は以下の通りです。
  * 施設基準の場合は「別添xの様式yのz」のような形式になります。
  * <pre>
- * 別紙様式aのbのc → SYa_b_c
- * 別添aのbのc → Ta_b_c
- * 別紙aのbのc → Sa_b_c
- * 様式aのbのc → Ya_b_c
- * 別添6の別紙aのbのc → * T6_Sa_b_c
- * 別添7の様式aのbのc → T7_Ya_b_c
- * 別添2の様式aのbのc → T2_Ya_b_c
+ * 別紙様式aのbのc → SYa-b-c
+ * 別添aのbのc → Ta-b-c
+ * 別紙aのbのc → Sa-b-c
+ * 様式aのbのc → Ya-b-c
+ * 別添6の別紙aのbのc → * T6-Sa-b-c
+ * 別添7の様式aのbのc → T7-Ya-b-c
+ * 別添2の様式aのbのc → T2-Ya-b-c
  * </pre>
  * @param name 様式名。ex.「別紙様式2の3」
  * @param id 様式ID。ex.「SY2_3」
@@ -31,6 +33,9 @@ import java.util.regex.Pattern;
  * @param title 様式タイトル。ex.「退院証明書」
  */
 public class 様式 {
+	static final Logger logger = Logger.getLogger(様式.class.getName());
+    static final int 様式名出現最大行 = 3;
+
     public final String file, name, id;
     public final int startPage, endPage;
     public final String title;
@@ -52,20 +57,6 @@ public class 様式 {
         this.startPage = Integer.parseInt(f[3]);
         this.endPage = Integer.parseInt(f[4]);
         this.title = f[5];
-    }
-
-	static final Logger logger = Logger.getLogger(様式.class.getName());
-    static final int 様式名出現最大行 = 3;
-
-    /**
-     * 様式名を様式IDに変換します。
-     */
-    public static String id(String name) {
-        String r =  Normalizer.normalize(name, Form.NFKD)
-			.replaceAll("\\s+", "")
-			.replaceAll("別添", "T").replaceAll("別紙", "S").replaceAll("様式", "Y")
-            .replaceAll("[のー－]", "_");
-        return r;
     }
 
     static final Pattern 施設基準様式名パターン = Pattern.compile("\\s*[(（]?\\s*(" // 様式名 (group1)
@@ -139,7 +130,7 @@ public class 様式 {
                             if (title == null && j + 1 < lines.size())
                                 title = lines.get(j + 1);
                             title = title.replaceAll("\\s+", "");
-                            id = id(name.startsWith("別添") ? name : betten + "の" + name);
+                            id = Pat.正規化(name.startsWith("別添") ? name : betten + "の" + name);
                         }
                     }
                 }
@@ -183,7 +174,7 @@ public class 様式 {
                             if (title == null && j + 1 < lines.size())
                                 title = lines.get(j + 1);
                             title = title.replaceAll("\\s+", "");
-                            id = id(name);
+                            id = Pat.正規化(name);
                         }
                     }
                 }
