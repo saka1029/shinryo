@@ -50,7 +50,7 @@ public class Main {
     }
 
     static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link) throws IOException {
-    	LOGGER.info(param.title(点数表) + "HTML生成");
+        LOGGER.info(param.title(点数表) + "HTML生成");
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
         String outDir = param.outDir(点数表);
@@ -67,7 +67,11 @@ public class Main {
         Node tRoot = Parser.parse(tParser, false, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, kubunMap, link).render(kRoot, title, "index.html");
-        new 区分番号一覧().render(kRoot, title, param.outFile(点数表, "kubun.html"));
+        Param prev = param.previous();
+        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ?
+            Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
+        LOGGER.info(param.title(点数表) + "区分番号一覧生成");
+        new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
     }
 
     public static void main(String[] args) throws IOException {

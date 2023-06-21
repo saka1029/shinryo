@@ -28,7 +28,7 @@ public class 様式一覧 extends HTML {
 			menu(writer);
 			writer.println("</div>");
             writer.println("<h1 class='title'>%s</h1>", fullTitle);
-            writer.println("<ul>");
+//            writer.println("<ul>");
             String fileName = Path.of(inCsvFile).getFileName().toString();
             String line;
             int lineNo = 0;
@@ -37,13 +37,13 @@ public class 様式一覧 extends HTML {
                 if (line.isBlank() || line.matches("\\s*#.*"))
                     continue;
                 様式 e = new 様式(line);
-                writer.println("<!-- %s:%s %s:%s --><li><a href='%s/%s.pdf'>%s %s</a></li>",
+                writer.println("<!-- %s:%s %s:%s --><p><a href='%s/%s.pdf'>%s %s</a></p>",
                     Path.of(e.file).getFileName(), e.startPage,
                     fileName, lineNo,
                     outDir, e.id, e.name, e.title);
                 PDF.ページ分割(e.file, Path.of(outPath, e.id + ".pdf").toString(), e.startPage, e.endPage);
             }
-            writer.println("</ul>");
+//            writer.println("</ul>");
             writer.println("</body>");
             writer.println("</html>");
         }

@@ -13,7 +13,7 @@ public abstract class Parser {
 	final boolean isTuti;
 	List<Token> tokens;
 	int max;
-	int index = 0;
+	int index;
 	Token token, eaten = null;
 	/**
 	 * パース後にcheckSequence()を行うかどうかを指定します。
@@ -73,6 +73,7 @@ public abstract class Parser {
 	public Node parse(List<Token> tokens) {
 		this.tokens = tokens;
 		this.max = tokens.size();
+		this.index = 0;
 		this.token = get();
 		Node root = Node.root(isTuti);
 		parse(root);
