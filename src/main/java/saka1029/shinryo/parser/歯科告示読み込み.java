@@ -18,7 +18,9 @@ import java.util.logging.Logger;
  * 区分分類 = { "区分分類" 通則 区分番号 }
  * 区分番号 = { "区分番号" 数字 注 }
  * 数字     = { "数字" カナ 注 }
- * カナ     = { "カナ" { "括弧数字" } }
+ * 丸数字   = { "丸数字" }
+ * 括弧数字 = { "括弧数字" 丸数字 }
+ * カナ     = { "カナ" ( 括弧数字 | 注 ) }
  * 区分番号 = { "区分番号" 数字 注 }
  * 注       = "注" カナ | "注１" カナ 注数字
  * 注数字   = { "数字" カナ }
@@ -46,10 +48,11 @@ public class 歯科告示読み込み extends Parser {
 	public static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"), Pat.固定値id("tyu1"));
 	public static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("tyu1"));
 	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
+	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
 	public static final TokenType 注ルート = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("tyu"));
 
 	// 注ルートはパース時に作成するトークンなので、トークンリード時には指定しない。
-	static final List<TokenType> TYPES = List.of(通則, 章, 部, 節, 款, 数字, 区分, 区分分類, 区分番号, カナ, 注１, 注, 括弧数字);
+	static final List<TokenType> TYPES = List.of(通則, 章, 部, 節, 款, 数字, 区分, 区分分類, 区分番号, カナ, 注１, 注, 括弧数字, 丸数字);
 	
 	@Override
     public List<TokenType> types() {
@@ -97,9 +100,16 @@ public class 歯科告示読み込み extends Parser {
         }
     }
 
+    void 丸数字(Node parent) {
+        while (eat(丸数字)) {
+            add(parent, eaten);
+        }
+    }
+
     void 括弧数字(Node parent) {
         while (eat(括弧数字)) {
-            add(parent, eaten);
+            Node kakko = add(parent, eaten);
+            丸数字(kakko);
         }
     }
 

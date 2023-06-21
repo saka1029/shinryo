@@ -44,8 +44,8 @@ public class Main {
         様式.様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
     }
 
-    static void 様式生成(Param param, String 点数表) throws IOException {
-    	LOGGER.info(param.title(点数表) + "様式生成");
+    static void 様式一覧生成(Param param, String 点数表) throws IOException {
+    	LOGGER.info(param.title(点数表) + "様式一覧生成");
         new 様式一覧().render(param.txt(点数表, "ye"), param.title(点数表), param.outFile(点数表, "yoshiki.html"));
     }
 
@@ -108,13 +108,13 @@ public class Main {
         for (; i < size; ++i)
             switch (args[i]) {
                 case "i0": PDF変換(param, "i"); break;
-                case "i1": 様式生成(param, "i"); break;
+                case "i1": 様式一覧生成(param, "i"); break;
                 case "i2": HTML生成(param, "i", new 医科告示読み込み(), new 医科通知読み込み(), Pat.医科リンク); break;
                 case "s0": PDF変換(param, "s"); break;
-                case "s1": 様式生成(param, "s"); break;
+                case "s1": 様式一覧生成(param, "s"); break;
                 case "s2": HTML生成(param, "s", new 歯科告示読み込み(), new 歯科通知読み込み(), Pat.医科リンク); break;
                 case "t0": PDF変換(param, "t"); break;
-                case "t1": 様式生成(param, "t"); break;
+                case "t1": 様式一覧生成(param, "t"); break;
                 case "t2": HTML生成(param, "t", new 調剤告示読み込み(), new 調剤通知読み込み(), Pat.調剤リンク); break;
                 default:
                     throw usage("不明なSTEPです(" + args[i] + ")");
