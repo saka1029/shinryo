@@ -118,8 +118,8 @@ public class Test区分番号一覧 {
         Node oldRoot = Parser.parse(new 医科告示読み込み(), false, param.previous().txt(点数表, "ke"));
         List<Node> newList = 区分リスト(newRoot);
         List<Node> oldList = 区分リスト(oldRoot);
-//        matching(oldList, newList, outTxtFile);
-        matching(Collections.emptyList(), newList, outTxtFile);
+        matching(oldList, newList, outTxtFile);
+//        matching(Collections.emptyList(), newList, outTxtFile);
     }
 
 }
