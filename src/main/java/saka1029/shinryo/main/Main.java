@@ -64,12 +64,6 @@ public class Main {
             Node ikaRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
             kubunMap = 本文.区分名称マップ(ikaRoot);
         }
-        LOGGER.info("ホームファイルコピー");
-        Common.copyTree(param.inHomeDir(), param.outHomeDir());
-        if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
-            LOGGER.info("イメージコピー");
-            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
-        }
         Node kRoot = Parser.parse(kParser, false, kTxt);
         Node tRoot = Parser.parse(tParser, false, tTxt);
         Merger.merge(kRoot, tRoot);
@@ -79,6 +73,12 @@ public class Main {
             : null;
         LOGGER.info("区分番号一覧生成");
         new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
+        LOGGER.info("ホームファイルコピー");
+        Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
+            LOGGER.info("イメージコピー");
+            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
+        }
     }
 
     public static void main(String[] args) throws IOException {
