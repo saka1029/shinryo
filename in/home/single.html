@@ -6,13 +6,8 @@
 <meta name='description' content='比較 - 令和02,04年医科診療報酬点数表'>
 <title>比較</title>
 <script type='text/javascript'>
-    function bodyonload() {
-    	console.log("bodyonload");
-    }
     function leftonload() {
-		console.log("left loaded");
-		console.log(left.document.title);
-		console.log(left.document.getElementById("content"));
+		console.log("left loaded " + left.document.title);
 		const as = left.document.getElementById("content").getElementsByTagName("a");
 		for (var i = 0; i < as.length; ++i) {
 			as[i].target = "right";
@@ -26,10 +21,10 @@
     #right { float:right; margin: 0px; padding: 0px; }
 </style>
 </head>
-<body onload='bodyonload()'>
+<body>
 <div id='content'>
 <iframe id='left' name='left'
-	src = "04/i/index.html"
+	src = "index.html"
 	onload='leftonload()'
     title='left'
     width='35%' height='100%'
