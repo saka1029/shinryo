@@ -7,16 +7,16 @@
 <title>比較</title>
 <script type='text/javascript'>
     function bodyonload() {
-        const loc = window.location;
-        const params = new URLSearchParams(loc.search);
-        const l = params.get("l");
-        const r = params.get("r");
-        left.src =  l;
-        right.src = r;
-        right.onload = () => {
-            console.log("right loaded: " + right.contentWindow.document.title);
-            document.title = "比較 " + right.contentWindow.document.title;
-        };
+    	console.log("bodyonload");
+    }
+    function leftonload() {
+		console.log("left loaded");
+		console.log(left.document.title);
+		console.log(left.document.getElementById("content"));
+		const as = left.document.getElementById("content").getElementsByTagName("a");
+		for (var i = 0; i < as.length; ++i) {
+			as[i].target = "right";
+		}
     }
 </script>
 <style type='text/css'>
@@ -28,16 +28,18 @@
 </head>
 <body onload='bodyonload()'>
 <div id='content'>
-<iframe id='left'
+<iframe id='left' name='left'
+	src = "04/i/index.html"
+	onload='leftonload()'
     title='left'
-    width='50%' height='100%'
+    width='35%' height='100%'
     border='0' frameborder='0'
     hspace='0' vspace='0'
     marginheight='0' marginwidth='0'
     scrolling='auto' border='0' >iframe対応のブラウザが必要です</iframe>
-<iframe id='right'
+<iframe id='right' name='right'
     title='right'
-    width='50%' height='100%'
+    width='65%' height='100%'
     border='0' frameborder='0'
     hspace='0' vspace='0'
     marginheight='0' marginwidth='0'

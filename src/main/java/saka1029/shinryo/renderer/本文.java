@@ -142,9 +142,10 @@ public class 本文 extends HTML {
 			    sep = "&gt; ";
 			}
 			menu(writer);
-			writer.println("</div>");
+			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
+			writer.println("<div id='content'>");
 			if (node.isTuti)
 			    beginTuti(writer);
 			if (node.token != null) {
@@ -182,6 +183,7 @@ public class 本文 extends HTML {
 			}
 			if (node.isTuti)
 			    endTuti(writer);
+			writer.println("</div>"); // id='content'
             writer.println("</body>");
             writer.println("</html>");
 			links.pop();

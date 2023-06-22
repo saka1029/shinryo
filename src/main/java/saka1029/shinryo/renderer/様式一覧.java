@@ -26,7 +26,8 @@ public class 様式一覧 extends HTML {
 			writer.println("<div id='breadcrumb'>");
 			writer.println("<a href='../../index.html'>トップ</a>");
 			menu(writer);
-			writer.println("</div>");
+			writer.println("</div>"); // id=breadcrumb
+			writer.println("<div id='content'>");
             writer.println("<h1 class='title'>%s</h1>", fullTitle);
 //            writer.println("<ul>");
             String fileName = Path.of(inCsvFile).getFileName().toString();
@@ -44,6 +45,7 @@ public class 様式一覧 extends HTML {
                 PDF.ページ分割(e.file, Path.of(outPath, e.id + ".pdf").toString(), e.startPage, e.endPage);
             }
 //            writer.println("</ul>");
+			writer.println("</div>"); // id=content
             writer.println("</body>");
             writer.println("</html>");
         }
