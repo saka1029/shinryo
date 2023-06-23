@@ -51,6 +51,8 @@ public class Param {
     }
     
     public static Param of(String inDir, String outDir, String 年度) {
+        if (!ALL.containsKey(年度))
+            throw new IllegalArgumentException("年度" + 年度 + "は定義されていません");
         return new Param(inDir, outDir, ALL.get(年度));
     }
     
