@@ -21,6 +21,7 @@ import saka1029.shinryo.parser.調剤通知読み込み;
 import saka1029.shinryo.pdf.PDF;
 import saka1029.shinryo.pdf.様式;
 import saka1029.shinryo.renderer.Merger;
+import saka1029.shinryo.renderer.Sitemap;
 import saka1029.shinryo.renderer.区分番号一覧;
 import saka1029.shinryo.renderer.本文;
 import saka1029.shinryo.renderer.様式一覧;
@@ -30,7 +31,7 @@ public class Main {
     static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     static RuntimeException usage(String message) {
-        System.err.println("usage: java saka1029.shinryo.main.Main [-i inDir] [-o outDir] 年度 STEP...");
+        System.err.println("usage: java saka1029.shinryo.main.Main [-i inDir] [-o outDir] [-b baseUrl] 年度 STEP...");
         System.err.println("STEP: [ist][012]");
         System.err.println("   i:医科, s:歯科, t:調剤, 0:PDF変換, 1:様式生成, 2:HTML生成");
         System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
@@ -79,15 +80,20 @@ public class Main {
         }
     }
     
-    static void 終了(Param param) throws IOException {
+    static void 終了(Param param, String baseUrl) throws IOException {
         LOGGER.info("ホームファイルコピー");
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        if (baseUrl != null) {
+            LOGGER.info("サイトマップ作成");
+            Sitemap.render(param.outHomeDir(), baseUrl);
+        }
         LOGGER.info("終了");
     }
 
     public static void main(String[] args) throws IOException {
         String inDir = "in";
         String outDir = "debug/html";
+        String baseUrl = null;
         String 年度 = null;
         int i = 0, size = args.length;
         L: for (; i < size; ++i) {
@@ -101,6 +107,11 @@ public class Main {
                     if (i + 1 >= size)
                         throw usage("-oの後にパラメータがありません");
                     outDir = args[++i];
+                    break;
+                case "-b":
+                    if (i + 1 >= size)
+                        throw usage("-bの後にパラメータがありません");
+                    baseUrl = args[++i];
                     break;
                 default:
                     if (args[i].startsWith("-"))
@@ -129,6 +140,6 @@ public class Main {
                 case "t2": HTML生成(param, "t", new 調剤告示読み込み(), new 調剤通知読み込み(), Pat.調剤リンク); break;
                 default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
-        終了(param);
+        終了(param, baseUrl);
     }
 }
