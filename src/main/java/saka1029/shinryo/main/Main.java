@@ -29,9 +29,14 @@ import saka1029.shinryo.renderer.様式一覧;
 public class Main {
 
     static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    static final String DEFAULT_IN_DIR = "in";
+    static final String DEFAULT_OUT_DIR = "debug/html";
 
     static RuntimeException usage(String message) {
         System.err.println("usage: java saka1029.shinryo.main.Main [-i inDir] [-o outDir] [-b baseUrl] 年度 STEP...");
+        System.err.printf("inDir: 入力ディレクトリ(省略時は'%s')%n", DEFAULT_IN_DIR);
+        System.err.printf("outDir: 出力ディレクトリ(省略時は'%s')%n", DEFAULT_OUT_DIR);
+        System.err.println("baseUrl: サイトマップ作成時のベースURL(省略時はサイトマップを作成しません)");
         System.err.println("STEP: [ist][012]");
         System.err.println("   i:医科, s:歯科, t:調剤, 0:PDF変換, 1:様式生成, 2:HTML生成");
         System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
@@ -91,8 +96,8 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        String inDir = "in";
-        String outDir = "debug/html";
+        String inDir = DEFAULT_IN_DIR;
+        String outDir = DEFAULT_OUT_DIR;
         String baseUrl = null;
         String 年度 = null;
         int i = 0, size = args.length;
