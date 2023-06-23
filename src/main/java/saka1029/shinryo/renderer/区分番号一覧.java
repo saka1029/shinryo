@@ -103,6 +103,7 @@ public class 区分番号一覧 extends HTML {
 		        void render() {
                     head(fullTitle, newRoot, writer);
                     writer.println("<body>");
+                    writer.println("<div id='all'>");
                     // パンくずリスト
                     writer.println("<div id='breadcrumb'>");
                     writer.println("<a href='../../index.html'>トップ</a>");
@@ -114,6 +115,7 @@ public class 区分番号一覧 extends HTML {
                     matching();
 //                    writer.println("</ul>");
                     writer.println("</div>"); // id=content
+                    writer.println("</div>"); // id=all
                     writer.println("</body>");
                     writer.println("</html>");
 		        }

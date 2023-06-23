@@ -1,14 +1,12 @@
 @charset "UTF-8";
 body {
-    Xfont-family: monospace;
-    font-family:'MS Gothic', 'Osaka-Mono', monospace;
+    font-family: "ＭＳ ゴシック", "MS Gothic", Osaka－等幅, Osaka-Mono, monospace;
+    text-size-adjust: 100%;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     line-height: 160%;
     margin-left: 0.5em;
     margin-right: 0.5em;
-    margin: 0 auto;
-    max-width: 46em;
 }
 li {
 	line-height: 220%;
@@ -35,6 +33,10 @@ a:active {
 a:visited {
    border-bottom: 1px solid #800080;
    padding-bottom: 2px;
+}
+#all {
+    margin:0 auto;
+    max-width: 640px;
 }
 #breadcrumb {
     border-radius: 0.25em;

@@ -22,6 +22,7 @@ public class 様式一覧 extends HTML {
             TextWriter writer = new TextWriter(outHtmlFile)) {
             head(fullTitle, null, writer);
             writer.println("<body>");
+            writer.println("<div id='all'>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
 			writer.println("<a href='../../index.html'>トップ</a>");
@@ -46,6 +47,7 @@ public class 様式一覧 extends HTML {
             }
 //            writer.println("</ul>");
 			writer.println("</div>"); // id=content
+			writer.println("</div>"); // id=all
             writer.println("</body>");
             writer.println("</html>");
         }

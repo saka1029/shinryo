@@ -134,6 +134,7 @@ public class 本文 extends HTML {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             head(title, node, writer);
 			writer.println("<body>");
+			writer.println("<div id='all'>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
 			String sep = "";
@@ -184,6 +185,7 @@ public class 本文 extends HTML {
 			if (node.isTuti)
 			    endTuti(writer);
 			writer.println("</div>"); // id='content'
+			writer.println("</div>"); // id='all'
             writer.println("</body>");
             writer.println("</html>");
 			links.pop();

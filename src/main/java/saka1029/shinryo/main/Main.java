@@ -74,7 +74,7 @@ public class Main {
         LOGGER.info("区分番号一覧生成");
         new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
         if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
-            LOGGER.info("イメージコピー");
+            LOGGER.info(param.title(点数表) + "イメージコピー");
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         }
     }
