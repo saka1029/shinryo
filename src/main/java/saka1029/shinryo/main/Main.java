@@ -73,12 +73,16 @@ public class Main {
             : null;
         LOGGER.info("区分番号一覧生成");
         new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
-        LOGGER.info("ホームファイルコピー");
-        Common.copyTree(param.inHomeDir(), param.outHomeDir());
         if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
             LOGGER.info("イメージコピー");
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         }
+    }
+    
+    static void 終了(Param param) throws IOException {
+        LOGGER.info("ホームファイルコピー");
+        Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        LOGGER.info("終了");
     }
 
     public static void main(String[] args) throws IOException {
@@ -109,8 +113,8 @@ public class Main {
         }
         if (年度 == null)
             throw usage("年度の指定がありません");
-        if (i >= size)
-            throw usage("STEPの指定がありません");
+//        if (i >= size)
+//            throw usage("STEPの指定がありません");
         Param param = Param.of(inDir, outDir, 年度);
         for (; i < size; ++i)
             switch (args[i]) {
@@ -125,6 +129,6 @@ public class Main {
                 case "t2": HTML生成(param, "t", new 調剤告示読み込み(), new 調剤通知読み込み(), Pat.調剤リンク); break;
                 default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
-        LOGGER.info("終了");
+        終了(param);
     }
 }
