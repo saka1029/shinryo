@@ -38,7 +38,7 @@ public class Main {
         System.err.printf("outDir: 出力ディレクトリ(省略時は'%s')%n", DEFAULT_OUT_DIR);
         System.err.println("baseUrl: サイトマップ作成時のベースURL(省略時はサイトマップを作成しません)");
         System.err.println("STEP: [ist][012]");
-        System.err.println("   i:医科, s:歯科, t:調剤, 0:PDF変換, 1:様式生成, 2:HTML生成");
+        System.err.println("   i:医科, s:歯科, t:調剤, k:施設基準, 0:PDF変換, 1:様式生成, 2:HTML生成");
         System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
         return new IllegalArgumentException(message);
     }
@@ -51,6 +51,17 @@ public class Main {
         new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
         LOGGER.info("様式PDF変換");
         様式.様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
+    }
+
+    static void 施設基準PDF変換(Param param, String 点数表) throws IOException {
+        LOGGER.info(param.title(点数表) + "PDF変換");
+        LOGGER.info("告示PDF変換");
+        // 縦書き
+        new PDF(false).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
+        LOGGER.info("通知PDF変換");
+        new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
+        LOGGER.info("様式PDF変換");
+        様式.施設基準様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
     }
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
@@ -143,6 +154,9 @@ public class Main {
                 case "t0": PDF変換(param, "t"); break;
                 case "t1": 様式一覧生成(param, "t"); break;
                 case "t2": HTML生成(param, "t", new 調剤告示読み込み(), new 調剤通知読み込み(), Pat.調剤リンク); break;
+                case "k0": 施設基準PDF変換(param, "k"); break;
+                case "k1": 様式一覧生成(param, "k"); break;
+                case "k2": throw usage("施設基準HTML生成は実装していません");
                 default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
         終了(param, baseUrl);
