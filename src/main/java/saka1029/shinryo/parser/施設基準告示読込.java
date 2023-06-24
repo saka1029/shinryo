@@ -4,6 +4,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * 施設基準告示用パーサ
+ * 
+ * <pre>
+ * 文法:
+ * 施設基準告示 = "基本診療料" 施設基準
+ * </pre>
+ */
 public class 施設基準告示読込 extends Parser {
 	
 	static final Logger LOGGER = Logger.getLogger(施設基準告示読込.class.getName());
@@ -93,13 +101,13 @@ public class 施設基準告示読込 extends Parser {
 
 	@Override
 	public void parse(Node parent) {
-		if (eat(基本診療料)) {
-			Node n = add(parent, eaten);
-			施設基準(n);
-		}
-		if (eat(特掲診療料)) {
-			Node n = add(parent, eaten);
-			施設基準(n);
-		}
+		if (!eat(基本診療料))
+			throw error("「基本診療料の施設基準等」がありません");
+		Node k = add(parent, eaten);
+		施設基準(k);
+		if (!eat(特掲診療料))
+			throw error("「特掲診療料の施設基準等」がありません");
+		Node t = add(parent, eaten);
+		施設基準(t);
 	}
 }
