@@ -11,12 +11,12 @@ import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
 import saka1029.shinryo.parser.Pat;
-import saka1029.shinryo.parser.医科告示読み込み;
-import saka1029.shinryo.parser.医科通知読み込み;
-import saka1029.shinryo.parser.歯科告示読み込み;
-import saka1029.shinryo.parser.歯科通知読み込み;
-import saka1029.shinryo.parser.調剤告示読み込み;
-import saka1029.shinryo.parser.調剤通知読み込み;
+import saka1029.shinryo.parser.医科告示読込;
+import saka1029.shinryo.parser.医科通知読込;
+import saka1029.shinryo.parser.歯科告示読込;
+import saka1029.shinryo.parser.歯科通知読込;
+import saka1029.shinryo.parser.調剤告示読込;
+import saka1029.shinryo.parser.調剤通知読込;
 
 public class Test本文 {
 
@@ -36,8 +36,8 @@ public class Test本文 {
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
         if (Files.exists(Path.of(param.inDir(点数表, "img"))))
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
-        Node kRoot = Parser.parse(new 医科告示読み込み(), false, kTxt);
-        Node tRoot = Parser.parse(new 医科通知読み込み(), false, tTxt);
+        Node kRoot = Parser.parse(new 医科告示読込(), false, kTxt);
+        Node tRoot = Parser.parse(new 医科通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, null, Pat.医科リンク).render(kRoot, title, outHtmlFile);
     }
@@ -50,14 +50,14 @@ public class Test本文 {
         String tTxt = param.txt(点数表, "te");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
-        Node ikaRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
+        Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
         Map<String, String> kubunMap = 本文.区分名称マップ(ikaRoot);
         String outHtmlFile = "index.html";
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
         if (Files.exists(Path.of(param.inDir(点数表, "img"))))
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
-        Node kRoot = Parser.parse(new 歯科告示読み込み(), false, kTxt);
-        Node tRoot = Parser.parse(new 歯科通知読み込み(), false, tTxt);
+        Node kRoot = Parser.parse(new 歯科告示読込(), false, kTxt);
+        Node tRoot = Parser.parse(new 歯科通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, kubunMap, Pat.医科リンク).render(kRoot, title, outHtmlFile);
     }
@@ -74,8 +74,8 @@ public class Test本文 {
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
         if (Files.exists(Path.of(param.inDir(点数表, "img"))))
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
-        Node kRoot = Parser.parse(new 調剤告示読み込み(), false, kTxt);
-        Node tRoot = Parser.parse(new 調剤通知読み込み(), false, tTxt);
+        Node kRoot = Parser.parse(new 調剤告示読込(), false, kTxt);
+        Node tRoot = Parser.parse(new 調剤通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, null, Pat.調剤リンク).render(kRoot, title, outHtmlFile);
     }

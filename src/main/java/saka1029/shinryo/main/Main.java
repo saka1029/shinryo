@@ -12,12 +12,12 @@ import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
 import saka1029.shinryo.parser.Pat;
-import saka1029.shinryo.parser.医科告示読み込み;
-import saka1029.shinryo.parser.医科通知読み込み;
-import saka1029.shinryo.parser.歯科告示読み込み;
-import saka1029.shinryo.parser.歯科通知読み込み;
-import saka1029.shinryo.parser.調剤告示読み込み;
-import saka1029.shinryo.parser.調剤通知読み込み;
+import saka1029.shinryo.parser.医科告示読込;
+import saka1029.shinryo.parser.医科通知読込;
+import saka1029.shinryo.parser.歯科告示読込;
+import saka1029.shinryo.parser.歯科通知読込;
+import saka1029.shinryo.parser.調剤告示読込;
+import saka1029.shinryo.parser.調剤通知読込;
 import saka1029.shinryo.pdf.PDF;
 import saka1029.shinryo.pdf.様式;
 import saka1029.shinryo.renderer.Merger;
@@ -78,7 +78,7 @@ public class Main {
         String title = param.title(点数表);
         Map<String, String> kubunMap = null;
         if (点数表.equals("s")) {
-            Node ikaRoot = Parser.parse(new 医科告示読み込み(), false, param.txt("i", "ke"));
+            Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
             kubunMap = 本文.区分名称マップ(ikaRoot);
         }
         Node kRoot = Parser.parse(kParser, false, kTxt);
@@ -147,13 +147,13 @@ public class Main {
             switch (args[i]) {
                 case "i0": PDF変換(param, "i"); break;
                 case "i1": 様式一覧生成(param, "i"); break;
-                case "i2": HTML生成(param, "i", new 医科告示読み込み(), new 医科通知読み込み(), Pat.医科リンク); break;
+                case "i2": HTML生成(param, "i", new 医科告示読込(), new 医科通知読込(), Pat.医科リンク); break;
                 case "s0": PDF変換(param, "s"); break;
                 case "s1": 様式一覧生成(param, "s"); break;
-                case "s2": HTML生成(param, "s", new 歯科告示読み込み(), new 歯科通知読み込み(), Pat.医科リンク); break;
+                case "s2": HTML生成(param, "s", new 歯科告示読込(), new 歯科通知読込(), Pat.医科リンク); break;
                 case "t0": PDF変換(param, "t"); break;
                 case "t1": 様式一覧生成(param, "t"); break;
-                case "t2": HTML生成(param, "t", new 調剤告示読み込み(), new 調剤通知読み込み(), Pat.調剤リンク); break;
+                case "t2": HTML生成(param, "t", new 調剤告示読込(), new 調剤通知読込(), Pat.調剤リンク); break;
                 case "k0": 施設基準PDF変換(param, "k"); break;
                 case "k1": 様式一覧生成(param, "k"); break;
                 case "k2": throw usage("施設基準HTML生成は実装していません");

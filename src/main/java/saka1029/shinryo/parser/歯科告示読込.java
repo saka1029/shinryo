@@ -32,8 +32,8 @@ import java.util.logging.Logger;
  * 「注数字」は「数字」と同一であるが、「"数字"」に対する制約が異なる。
  * 「注数字」における「数字」は「注１」よりも右になければならない。
  */
-public class 歯科告示読み込み extends Parser {
-    static final Logger LOGGER = Logger.getLogger(歯科告示読み込み.class.getName());
+public class 歯科告示読込 extends Parser {
+    static final Logger LOGGER = Logger.getLogger(歯科告示読込.class.getName());
 
 	public static final TokenType 通則 = new TokenType("通則", Pat.number("通則"), Pat.固定値id("t"));
 	public static final TokenType 章 = new TokenType("章", Pat.numberHeader("第" + Pat.数字 + "章"), Pat.数字id);
@@ -59,7 +59,7 @@ public class 歯科告示読み込み extends Parser {
         return TYPES;
     }
 	
-	public 歯科告示読み込み() {
+	public 歯科告示読込() {
 	    super(false);
 	}
 
