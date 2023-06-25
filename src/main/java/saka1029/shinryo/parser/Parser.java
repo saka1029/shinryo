@@ -133,6 +133,22 @@ public abstract class Parser {
         return NUM.matcher(id).replaceFirst(m -> "" + (Integer.parseInt(m.group()) + 1));
     }
 
+    /**
+     * ・からまで、及びの場合
+     * 「1-2x1-3」は「１の２から１の３まで」または「１の２及び１の３」を表す。
+     * 「1-2x1-3」の次に「1-4x2」が続いてよいかどうかのチェックは
+     * 「1-3」の次に「1-4」が続いてよいかのチェックとなる。
+     * <br>
+     * ・「数字の」または「漢数字の」の場合
+     * <pre>
+     * id「1-2-3-4」に続くid:
+     * 1-2-3-4-2 追番(追番は-2から始まる)
+     * 1-2-3-5   次番0
+     * 1-2-4     次番1
+     * 1-3       次番2
+     * 2         次番3
+     * </pre>
+     */
     void checkSequence(Node root) {
         String prevId = null;
         for (Node child : root.children) {
@@ -140,11 +156,18 @@ public abstract class Parser {
             if (prevId != null && !child.token.type.name.equals("区分番号") && id.matches("[0-9x-]+")) {
                 String prev = prevId.replaceFirst("^.*x", ""); // xの前を削除
                 String curr = id.replaceFirst("x.*$", "");  // xのあとを削除
-                String prev1 = incLast(prev);
-                String prev2 = prev + "-2";
-                String prev3 = prev.matches("\\d-\\d") ? incLast(prev.replaceFirst("-\\d+$", "")) : null;
-                if (!curr.equals(prev1) && !curr.equals(prev2) && !curr.equals(prev3))
-                    logger.warning("順序誤り: " + child.path + " " + child.token.toString());
+                if (curr.equals(prev + "-2"))
+                    /* OK */;
+                else
+                    while (true) {
+                        if (curr.equals(incLast(prev)))
+                            break; /* OK */
+                        if (!prev.matches("^.*-\\d+$")) {
+                            logger.warning("順序誤り: " + child.path + " " + child.token.toString());
+                            break; /* NG */
+                        }
+                        prev = prev.replaceFirst("-\\d+$", "");
+                    }
             }
             prevId = id;
             checkSequence(child);

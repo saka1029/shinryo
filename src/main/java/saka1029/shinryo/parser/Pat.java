@@ -97,9 +97,10 @@ public class Pat {
         s = s.replaceAll("(^|[+-_x])十([+-_x])", "$110$2");  // 単独の「十」→「10」
         s = s.replaceAll("(^|[+-_x])十$", "$110");           // 単独の「十」→「10」
         s = s.replaceAll("(^|[+-_x])十", "$11");             // 先頭の「十」→「1」
-        s = s.replaceAll("十($|[+-_x])", "0");               // 末尾の「十」→「0」
+        s = s.replaceAll("十($|[+-_x])", "0$1");               // 末尾の「十」→「0」
         s = s.replaceAll("十", "");                          // 中間の「十」→「」
         s = s.replaceAll("一", "1");
+        s = s.replaceAll("ニ", "2"); // カナの「ニ」
         s = s.replaceAll("二", "2");
         s = s.replaceAll("三", "3");
         s = s.replaceAll("四", "4");

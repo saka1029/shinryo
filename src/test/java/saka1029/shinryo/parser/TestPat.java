@@ -75,11 +75,15 @@ public class TestPat {
         assertEquals("7", Pat.漢数字id.apply("（七）"));
         assertEquals("8", Pat.漢数字id.apply("（八）"));
         assertEquals("10", Pat.漢数字id.apply("（十）"));
+        assertEquals("11", Pat.漢数字id.apply("（十一）"));
+        assertEquals("12", Pat.漢数字id.apply("（十ニ）"));
+        assertEquals("13", Pat.漢数字id.apply("（十三）"));
         assertEquals("19", Pat.漢数字id.apply("（十九）"));
         assertEquals("20", Pat.漢数字id.apply("（二十）"));
         assertEquals("21", Pat.漢数字id.apply("（二十一）"));
         assertEquals("22", Pat.漢数字id.apply("（二十二）"));
         assertEquals("29", Pat.漢数字id.apply("（二十九）"));
+        assertEquals("20-3-6", Pat.漢数字id.apply("（二十の三の六）"));
         assertEquals("29-3-6", Pat.漢数字id.apply("（二十九の三の六）"));
         assertEquals("2", Pat.アイウid.apply("（イ）"));
         assertEquals("1", Pat.イロハid.apply("（イ）"));
