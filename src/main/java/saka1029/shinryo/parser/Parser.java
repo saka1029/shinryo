@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class Parser {
@@ -106,25 +107,50 @@ public abstract class Parser {
     	}
     }
 
-    static final List<String> NO_CHECK_TYPES = List.of("区分番号", "注");
+//    static final List<String> NO_CHECK_TYPES = List.of("区分番号", "注");
+//
+//    void checkSequence(Node root) {
+////        Node prevNode = null;
+//        int prevId = 0;
+//        for (Node child : root.children) {
+//            if (!NO_CHECK_TYPES.contains(child.token.type.name)) {
+//                String d = child.id.replaceAll("\\D", "");
+//                if (!d.isEmpty()) {
+//                    int id = Integer.parseInt(d);
+//                    if (id != prevId + 1)
+//                        logger.warning("順序誤り: " + child.path + " " + child.token.toString());
+////                    prevNode = child;
+//                    prevId = id;
+//                }
+//            }
+//            checkSequence(child);
+//        }
+//    }
+    
+    static final Pattern NUM = Pattern.compile("\\d+$");
+    
+    String incLast(String id) {
+        return NUM.matcher(id).replaceFirst(m -> "" + (Integer.parseInt(m.group()) + 1));
+    }
 
     void checkSequence(Node root) {
-//        Node prevNode = null;
-        int prevId = 0;
+        String prevId = null;
         for (Node child : root.children) {
-            if (!NO_CHECK_TYPES.contains(child.token.type.name)) {
-                String d = child.id.replaceAll("\\D", "");
-                if (!d.isEmpty()) {
-                    int id = Integer.parseInt(d);
-                    if (id != prevId + 1)
-                        logger.warning("順序誤り: " + child.path + " " + child.token.toString());
-//                    prevNode = child;
-                    prevId = id;
-                }
+            String id = child.id;
+            if (prevId != null && !child.token.type.name.equals("区分番号") && id.matches("[0-9x-]+")) {
+                String prev = prevId.replaceFirst("^.*x", ""); // xの前を削除
+                String curr = id.replaceFirst("x.*$", "");  // xのあとを削除
+                String prev1 = incLast(prev);
+                String prev2 = prev + "-2";
+                String prev3 = prev.matches("\\d-\\d") ? incLast(prev.replaceFirst("-\\d+$", "")) : null;
+                if (!curr.equals(prev1) && !curr.equals(prev2) && !curr.equals(prev3))
+                    logger.warning("順序誤り: " + child.path + " " + child.token.toString());
             }
+            prevId = id;
             checkSequence(child);
         }
     }
+    
 	public Node parse(String inTxtFile) throws IOException {
 	    List<Token> tokens = TokenReader.read(types(), inTxtFile);
 	    Node root = parse(tokens);

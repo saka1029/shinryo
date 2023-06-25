@@ -94,10 +94,11 @@ public class Pat {
 
     public static String 漢数字正規化(String s) {
         s = 正規化(s);
-        s = s.replaceAll("(^|[+-_x])十([+-_x])", "$110$2");
-        s = s.replaceAll("(^|[+-_x])十$", "$110");
-        s = s.replaceAll("(^|[+-_x])十", "$11");
-        s = s.replaceAll("十", "");
+        s = s.replaceAll("(^|[+-_x])十([+-_x])", "$110$2");  // 単独の「十」→「10」
+        s = s.replaceAll("(^|[+-_x])十$", "$110");           // 単独の「十」→「10」
+        s = s.replaceAll("(^|[+-_x])十", "$11");             // 先頭の「十」→「1」
+        s = s.replaceAll("十($|[+-_x])", "0");               // 末尾の「十」→「0」
+        s = s.replaceAll("十", "");                          // 中間の「十」→「」
         s = s.replaceAll("一", "1");
         s = s.replaceAll("二", "2");
         s = s.replaceAll("三", "3");

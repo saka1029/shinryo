@@ -25,7 +25,7 @@ public class 施設基準告示読込 extends Parser {
 	
 	public static final TokenType 基本診療料 = new TokenType("基本診療料", Pat.number("基本診療料の施設基準等"), Pat.固定値id("1"));
 	public static final TokenType 特掲診療料 = new TokenType("特掲診療料", Pat.number("特掲診療料の施設基準等"), Pat.固定値id("2"));
-	public static final TokenType 第漢数字 = new TokenType("第漢数字", Pat.numberHeader("第" + Pat.漢数字), Pat.漢数字id);
+	public static final TokenType 第漢数字 = new TokenType("第漢数字", Pat.numberHeader("第" + Pat.漢数字の), Pat.漢数字id);
 	public static final TokenType 漢数字の = new TokenType("漢数字の", Pat.numberHeader(Pat.fromTo(Pat.漢数字の)), Pat.漢数字id);
 	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
 	public static final TokenType 括弧漢数字 = new TokenType("括弧漢数字", Pat.numberHeader(Pat.括弧漢数字), Pat.漢数字id);
