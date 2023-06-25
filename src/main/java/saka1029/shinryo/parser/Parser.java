@@ -47,10 +47,13 @@ public abstract class Parser {
 		return token.type == expected;
 	}
 	
+	/**
+	 * 現在のトークンのインデントが親よりも深い(または等しい)場合にtrueを返します。
+	 */
 	boolean isChild(Node parent, TokenType expected) {
 		if (token == null)
 			return false;
-		return token.indent > parent.token.indent && token.type == expected;
+		return token.indent >= parent.token.indent && token.type == expected;
 	}
 
 	boolean eat(TokenType expected) {
@@ -164,7 +167,11 @@ public abstract class Parser {
 							if (curr.equals(incLast(prev)))
 								break; /* OK */
 							if (!prev.matches("^.*-\\d+$")) {
-								logger.warning("順序誤り: " + child.path + " " + child.token.toString());
+								logger.warning("順序誤り: %s %s:%s %s:%s %s".formatted(
+								    child.path,
+								    child.token.pdfFileName, child.token.pageNo,
+								    child.token.txtFileName, child.token.lineNo,
+								    child.token.number));
 								break; /* NG */
 							}
 							prev = prev.replaceFirst("-\\d+$", "");

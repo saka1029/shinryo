@@ -81,8 +81,8 @@ public class Main {
             Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
             kubunMap = 本文.区分名称マップ(ikaRoot);
         }
-        Node kRoot = Parser.parse(kParser, false, kTxt);
-        Node tRoot = Parser.parse(tParser, false, tTxt);
+        Node kRoot = Parser.parse(kParser, true, kTxt);
+        Node tRoot = Parser.parse(tParser, true, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, kubunMap, link).render(kRoot, title, "index.html");
         Param prev = param.previous();
