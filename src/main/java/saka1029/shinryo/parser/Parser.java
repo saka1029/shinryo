@@ -153,23 +153,25 @@ public abstract class Parser {
         String prevId = null;
         for (Node child : root.children) {
             String id = child.id;
-            if (prevId != null && !child.token.type.name.equals("区分番号") && id.matches("[0-9x-]+")) {
-                String prev = prevId.replaceFirst("^.*x", ""); // xの前を削除
-                String curr = id.replaceFirst("x.*$", "");  // xのあとを削除
-                if (curr.equals(prev + "-2"))
-                    /* OK */;
-                else
-                    while (true) {
-                        if (curr.equals(incLast(prev)))
-                            break; /* OK */
-                        if (!prev.matches("^.*-\\d+$")) {
-                            logger.warning("順序誤り: " + child.path + " " + child.token.toString());
-                            break; /* NG */
-                        }
-                        prev = prev.replaceFirst("-\\d+$", "");
-                    }
+            if (!child.token.type.name.equals("区分番号") && id.matches("[0-9x-]+")) {
+            	if (prevId != null) {
+					String prev = prevId.replaceFirst("^.*x", ""); // xの前を削除
+					String curr = id.replaceFirst("x.*$", "");  // xのあとを削除
+					if (curr.equals(prev + "-2"))
+						/* OK */;
+					else
+						while (true) {
+							if (curr.equals(incLast(prev)))
+								break; /* OK */
+							if (!prev.matches("^.*-\\d+$")) {
+								logger.warning("順序誤り: " + child.path + " " + child.token.toString());
+								break; /* NG */
+							}
+							prev = prev.replaceFirst("-\\d+$", "");
+						}
+            	}
+				prevId = id;
             }
-            prevId = id;
             checkSequence(child);
         }
     }
