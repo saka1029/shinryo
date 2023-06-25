@@ -27,15 +27,15 @@ public class 施設基準告示読込 extends Parser {
 	public static final TokenType 特掲診療料 = new TokenType("特掲診療料", Pat.number("特掲診療料の施設基準等"), Pat.固定値id("2"));
 	public static final TokenType 第漢数字 = new TokenType("第漢数字", Pat.numberHeader("第" + Pat.漢数字の), Pat.漢数字id);
 	public static final TokenType 漢数字の = new TokenType("漢数字の", Pat.numberHeader(Pat.fromTo(Pat.漢数字の)), Pat.漢数字id);
-	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
+	public static final TokenType 括弧数字の = new TokenType("括弧数字の", Pat.numberHeader(Pat.括弧数字の), Pat.数字id);
 	public static final TokenType 括弧漢数字 = new TokenType("括弧漢数字", Pat.numberHeader(Pat.括弧漢数字), Pat.漢数字id);
 	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.イロハid);
 	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
 	public static final TokenType 数字 = new TokenType("数字", Pat.numberHeader(Pat.数字), Pat.数字id);
 	public static final TokenType 別表 = new TokenType("別表", Pat.number("別表"), Pat.固定値id("b"));
-	public static final TokenType 別表第 = new TokenType("別表第", Pat.numberHeader("別表第" + Pat.漢数字の), Pat.漢数字id);
+	public static final TokenType 別表第 = new TokenType("別表第", Pat.numberHeader("別表" + Pat.fromTo("第" + Pat.漢数字の)), Pat.漢数字id);
 
-	static final List<TokenType> TYPES = List.of(基本診療料, 特掲診療料, 第漢数字, 漢数字の, 括弧数字, 括弧漢数字, カナ, 丸数字, 数字, 別表第);
+	static final List<TokenType> TYPES = List.of(基本診療料, 特掲診療料, 第漢数字, 漢数字の, 括弧数字の, 括弧漢数字, カナ, 丸数字, 数字, 別表第);
 	
 	@Override
     public List<TokenType> types() {
@@ -73,8 +73,8 @@ public class 施設基準告示読込 extends Parser {
 		}
 	}
 
-	void 括弧数字(Node parent) {
-		while (eat(括弧数字)) {
+	void 括弧数字の(Node parent) {
+		while (eat(括弧数字の)) {
 			Node n = add(parent, eaten);
 			if (is(カナ))
 				カナ(n);
@@ -86,7 +86,7 @@ public class 施設基準告示読込 extends Parser {
 	void 漢数字の(Node parent) {
 		while (eat(漢数字の)) {
 			Node n = add(parent, eaten);
-			括弧数字(n);
+			括弧数字の(n);
 		}
 	}
 

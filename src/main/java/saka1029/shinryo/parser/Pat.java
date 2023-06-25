@@ -24,6 +24,7 @@ public class Pat {
     public static final String 左括弧 = "[(（]";
     public static final String 右括弧 = "[)）]";
     public static final String 括弧数字 = paren(数字);
+    public static final String 括弧数字の = repeat(括弧数字, "の", 数字); // 施設基準告示の別表で使用
     public static final String アイウ = "アイウエオカキクケコ"
         + "サシスセソタチツテト"
         + "ナニヌネノハヒフヘホ" // ひらがなの「へ」調剤通知区分１０の３
