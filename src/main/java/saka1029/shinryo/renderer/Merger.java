@@ -58,7 +58,7 @@ public class Merger {
             logger.severe("通知の区分番号「" + tNode.token.number + " " + tNode.token.header + "」が告示にありません");
             return;
         }
-        logger.info("通知パス「" + tNode.path + "」を告示Nodeに追加します");
+        logger.fine("通知パス「" + tNode.path + "」を告示Nodeに追加します");
         Node tParent = tNode.parent;
         Node kParent = tParent.isRoot() ? kMap.get("") : kMap.get(tParent.path);
         if (kParent == null) {
