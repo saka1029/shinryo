@@ -113,26 +113,6 @@ public abstract class Parser {
     	}
     }
 
-//    static final List<String> NO_CHECK_TYPES = List.of("区分番号", "注");
-//
-//    void checkSequence(Node root) {
-////        Node prevNode = null;
-//        int prevId = 0;
-//        for (Node child : root.children) {
-//            if (!NO_CHECK_TYPES.contains(child.token.type.name)) {
-//                String d = child.id.replaceAll("\\D", "");
-//                if (!d.isEmpty()) {
-//                    int id = Integer.parseInt(d);
-//                    if (id != prevId + 1)
-//                        logger.warning("順序誤り: " + child.path + " " + child.token.toString());
-////                    prevNode = child;
-//                    prevId = id;
-//                }
-//            }
-//            checkSequence(child);
-//        }
-//    }
-    
     static final Pattern LAST_NUM = Pattern.compile("\\d+$");
     
     String incLast(String id) {
