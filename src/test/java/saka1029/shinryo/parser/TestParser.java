@@ -14,7 +14,7 @@ public class TestParser {
     
     static final Param param = Param.of("in", "debug/out", "02");
 
-    @Test
+//    @Test
     public void test調剤告示読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("t", "ke");
@@ -23,7 +23,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test調剤通知読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("t", "te");
@@ -32,7 +32,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test医科告示読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("i", "ke");
@@ -41,7 +41,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test医科通知読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("i", "te");
@@ -50,7 +50,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test歯科告示読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("s", "ke");
@@ -59,7 +59,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test歯科通知読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("s", "te");
@@ -68,12 +68,21 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test施設基準告示読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("k", "ke");
         String outTxtFile = param.outDir("kk-tree.txt");
         Node root = new 施設基準告示読込().parse(inTxtFile);
+        root.summary(outTxtFile);
+    }
+
+    @Test
+    public void test施設基準通知読込() throws IOException {
+        logger.info(Common.methodName());
+        String inTxtFile = param.txt("k", "te");
+        String outTxtFile = param.outDir("kt-tree.txt");
+        Node root = new 施設基準通知読込().parse(inTxtFile);
         root.summary(outTxtFile);
     }
 }

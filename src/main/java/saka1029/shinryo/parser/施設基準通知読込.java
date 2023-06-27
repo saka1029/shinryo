@@ -15,22 +15,90 @@ public class 施設基準通知読込 extends Parser {
 	static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
 	static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.アイウid);
 	static final TokenType 括弧カナ = new TokenType("括弧カナ", Pat.numberHeader(Pat.括弧カナ), Pat.イロハid);
+	static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
 
     public 施設基準通知読込() {
         super(true);
     }
 
-    static final List<TokenType> TYPES = List.of();
+    static final List<TokenType> TYPES = List.of(基本診療料, 特掲診療料, 第数字の, 別添, 数字の, 括弧数字, カナ, 括弧カナ, 丸数字);
 
     @Override
     public List<TokenType> types() {
         return TYPES;
     }
 
+    void 丸数字(Node parent) {
+    	while (eat(丸数字)) {
+    		Node c = add(parent, eaten);
+    		カナ(c);
+    	}
+    }
+    void 括弧カナ(Node parent) {
+    	while (eat(括弧カナ)) {
+    		Node c = add(parent, eaten);
+    		丸数字(c);
+    	}
+    }
+
+    void カナ(Node parent) {
+    	while (eat(カナ)) {
+    		Node c = add(parent, eaten);
+    		if (is(丸数字))
+    			丸数字(c);
+    		else
+				括弧カナ(c);
+    	}
+    }
+
+    void 括弧数字(Node parent) {
+    	while (eat(括弧数字)) {
+    		Node c = add(parent, eaten);
+    		if (is(丸数字))
+    			丸数字(c);
+    		else
+				カナ(c);
+    	}
+    }
+
+    void 数字の(Node parent) {
+    	while (eat(数字の)) {
+    		Node c = add(parent, eaten);
+			カナ(c);
+			括弧数字(c);
+    	}
+    }
+
+    void 第数字の(Node parent) {
+    	while (eat(第数字の)) {
+    		Node c = add(parent, eaten);
+    		数字の(c);
+    	}
+    }
+
+    void 別添(Node parent) {
+    	while (eat(別添)) {
+    		Node c = add(parent, eaten);
+    		数字の(c);
+    		第数字の(c);
+    	}
+    }
+
+    void 施設基準(Node parent) {
+    	第数字の(parent);
+		別添(parent);
+    }
+
     @Override
     public void parse(Node parent) {
-        // TODO Auto-generated method stub
-
+		if (!eat(基本診療料))
+			throw error("「基本診療料の施設基準等」がありません %s", token);
+		Node k = add(parent, eaten);
+		施設基準(k);
+		if (!eat(特掲診療料))
+			throw error("「特掲診療料の施設基準等」がありません %s", token);
+		Node t = add(parent, eaten);
+		施設基準(t);
     }
 
 }

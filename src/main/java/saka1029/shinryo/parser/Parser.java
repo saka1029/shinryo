@@ -9,7 +9,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public abstract class Parser {
-	static final Logger logger = Logger.getLogger(Parser.class.getName());
+
+	static final Logger LOGGER = Logger.getLogger(Parser.class.getName());
 
 	final boolean isTuti;
 	List<Token> tokens;
@@ -34,7 +35,9 @@ public abstract class Parser {
 	}
 
 	ParseException error(String format, Object... args) {
-		return new ParseException(format.formatted(args));
+		String message = format.formatted(args);
+		LOGGER.severe(message);
+		return new ParseException(message);
 	}
 	
 	Token get() {
@@ -82,7 +85,7 @@ public abstract class Parser {
 		Node root = Node.root(isTuti);
 		parse(root);
 	    if (token != null)
-            logger.warning("未処理のトークン: " + tokens.get(index - 1));
+            throw error("未処理のトークン: %s", tokens.get(index - 1));
 		return root;
 	}
 	
@@ -169,7 +172,7 @@ public abstract class Parser {
 							if (curr.equals(incLast(prev)))
 								break; /* OK */
 							if (!prev.matches("^.*-\\d+$")) {
-								logger.warning("順序誤り: %s %s:%s %s:%s %s".formatted(
+								LOGGER.warning("順序誤り: %s %s:%s %s:%s %s".formatted(
 								    child.path,
 								    child.token.pdfFileName, child.token.pageNo,
 								    child.token.txtFileName, child.token.lineNo,
