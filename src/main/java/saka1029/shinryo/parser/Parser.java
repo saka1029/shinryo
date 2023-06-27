@@ -130,10 +130,10 @@ public abstract class Parser {
 //        }
 //    }
     
-    static final Pattern NUM = Pattern.compile("\\d+$");
+    static final Pattern LAST_NUM = Pattern.compile("\\d+$");
     
     String incLast(String id) {
-        return NUM.matcher(id).replaceFirst(m -> "" + (Integer.parseInt(m.group()) + 1));
+        return LAST_NUM.matcher(id).replaceFirst(m -> "" + (Integer.parseInt(m.group()) + 1));
     }
 
     /**
@@ -145,12 +145,14 @@ public abstract class Parser {
      * ・「数字の」または「漢数字の」の場合
      * <pre>
      * id「1-2-3-4」に続くid:
-     * 1-2-3-4-2 追番(追番は-2から始まる)
-     * 1-2-3-5   次番0
-     * 1-2-4     次番1
-     * 1-3       次番2
-     * 2         次番3
+     * 1-2-3-4-1-2 追番1(追番は-1-2から始まる)
+     * 1-2-3-4-2   追番2(追番は-2から始まる)
+     * 1-2-3-5     次番1
+     * 1-2-4       次番2
+     * 1-3         次番3
+     * 2           次番4
      * </pre>
+     * 「追番1」は施設基準の「別表第三」→「別表第三の一の二」のような場合である。
      */
     void checkSequence(Node root) {
         String prevId = null;
@@ -160,7 +162,7 @@ public abstract class Parser {
             	if (prevId != null) {
 					String prev = prevId.replaceFirst("^.*x", ""); // xの前を削除
 					String curr = id.replaceFirst("x.*$", "");  // xのあとを削除
-					if (curr.equals(prev + "-2"))
+					if (curr.equals(prev + "-2") || curr.equals(prev + "-1-2"))
 						/* OK */;
 					else
 						while (true) {
