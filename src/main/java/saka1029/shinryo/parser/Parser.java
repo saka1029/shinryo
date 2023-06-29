@@ -58,6 +58,16 @@ public abstract class Parser {
 			return false;
 		return token.indent >= parent.token.indent && token.type == expected;
 	}
+	
+	/**
+	 * parentまたはその祖先がtypeを含むかどうかを返します。
+	 */
+	boolean containsAncestor(Node parent, TokenType type) {
+	    for (Node n = parent; n.token != null; n = n.parent)
+            if (n.token.type == type)
+                return true;
+	    return false;
+	}
 
 	boolean eat(TokenType expected) {
 		if (token == null)

@@ -108,9 +108,9 @@ public class Node {
     }
     
     public void visit(Consumer<Node> visitor) {
-    	visitor.accept(this);
-    	for (Node child : children)
-    		child.visit(visitor);
+        visitor.accept(this);
+        for (Node child : children)
+            child.visit(visitor);
     }
 
     @Override

@@ -18,6 +18,15 @@ import java.util.logging.Logger;
  * カナ         = { "カナ" ( 丸数字 | 括弧カナ ) }
  * 括弧カナ     = { "括弧カナ" 丸数字 }
  * </pre>
+ * 「丸数字」と「括弧カナ」および「丸数字」と「カナ」は相互に参照しあっているので、例えば
+ * 以下のように解釈されることがある。
+ * <pre>
+ * ①
+ *     ア
+ *     イ
+ *         ②
+ * </pre>
+ * これを防ぐために、先祖が既に丸数字を含む場合は丸数字と解釈しないようにする。
  */
 public class 施設基準通知読込 extends Parser {
 
@@ -45,6 +54,9 @@ public class 施設基準通知読込 extends Parser {
     }
 
     void 丸数字(Node parent) {
+        // 既にparentの先祖に丸数字があれば何もしない。
+        if (containsAncestor(parent, 丸数字))
+            return;
         while (eat(丸数字)) {
             Node c = add(parent, eaten);
             if (is(括弧カナ))
@@ -55,6 +67,8 @@ public class 施設基準通知読込 extends Parser {
     }
 
     void 括弧カナ(Node parent) {
+        if (containsAncestor(parent, 括弧カナ))
+            return;
         while (eat(括弧カナ)) {
             Node c = add(parent, eaten);
             丸数字(c);
@@ -62,6 +76,8 @@ public class 施設基準通知読込 extends Parser {
     }
 
     void カナ(Node parent) {
+        if (containsAncestor(parent, カナ))
+            return;
         while (eat(カナ)) {
             Node c = add(parent, eaten);
             if (is(丸数字))
