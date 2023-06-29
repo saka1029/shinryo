@@ -45,11 +45,11 @@ public class 歯科告示読込 extends Parser {
 	public static final TokenType 区分分類 = new TokenType("区分分類", Pat.number(Pat.区分分類), Pat.固定値id("b"));
 	public static final TokenType 区分番号 = new TokenType("区分番号", Pat.numberHeader(Pat.fromTo(Pat.区分番号)), Pat.区分番号id);
 	public static final TokenType カナ = new TokenType("カナ", Pat.numberHeader(Pat.カナ), Pat.イロハid);
-	public static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"), Pat.固定値id("tyu1"));
-	public static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("tyu1"));
+	public static final TokenType 注１ = new TokenType("注１", Pat.numberHeader("注１"), Pat.固定値id("u1"));
+	public static final TokenType 注 = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("u1"));
 	public static final TokenType 括弧数字 = new TokenType("括弧数字", Pat.numberHeader(Pat.括弧数字), Pat.数字id);
 	public static final TokenType 丸数字 = new TokenType("丸数字", Pat.numberHeader(Pat.丸数字), Pat.丸数字id);
-	public static final TokenType 注ルート = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("tyu"));
+	public static final TokenType 注ルート = new TokenType("注", Pat.numberHeader("注"), Pat.固定値id("u"));
 
 	// 注ルートはパース時に作成するトークンなので、トークンリード時には指定しない。
 	static final List<TokenType> TYPES = List.of(通則, 章, 部, 節, 款, 数字, 区分, 区分分類, 区分番号, カナ, 注１, 注, 括弧数字, 丸数字);

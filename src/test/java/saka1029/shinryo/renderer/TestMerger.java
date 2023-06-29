@@ -1,19 +1,14 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Logger;
-
-import org.junit.Test;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
-import saka1029.shinryo.parser.TokenType;
 import saka1029.shinryo.parser.医科告示読込;
 import saka1029.shinryo.parser.医科通知読込;
-import saka1029.shinryo.parser.施設基準告示読込;
 import saka1029.shinryo.parser.施設基準通知読込;
 import saka1029.shinryo.parser.歯科告示読込;
 import saka1029.shinryo.parser.歯科通知読込;
@@ -62,20 +57,18 @@ public class TestMerger {
         kRoot.summary(param.outFile("t-tree-merged.txt"));
 	}
 	
-	@Test
+//	@Test
 	public void test施設基準() throws IOException {
 	    LOGGER.info(Common.methodName());
 	    String 点数表 = "k";
-        Node kRoot = Parser.parse(new 施設基準告示読込(), false, param.txt(点数表, "ke"));
-//        Node tRoot = Parser.parse(new 施設基準通知読込(), false, param.txt(点数表, "te"));
-        List<TokenType> types = List.of(
-            施設基準告示読込.基本診療料,
-            施設基準告示読込.特掲診療料,
-            施設基準告示読込.第漢数字,
-            施設基準告示読込.漢数字の
-            );
-        kRoot.visit(n -> {
-            if (n.token != null && n.token.header.endsWith("の施設基準"))
+//        Node kRoot = Parser.parse(new 施設基準告示読込(), false, param.txt(点数表, "ke"));
+//        kRoot.visit(n -> {
+//            if (n.token != null && n.token.header.endsWith("の施設基準"))
+//                LOGGER.info("%s %s %s".formatted(n.path, n.token.type.name, n.token.header));
+//        });
+        Node tRoot = Parser.parse(new 施設基準通知読込(), false, param.txt(点数表, "te"));
+        tRoot.visit(n -> {
+            if (n.token != null && n.token.type.name.equals("第数字の"))
                 LOGGER.info("%s %s %s".formatted(n.path, n.token.type.name, n.token.header));
         });
 	}

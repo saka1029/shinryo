@@ -26,7 +26,7 @@ public class Test本文 {
 
 //    @Test
     public void test医科() throws IOException {
-    	logger.info(Common.methodName());
+        logger.info(Common.methodName());
         String 点数表 = "i";
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");

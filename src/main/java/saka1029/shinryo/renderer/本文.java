@@ -21,9 +21,6 @@ public class 本文 extends HTML {
 
 	static final Logger LOGGER = Logger.getLogger(本文.class.getName());
 
-    record Link(String url, String title) {
-    }
-
     final String outDir;
     final Map<String, String> kubunMap;
     final Function<String, String> linker;
@@ -49,7 +46,7 @@ public class 本文 extends HTML {
     	if (node.token != null && node.token.type.name.equals("区分番号"))
     		map.put(node.token.header0().replaceFirst(区分末尾の括弧, ""), node.token.number);
     	for (Node child : node.children)
-			区分名称マップ(child, map);
+        区分名称マップ(child, map);
     }
 
     /**
@@ -57,15 +54,10 @@ public class 本文 extends HTML {
      * 医科の区分名称から医科の区分番号へのマップを作製します。
      */
     public static Map<String, String> 区分名称マップ(Node root) {
-    	Map<String, String> map = new HashMap<>();
-    	区分名称マップ(root, map);
-    	return map;
+        Map<String, String> map = new HashMap<>();
+        区分名称マップ(root, map);
+        return map;
     }
-
-	static String indent(int indent, String number) {
-		float width = (number.codePoints().map(c -> c < 256 ? 1 : 2).sum() + 1) / 2.0F;
-		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
-	}
 	
 	String linkText(String text) {
 	    return linker.apply(text);
@@ -82,13 +74,6 @@ public class 本文 extends HTML {
 	
 	static void endTuti(TextWriter writer) {
         writer.println("</div>");
-	}
-	
-	static String paths(Node node) {
-	    Deque<String> list = new LinkedList<>();
-	    for (Node p = node.parent; p != null && p.token != null; p = p.parent)
-	        list.addFirst(p.token.number + " " + p.token.header0());
-	    return list.stream().collect(Collectors.joining(" / "));
 	}
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {

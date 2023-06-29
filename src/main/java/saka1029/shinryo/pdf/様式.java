@@ -33,7 +33,8 @@ import saka1029.shinryo.parser.Pat;
  * @param title 様式タイトル。ex.「退院証明書」
  */
 public class 様式 {
-	static final Logger logger = Logger.getLogger(様式.class.getName());
+	static final Logger LOGGER = Logger.getLogger(様式.class.getName());
+
     static final int 様式名出現最大行 = 3;
 
     public final String file, name, id;

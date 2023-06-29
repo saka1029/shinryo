@@ -68,7 +68,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-//    @Test
+    @Test
     public void test施設基準告示読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("k", "ke");
