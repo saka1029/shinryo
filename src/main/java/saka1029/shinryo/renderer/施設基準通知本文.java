@@ -4,61 +4,51 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
-import saka1029.shinryo.common.Trie;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 
-public class 施設基準告示本文 extends HTML {
+public class 施設基準通知本文 extends HTML {
 
-    static final String PATH_PREFIX = "k";
+    static final String PATH_PREFIX = "t";
 
     final String outDir;
-    final Trie<Node> tRef;
     
-    public 施設基準告示本文(String outDir, Trie<Node> tRef) throws IOException {
+    public 施設基準通知本文(String outDir) throws IOException {
         Files.createDirectories(Path.of(outDir));
         this.outDir = outDir;
-        this.tRef = tRef;
     }
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
-        String title = "%s %s".formatted(token.number, token.header0());
+        String title = "%s %s".formatted(token.number,
+            token.type.name.equals("別添") ? token.body.stream().collect(Collectors.joining()) : token.header0());
         String url = "%s%s.html".formatted(PATH_PREFIX, node.path);
         writer.println("%s<p %s><a href='%s'>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, title);
         file(node, title, url, links);
     }
     
-    public void text(Node node, int level, TextWriter writer, Deque<Link> links, Set<Node> tRefSet) throws IOException {
+    public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
-        String body = token.body.stream().collect(Collectors.joining());
         writer.println("%s<p %s>%s %s%s%s</p>",
             lineDirective(token), indent(level, token.number), token.number, token.header,
-            token.body.size() > 0 ? "<br>" : "", body);
-        Map<Integer, List<Node>> ref = tRef.findAll(token.header + body);
-        for (List<Node> e : ref.values())
-            tRefSet.addAll(e);
+            token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()));
         for (Node child : node.children)
-            node(child, level + 1, writer, links, tRefSet);
+            node(child, level + 1, writer, links);
     }
     
-    static final List<String> LINKS = List.of("第漢数字", "別表", "別表第");
+    static final List<String> LINKS = List.of("第数字の", "別添");
 
-    void node(Node node, int level, TextWriter writer, Deque<Link> links, Set<Node> tRefSet) throws IOException {
-        if (LINKS.contains(node.token.type.name))
+    void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+        if (LINKS.contains(node.token.type.name) && !node.token.header.equals("削除"))
             link(node, level, writer, links);
         else
-            text(node, level, writer, links, tRefSet);
+            text(node, level, writer, links);
     }
 
     void file(Node node, String title, String outHtmlFile, Deque<Link> links) throws IOException {
@@ -79,17 +69,9 @@ public class 施設基準告示本文 extends HTML {
 			writer.println("<h1 class='title'>%s</h1>", title);
 			writer.println("<div id='content'>");
 			links.push(new Link(outHtmlFile, title));
-			Set<Node> tRefSet = new LinkedHashSet<>();
             // 子ノードのレンダリング
             for (Node child : node.children)
-                node(child, 0, writer, links, tRefSet);
-            if (!tRefSet.isEmpty()) {
-                writer.println("<div id='tuti'>");
-                writer.println("<p><b>通知<b></p>");
-                for (Node n : tRefSet)
-                    writer.println("<p><a href='t%s.html'>%s %s</p>", n.path, n.token.number, n.token.header);
-                writer.println("</div>"); // id='tuti'
-            }
+                node(child, 0, writer, links);
 			writer.println("</div>"); // id='content'
 			writer.println("</div>"); // id='all'
             writer.println("</body>");
