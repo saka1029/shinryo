@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import saka1029.shinryo.common.TextWriter;
-import saka1029.shinryo.pdf.PDF;
+import saka1029.shinryo.pdf.PDFSplitter;
 import saka1029.shinryo.pdf.様式;
 
 public class 様式一覧 extends HTML {
@@ -19,7 +19,8 @@ public class 様式一覧 extends HTML {
         Files.createDirectories(Path.of(outDir));
         String fullTitle = title + " 様式一覧";
         try (BufferedReader reader = Files.newBufferedReader(Path.of(inCsvFile), StandardCharsets.UTF_8);
-            TextWriter writer = new TextWriter(outHtmlFile)) {
+            TextWriter writer = new TextWriter(outHtmlFile);
+            PDFSplitter splitter = new PDFSplitter()) {
             head(fullTitle, null, writer);
             writer.println("<body>");
             writer.println("<div id='all'>");
@@ -43,7 +44,7 @@ public class 様式一覧 extends HTML {
                     Path.of(e.file).getFileName(), e.startPage,
                     fileName, lineNo,
                     outDir, e.id, e.name, e.title);
-                PDF.ページ分割(e.file, Path.of(outPath, e.id + ".pdf").toString(), e.startPage, e.endPage);
+                splitter.split(e.file, Path.of(outPath, e.id + ".pdf").toString(), e.startPage, e.endPage);
             }
 //            writer.println("</ul>");
 			writer.println("</div>"); // id=content

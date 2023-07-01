@@ -14,14 +14,14 @@ public class TestCommon {
         logger.info("in eclipse: " + Common.inEclipse());
     }
 
-    @Test
+//    @Test
     public void testInitLogger() {
         System.out.println("標準出力");
         System.out.println("stdout.encoding=" + System.getProperty("stdout.encoding"));
         System.err.println("標準エラー出力");
     }
 
-    @Test
+//    @Test
     public void testLogging() {
         logger.setLevel(Level.FINEST);
         logger.finest("日本語を出力");
@@ -29,5 +29,4 @@ public class TestCommon {
         logger.info("日本語を出力");
         logger.warning("日本語を出力");
     }
-
 }

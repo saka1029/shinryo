@@ -9,11 +9,14 @@ import java.util.logging.Logger;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
+import saka1029.shinryo.common.Trie;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
 import saka1029.shinryo.parser.Pat;
 import saka1029.shinryo.parser.医科告示読込;
 import saka1029.shinryo.parser.医科通知読込;
+import saka1029.shinryo.parser.施設基準告示読込;
+import saka1029.shinryo.parser.施設基準通知読込;
 import saka1029.shinryo.parser.歯科告示読込;
 import saka1029.shinryo.parser.歯科通知読込;
 import saka1029.shinryo.parser.調剤告示読込;
@@ -23,6 +26,9 @@ import saka1029.shinryo.pdf.様式;
 import saka1029.shinryo.renderer.Merger;
 import saka1029.shinryo.renderer.Sitemap;
 import saka1029.shinryo.renderer.区分番号一覧;
+import saka1029.shinryo.renderer.施設基準告示本文;
+import saka1029.shinryo.renderer.施設基準通知本文;
+import saka1029.shinryo.renderer.施設基準通知辞書;
 import saka1029.shinryo.renderer.本文;
 import saka1029.shinryo.renderer.様式一覧;
 
@@ -41,6 +47,13 @@ public class Main {
         System.err.println("   i:医科, s:歯科, t:調剤, k:施設基準, 0:PDF変換, 1:様式生成, 2:HTML生成");
         System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
         return new IllegalArgumentException(message);
+    }
+
+    static void イメージコピー(Param param, String 点数表) throws IOException {
+        if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
+            LOGGER.info(param.title(点数表) + "イメージコピー");
+            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
+        }
     }
 
     static void PDF変換(Param param, String 点数表) throws IOException {
@@ -77,6 +90,7 @@ public class Main {
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
         Map<String, String> kubunMap = null;
+        // 歯科の場合は医科の区分番号のマップを作成する。歯科以外の場合はkubunMap = null
         if (点数表.equals("s")) {
             Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
             kubunMap = 本文.区分名称マップ(ikaRoot);
@@ -86,14 +100,25 @@ public class Main {
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, kubunMap, link).render(kRoot, title, "index.html");
         Param prev = param.previous();
-        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ? Parser.parse(kParser, false, prev.txt(点数表, "ke"))
-            : null;
+        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
+            ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
         LOGGER.info("区分番号一覧生成");
         new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
-        if (Files.exists(Path.of(param.inDir(点数表, "img")))) {
-            LOGGER.info(param.title(点数表) + "イメージコピー");
-            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
-        }
+        イメージコピー(param, 点数表);
+    }
+    
+    static void 施設基準HTML生成(Param param) throws IOException {
+        String 点数表 = "k";
+        String outDir = param.outDir(点数表);
+        String title = param.title(点数表);
+        String kTxt = param.txt(点数表, "ke");
+        String tTxt = param.txt(点数表, "te");
+        Node kRoot = Parser.parse(new 施設基準告示読込(), false, kTxt);
+        Node tRoot = Parser.parse(new 施設基準通知読込(), false, tTxt);
+        Trie<Node> dict = 施設基準通知辞書.create(tRoot);
+        new 施設基準告示本文(outDir, dict).render(kRoot, title + "(告示)", "index.html");
+        new 施設基準通知本文(outDir).render(tRoot, title + "(通知)", "tuti.html");
+        イメージコピー(param, 点数表);
     }
     
     static void 終了(Param param, String baseUrl) throws IOException {
@@ -156,7 +181,7 @@ public class Main {
                 case "t2": HTML生成(param, "t", new 調剤告示読込(), new 調剤通知読込(), Pat.調剤リンク); break;
                 case "k0": 施設基準PDF変換(param, "k"); break;
                 case "k1": 様式一覧生成(param, "k"); break;
-                case "k2": throw usage("施設基準HTML生成は実装していません");
+                case "k2": 施設基準HTML生成(param); break;
                 default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
         終了(param, baseUrl);

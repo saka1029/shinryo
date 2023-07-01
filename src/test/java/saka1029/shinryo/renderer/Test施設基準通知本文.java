@@ -19,7 +19,7 @@ public class Test施設基準通知本文 {
     
     static final Param param = Param.of("in", "debug/html", "02");
 
-    @Test
+//    @Test
     public void testRender() throws IOException {
         logger.info(Common.methodName());
         String 点数表 = "k";

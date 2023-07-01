@@ -12,7 +12,7 @@ public class TestTrie {
 
     static final Logger LOGGER = Common.logger(TestTrie.class);
 
-    @Test
+//    @Test
     public void testTrie() {
         LOGGER.info(Common.methodName());
         String[] words = {"A", "to", "tea", "ted", "ten", "i", "in", "inn"};

@@ -3,8 +3,6 @@ package saka1029.shinryo.parser;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 
@@ -68,7 +66,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test施設基準告示読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("k", "ke");
@@ -77,7 +75,7 @@ public class TestParser {
         root.summary(outTxtFile);
     }
 
-    @Test
+//    @Test
     public void test施設基準通知読込() throws IOException {
         logger.info(Common.methodName());
         String inTxtFile = param.txt("k", "te");

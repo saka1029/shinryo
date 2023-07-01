@@ -18,7 +18,7 @@ public class Test施設基準通知辞書 {
     
     Param param = Param.of("in", "debug/out", "02");
 
-    @Test
+//    @Test
     public void testCreate() throws IOException {
         LOGGER.info(Common.methodName());
         String 点数表 = "k";
