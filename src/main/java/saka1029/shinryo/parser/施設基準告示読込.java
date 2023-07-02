@@ -62,7 +62,10 @@ public class 施設基準告示読込 extends Parser {
 	void 丸数字(Node parent) {
 		while (eat(丸数字)) {
 			Node n = add(parent, eaten);
-			数字(n);
+			if (is(括弧漢数字))
+			    括弧漢数字(n);
+			else
+                数字(n);
 		}
 	}
 
@@ -109,11 +112,11 @@ public class 施設基準告示読込 extends Parser {
 	@Override
 	public void parse(Node parent) {
 		if (!eat(基本診療料))
-			throw error("「基本診療料の施設基準等」がありません");
+			throw error("「基本診療料の施設基準等」がありませんtoken=%s", token);
 		Node k = add(parent, eaten);
 		施設基準(k);
 		if (!eat(特掲診療料))
-			throw error("「特掲診療料の施設基準等」がありません");
+			throw error("「特掲診療料の施設基準等」がありませんtoken=%s", token);
 		Node t = add(parent, eaten);
 		施設基準(t);
 	}

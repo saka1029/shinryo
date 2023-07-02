@@ -109,12 +109,15 @@ public class Main {
     
     static void 施設基準HTML生成(Param param) throws IOException {
         String 点数表 = "k";
+        LOGGER.info(param.title(点数表) + "HTML生成");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
-        Node kRoot = Parser.parse(new 施設基準告示読込(), false, kTxt);
-        Node tRoot = Parser.parse(new 施設基準通知読込(), false, tTxt);
+        LOGGER.info(param.title(点数表) + "(告示)");
+        Node kRoot = Parser.parse(new 施設基準告示読込(), true, kTxt);
+        LOGGER.info(param.title(点数表) + "(通知)");
+        Node tRoot = Parser.parse(new 施設基準通知読込(), true, tTxt);
         Trie<Node> dict = 施設基準通知辞書.create(tRoot);
         new 施設基準告示本文(outDir, dict).render(kRoot, title + "(告示)", "index.html");
         new 施設基準通知本文(outDir).render(tRoot, title + "(通知)", "tuti.html");
