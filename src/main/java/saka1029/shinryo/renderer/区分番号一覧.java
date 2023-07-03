@@ -107,7 +107,7 @@ public class 区分番号一覧 extends HTML {
                     // パンくずリスト
                     writer.println("<div id='breadcrumb'>");
                     writer.println("<a href='../../index.html'>トップ</a>");
-                    menu(writer);
+                    menu("i", writer);
                     writer.println("</div>"); // id=breacdcrumb
                     writer.println("<div id='content'>");
                     writer.println("<h1 class='title'>%s</h1>", fullTitle);

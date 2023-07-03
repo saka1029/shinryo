@@ -30,13 +30,18 @@ public class HTML {
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
 	}
 	
-	static void menu(TextWriter writer) {
+	static void menu(String 点数表, TextWriter writer) {
 		writer.println("<hr>");
-		writer.println("<a href='index.html'>本文</a>");
-		writer.println("<a href='kubun.html'>区分番号一覧</a>");
+		if (点数表.equals("k")) {
+            writer.println("<a href='index.html'>告示</a>");
+            writer.println("<a href='tuti.html'>通知</a>");
+		} else {
+            writer.println("<a href='index.html'>本文</a>");
+            writer.println("<a href='kubun.html'>区分番号一覧</a>");
+		}
 		writer.println("<a href='yoshiki.html'>様式一覧</a>");
 	}
-
+	
     static void head(String title, Node node, TextWriter writer) {
         writer.println("<!DOCTYPE html>");
         writer.println("<html lang='ja_JP'>");

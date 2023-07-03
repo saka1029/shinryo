@@ -12,7 +12,7 @@ import saka1029.shinryo.pdf.様式;
 
 public class 様式一覧 extends HTML {
 
-    public void render(String inCsvFile, String title, String outHtmlFile) throws IOException {
+    public void render(String inCsvFile, String 点数表, String title, String outHtmlFile) throws IOException {
         Files.createDirectories(Path.of(outHtmlFile).getParent());
         String outDir = "pdf";
         String outPath = Path.of(outHtmlFile).getParent().resolve(outDir).toString();
@@ -27,7 +27,7 @@ public class 様式一覧 extends HTML {
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
 			writer.println("<a href='../../index.html'>トップ</a>");
-			menu(writer);
+			menu(点数表, writer);
 			writer.println("</div>"); // id=breadcrumb
 			writer.println("<div id='content'>");
             writer.println("<h1 class='title'>%s</h1>", fullTitle);

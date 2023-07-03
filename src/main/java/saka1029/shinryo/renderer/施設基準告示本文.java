@@ -72,7 +72,7 @@ public class 施設基準告示本文 extends HTML {
 			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
 			    sep = "&gt; ";
 			}
-			menu(writer);
+			menu("k", writer);
 			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
