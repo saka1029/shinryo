@@ -1,7 +1,6 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
@@ -16,11 +15,8 @@ public class 施設基準通知本文 extends HTML {
 
     static final String PATH_PREFIX = "t";
 
-    final String outDir;
-    
     public 施設基準通知本文(String outDir) throws IOException {
-        Files.createDirectories(Path.of(outDir));
-        this.outDir = outDir;
+        super(outDir);
     }
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
@@ -58,11 +54,11 @@ public class 施設基準通知本文 extends HTML {
 			writer.println("<div id='all'>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
-			String sep = "";
-			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
-			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
-			    sep = "&gt; ";
-			}
+//			String sep = "";
+//			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
+//			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
+//			    sep = "&gt; ";
+//			}
 			menu("k", writer);
 			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));

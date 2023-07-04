@@ -21,7 +21,6 @@ public class 本文 extends HTML {
 
 	static final Logger LOGGER = Logger.getLogger(本文.class.getName());
 
-    final String outDir;
     final Map<String, String> kubunMap;
     final Function<String, String> linker;
     
@@ -34,7 +33,7 @@ public class 本文 extends HTML {
      * @throws IOException
      */
     public 本文(String outDir, Map<String, String> kubunMap, Function<String, String> linker) throws IOException {
-        this.outDir = outDir;
+        super(outDir);
         this.kubunMap = kubunMap;
         Files.createDirectories(Path.of(outDir));
         this.linker = linker;
@@ -122,11 +121,11 @@ public class 本文 extends HTML {
 			writer.println("<div id='all'>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
-			String sep = "";
-			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
-			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
-			    sep = "&gt; ";
-			}
+//			String sep = "";
+//			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
+//			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
+//			    sep = "&gt; ";
+//			}
 			menu("i", writer);
 			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));

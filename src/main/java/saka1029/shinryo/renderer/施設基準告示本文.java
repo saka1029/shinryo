@@ -1,7 +1,6 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedHashSet;
@@ -20,12 +19,10 @@ public class 施設基準告示本文 extends HTML {
 
     static final String PATH_PREFIX = "k";
 
-    final String outDir;
     final Trie<Node> tRef;
     
     public 施設基準告示本文(String outDir, Trie<Node> tRef) throws IOException {
-        Files.createDirectories(Path.of(outDir));
-        this.outDir = outDir;
+        super(outDir);
         this.tRef = tRef;
     }
 
@@ -67,11 +64,11 @@ public class 施設基準告示本文 extends HTML {
 			writer.println("<div id='all'>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
-			String sep = "";
-			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
-			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
-			    sep = "&gt; ";
-			}
+//			String sep = "";
+//			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
+//			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
+//			    sep = "&gt; ";
+//			}
 			menu("k", writer);
 			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));

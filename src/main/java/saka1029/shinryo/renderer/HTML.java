@@ -1,5 +1,8 @@
 package saka1029.shinryo.renderer;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
@@ -20,6 +23,13 @@ public class HTML {
         }
     }
 
+    final String outDir;
+    
+    HTML(String outDir) throws IOException {
+        this.outDir = outDir;
+        Files.createDirectories(Path.of(outDir));
+    }
+
 	static String lineDirective(Token token) {
 	    return token == null ? "<!-- -->"
 	        : "<!-- %s:%d %s:%d -->".formatted(token.pdfFileName, token.pageNo, token.txtFileName, token.lineNo);
@@ -31,7 +41,8 @@ public class HTML {
 	}
 	
 	static void menu(String 点数表, TextWriter writer) {
-		writer.println("<hr>");
+//		writer.println("<hr>");
+		writer.println("<a href='../../index.html'>トップ</a>");
 		if (点数表.equals("k")) {
             writer.println("<a href='index.html'>告示</a>");
             writer.println("<a href='tuti.html'>通知</a>");

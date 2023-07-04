@@ -79,7 +79,7 @@ public class Main {
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "様式一覧生成");
-        new 様式一覧().render(param.txt(点数表, "ye"), 点数表, param.title(点数表), param.outFile(点数表, "yoshiki.html"));
+        new 様式一覧(param.outDir(点数表)).render(param.txt(点数表, "ye"), 点数表, param.title(点数表), "yoshiki.html");
     }
 
     static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link)
@@ -103,7 +103,7 @@ public class Main {
         Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
             ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
         LOGGER.info("区分番号一覧生成");
-        new 区分番号一覧().render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, param.outFile(点数表, "kubun.html"));
+        new 区分番号一覧(outDir).render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, "kubun.html");
         イメージコピー(param, 点数表);
     }
     

@@ -3,8 +3,6 @@ package saka1029.shinryo.renderer;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 
@@ -18,27 +16,24 @@ public class Test様式一覧 {
     public void test医科() throws IOException {
         String 点数表 = "i";
         String inCsvFile = param.txt(点数表, "ye");
-        String outHtmlFile = param.outFile(点数表, "yoshiki.html");
         String title = param.title(点数表);
-        new 様式一覧().render(inCsvFile, "i", title, outHtmlFile);
+        new 様式一覧(param.outDir(点数表)).render(inCsvFile, "i", title, "yoshiki.html");
     }
 
 //    @Test
     public void test歯科() throws IOException {
         String 点数表 = "s";
         String inCsvFile = param.txt(点数表, "ye");
-        String outHtmlFile = param.outFile(点数表, "yoshiki.html");
         String title = param.title(点数表);
-        new 様式一覧().render(inCsvFile, "s", title, outHtmlFile);
+        new 様式一覧(param.outDir(点数表)).render(inCsvFile, "s", title, "yoshiki.html");
     }
 
 //    @Test
     public void test調剤() throws IOException {
         String 点数表 = "t";
         String inCsvFile = param.txt(点数表, "ye");
-        String outHtmlFile = param.outFile(点数表, "yoshiki.html");
         String title = param.title(点数表);
-        new 様式一覧().render(inCsvFile, "t", title, outHtmlFile);
+        new 様式一覧(param.outDir(点数表)).render(inCsvFile, "t", title, "yoshiki.html");
     }
 
 }

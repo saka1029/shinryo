@@ -12,21 +12,21 @@ import saka1029.shinryo.pdf.様式;
 
 public class 様式一覧 extends HTML {
 
+    public 様式一覧(String outDir) throws IOException {
+        super(outDir);
+    }
+
     public void render(String inCsvFile, String 点数表, String title, String outHtmlFile) throws IOException {
-        Files.createDirectories(Path.of(outHtmlFile).getParent());
-        String outDir = "pdf";
-        String outPath = Path.of(outHtmlFile).getParent().resolve(outDir).toString();
-        Files.createDirectories(Path.of(outDir));
         String fullTitle = title + " 様式一覧";
         try (BufferedReader reader = Files.newBufferedReader(Path.of(inCsvFile), StandardCharsets.UTF_8);
-            TextWriter writer = new TextWriter(outHtmlFile);
+            TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile));
             PDFSplitter splitter = new PDFSplitter()) {
             head(fullTitle, null, writer);
             writer.println("<body>");
             writer.println("<div id='all'>");
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
-			writer.println("<a href='../../index.html'>トップ</a>");
+//			writer.println("<a href='../../index.html'>トップ</a>");
 			menu(点数表, writer);
 			writer.println("</div>"); // id=breadcrumb
 			writer.println("<div id='content'>");
@@ -44,7 +44,7 @@ public class 様式一覧 extends HTML {
                     Path.of(e.file).getFileName(), e.startPage,
                     fileName, lineNo,
                     outDir, e.id, e.name, e.title);
-                splitter.split(e.file, Path.of(outPath, e.id + ".pdf").toString(), e.startPage, e.endPage);
+                splitter.split(e.file, Path.of(outDir, "pdf", e.id + ".pdf").toString(), e.startPage, e.endPage);
             }
 //            writer.println("</ul>");
 			writer.println("</div>"); // id=content

@@ -1,6 +1,7 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,10 @@ import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Pat;
 
 public class 区分番号一覧 extends HTML {
+
+    public 区分番号一覧(String outDir) throws IOException {
+        super(outDir);
+    }
 
     List<Node> listKubun(Node root) {
         List<Node> list = new ArrayList<>();
@@ -37,7 +42,7 @@ public class 区分番号一覧 extends HTML {
 		String fullTitle = title + " 区分番号一覧";
 		List<Node> oldList = listKubun(oldRoot);
 		List<Node> newList = listKubun(newRoot);
-		try (TextWriter writer = new TextWriter(outHtmlFile)) {
+		try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
 		    new Object() {
                 <T> T next(Iterator<T> iterator) {
                     return iterator.hasNext() ? iterator.next() : null;
@@ -106,7 +111,7 @@ public class 区分番号一覧 extends HTML {
                     writer.println("<div id='all'>");
                     // パンくずリスト
                     writer.println("<div id='breadcrumb'>");
-                    writer.println("<a href='../../index.html'>トップ</a>");
+//                    writer.println("<a href='../../index.html'>トップ</a>");
                     menu("i", writer);
                     writer.println("</div>"); // id=breacdcrumb
                     writer.println("<div id='content'>");
