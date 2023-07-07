@@ -21,8 +21,7 @@ public class 施設基準通知本文 extends HTML {
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
-        String title = "%s %s".formatted(token.number,
-            token.type.name.equals("別添") ? token.body.stream().collect(Collectors.joining()) : token.header0());
+        String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s%s.html".formatted(PATH_PREFIX, node.path);
         writer.println("%s<p %s><a href='%s'>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, title);
@@ -64,6 +63,14 @@ public class 施設基準通知本文 extends HTML {
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
 			writer.println("<div id='content'>");
+			if (node.token != null) {
+			    // headerの後半とbodyの出力
+                Token token = node.token;
+                if (!token.header1().isEmpty())
+                    writer.println("<p><b>%s</b></p>", token.header1());
+                if (token.body.size() > 0)
+                    writer.println("<p>%s</p>", String.join("", token.body));
+			}
 			links.push(new Link(outHtmlFile, title));
             // 子ノードのレンダリング
             for (Node child : node.children)

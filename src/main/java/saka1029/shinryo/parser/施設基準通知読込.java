@@ -118,7 +118,9 @@ public class 施設基準通知読込 extends Parser {
 
     void 別添(Node parent) {
         while (eat(別添)) {
-            Node c = add(parent, eaten);
+        	// 「別添ｎ」のbodyの先頭行をheaderに、bodyの残りをbodyに置換する。
+        	Token t = new Token(別添, eaten.number, eaten.body.get(0), eaten.body.stream().skip(1).toList(), eaten);
+            Node c = add(parent, t);
             数字の(c);
             第数字の(c);
         }
