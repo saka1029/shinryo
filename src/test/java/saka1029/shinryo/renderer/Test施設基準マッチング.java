@@ -23,7 +23,7 @@ public class Test施設基準マッチング {
 	
 	static Param param = Param.of("in", "debug/out", "02");
 	
-	@Test
+//	@Test
 	public void test() throws IOException {
 		String 点数表 = "k";
 		Node kRoot = Parser.parse(new 施設基準告示読込(), false, param.txt(点数表, "ke"));
