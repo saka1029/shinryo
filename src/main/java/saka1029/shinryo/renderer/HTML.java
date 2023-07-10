@@ -24,9 +24,11 @@ public class HTML {
     }
 
     final String outDir;
+    final String 点数表;
     
-    HTML(String outDir) throws IOException {
+    HTML(String outDir, String 点数表) throws IOException {
         this.outDir = outDir;
+        this.点数表 = 点数表;
         Files.createDirectories(Path.of(outDir));
     }
 
@@ -40,7 +42,7 @@ public class HTML {
 		return "style='margin-left:%sem;text-indent:%sem'".formatted(indent * 2 + width, -width);
 	}
 	
-	static void menu(String 点数表, TextWriter writer) {
+	void menu(TextWriter writer) {
 //		writer.println("<hr>");
 		writer.println("<a href='../../index.html'>トップ</a>");
 		if (点数表.equals("k")) {

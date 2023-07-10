@@ -12,11 +12,11 @@ import saka1029.shinryo.pdf.様式;
 
 public class 様式一覧 extends HTML {
 
-    public 様式一覧(String outDir) throws IOException {
-        super(outDir);
+    public 様式一覧(String outDir, String 点数表) throws IOException {
+        super(outDir, 点数表);
     }
 
-    public void render(String inCsvFile, String 点数表, String title, String outHtmlFile) throws IOException {
+    public void render(String inCsvFile, String title, String outHtmlFile) throws IOException {
         String fullTitle = title + " 様式一覧";
         try (BufferedReader reader = Files.newBufferedReader(Path.of(inCsvFile), StandardCharsets.UTF_8);
             TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile));
@@ -27,7 +27,7 @@ public class 様式一覧 extends HTML {
 			// パンくずリスト
 			writer.println("<div id='breadcrumb'>");
 //			writer.println("<a href='../../index.html'>トップ</a>");
-			menu(点数表, writer);
+			menu(writer);
 			writer.println("</div>"); // id=breadcrumb
 			writer.println("<div id='content'>");
             writer.println("<h1 class='title'>%s</h1>", fullTitle);

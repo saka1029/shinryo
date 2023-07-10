@@ -32,8 +32,8 @@ public class 本文 extends HTML {
      * @param linker
      * @throws IOException
      */
-    public 本文(String outDir, Map<String, String> kubunMap, Function<String, String> linker) throws IOException {
-        super(outDir);
+    public 本文(String outDir, String 点数表, Map<String, String> kubunMap, Function<String, String> linker) throws IOException {
+        super(outDir, 点数表);
         this.kubunMap = kubunMap;
         Files.createDirectories(Path.of(outDir));
         this.linker = linker;
@@ -126,7 +126,7 @@ public class 本文 extends HTML {
 //			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
 //			    sep = "&gt; ";
 //			}
-			menu("i", writer);
+			menu(writer);
 			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);

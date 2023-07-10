@@ -12,8 +12,8 @@ import saka1029.shinryo.parser.Pat;
 
 public class 区分番号一覧 extends HTML {
 
-    public 区分番号一覧(String outDir) throws IOException {
-        super(outDir);
+    public 区分番号一覧(String outDir, String 点数表) throws IOException {
+        super(outDir, 点数表);
     }
 
     List<Node> listKubun(Node root) {
@@ -38,7 +38,7 @@ public class 区分番号一覧 extends HTML {
      * @param outHtmlFile
      * @throws IOException
      */
-    public void render(Node oldRoot, Node newRoot, String title, String 点数表, String 年度, String 旧年度, String outHtmlFile) throws IOException {
+    public void render(Node oldRoot, Node newRoot, String title, String 年度, String 旧年度, String outHtmlFile) throws IOException {
 		String fullTitle = title + " 区分番号一覧";
 		List<Node> oldList = listKubun(oldRoot);
 		List<Node> newList = listKubun(newRoot);
@@ -112,7 +112,7 @@ public class 区分番号一覧 extends HTML {
                     // パンくずリスト
                     writer.println("<div id='breadcrumb'>");
 //                    writer.println("<a href='../../index.html'>トップ</a>");
-                    menu("i", writer);
+                    menu(writer);
                     writer.println("</div>"); // id=breacdcrumb
                     writer.println("<div id='content'>");
                     writer.println("<h1 class='title'>%s</h1>", fullTitle);

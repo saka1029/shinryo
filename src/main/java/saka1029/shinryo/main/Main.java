@@ -79,7 +79,7 @@ public class Main {
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "様式一覧生成");
-        new 様式一覧(param.outDir(点数表)).render(param.txt(点数表, "ye"), 点数表, param.title(点数表), "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki.html");
     }
 
     static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link)
@@ -98,12 +98,12 @@ public class Main {
         Node kRoot = Parser.parse(kParser, true, kTxt);
         Node tRoot = Parser.parse(tParser, true, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, kubunMap, link).render(kRoot, title, "index.html");
+        new 本文(outDir, 点数表, kubunMap, link).render(kRoot, title, "index.html");
         Param prev = param.previous();
         Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
             ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
         LOGGER.info("区分番号一覧生成");
-        new 区分番号一覧(outDir).render(oldRoot, kRoot, title, 点数表, param.年度, prev.年度, "kubun.html");
+        new 区分番号一覧(outDir, 点数表).render(oldRoot, kRoot, title, param.年度, prev.年度, "kubun.html");
         イメージコピー(param, 点数表);
     }
     
@@ -112,15 +112,17 @@ public class Main {
         LOGGER.info(param.title(点数表) + "HTML生成");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
+        String kTitle = title + "(告示)";
+        String tTitle = title + "(通知)";
         String kTxt = param.txt(点数表, "ke");
         String tTxt = param.txt(点数表, "te");
-        LOGGER.info(param.title(点数表) + "(告示)");
+        LOGGER.info(kTitle);
         Node kRoot = Parser.parse(new 施設基準告示読込(), true, kTxt);
-        LOGGER.info(param.title(点数表) + "(通知)");
+        LOGGER.info(tTitle);
         Node tRoot = Parser.parse(new 施設基準通知読込(), true, tTxt);
         Trie<Node> dict = 施設基準通知辞書.create(tRoot);
-        new 施設基準告示本文(outDir, dict).render(kRoot, title + "(告示)", "index.html");
-        new 施設基準通知本文(outDir).render(tRoot, title + "(通知)", "tuti.html");
+        new 施設基準告示本文(outDir, dict).render(kRoot, kTitle, "index.html");
+        new 施設基準通知本文(outDir).render(tRoot, tTitle, "tuti.html");
         イメージコピー(param, 点数表);
     }
     

@@ -11,7 +11,7 @@ import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 
-public class 施設基準通知本文 extends HTML {
+public class 施設基準通知本文 extends 施設基準本文 {
 
     static final String PATH_PREFIX = "t";
 
@@ -58,7 +58,7 @@ public class 施設基準通知本文 extends HTML {
 //			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
 //			    sep = "&gt; ";
 //			}
-			menu("k", writer);
+			menu(writer);
 			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
