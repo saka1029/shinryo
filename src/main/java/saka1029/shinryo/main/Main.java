@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
-import saka1029.shinryo.common.Trie;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
 import saka1029.shinryo.parser.Pat;
@@ -28,7 +27,6 @@ import saka1029.shinryo.renderer.Sitemap;
 import saka1029.shinryo.renderer.区分番号一覧;
 import saka1029.shinryo.renderer.施設基準告示本文;
 import saka1029.shinryo.renderer.施設基準通知本文;
-import saka1029.shinryo.renderer.施設基準通知辞書;
 import saka1029.shinryo.renderer.本文;
 import saka1029.shinryo.renderer.様式一覧;
 
@@ -120,8 +118,7 @@ public class Main {
         Node kRoot = Parser.parse(new 施設基準告示読込(), true, kTxt);
         LOGGER.info(tTitle);
         Node tRoot = Parser.parse(new 施設基準通知読込(), true, tTxt);
-        Trie<Node> dict = 施設基準通知辞書.create(tRoot);
-        new 施設基準告示本文(outDir, dict).render(kRoot, kTitle, "index.html");
+        new 施設基準告示本文(outDir).render(kRoot, kTitle, "index.html");
         new 施設基準通知本文(outDir).render(tRoot, tTitle, "tuti.html");
         イメージコピー(param, 点数表);
     }

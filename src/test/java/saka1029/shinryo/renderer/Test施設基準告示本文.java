@@ -26,7 +26,6 @@ public class Test施設基準告示本文 {
         logger.info(Common.methodName());
         String 点数表 = "k";
         String kTxt = param.txt(点数表, "ke");
-        String tTxt = param.txt(点数表, "te");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表) + "(告示)";
         String outHtmlFile = "index.html";
@@ -34,9 +33,7 @@ public class Test施設基準告示本文 {
         if (Files.exists(Path.of(param.inDir(点数表, "img"))))
             Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
         Node kRoot = Parser.parse(new 施設基準告示読込(), false, kTxt);
-        Node tRoot = Parser.parse(new 施設基準通知読込(), false, tTxt);
-        Trie<Node> tRef = 施設基準通知辞書.create(tRoot);
-        new 施設基準告示本文(outDir, tRef).render(kRoot, title, outHtmlFile);
+        new 施設基準告示本文(outDir).render(kRoot, title, outHtmlFile);
     }
 
 }
