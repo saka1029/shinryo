@@ -137,10 +137,9 @@ public class TestPat {
     @Test
     public void test施設基準様式名パターン() {
         assertEquals("T3-S4", y("別添３の別紙４"));
-        assertEquals("T7", y("別添７"));
+//        assertEquals("T7", y("別添７"));
         assertEquals("T6-S1-2-3", y("別 添６ の 別紙１の２の３"));
         assertEquals("T7-Y1-2-3", y("別添 ７ の 様式 １ の ２ の ３"));
         assertEquals("T2-Y1", y("別添2の様式１"));
-        
     }
 }

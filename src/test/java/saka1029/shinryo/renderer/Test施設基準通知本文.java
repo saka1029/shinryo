@@ -5,8 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
@@ -33,5 +31,5 @@ public class Test施設基準通知本文 {
         Node kRoot = Parser.parse(new 施設基準通知読込(), false, kTxt);
         new 施設基準通知本文(outDir).render(kRoot, title, outHtmlFile);
     }
-
+    
 }

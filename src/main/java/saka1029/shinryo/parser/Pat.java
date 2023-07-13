@@ -54,7 +54,7 @@ public class Pat {
     public static final String 例 = "例" + 数字; 
     public static final String 様式名パターン = repeat("別[紙添]様式\\s*" + 数字, "\\s*[のー－―‐-]\\s*", 数字);
     public static final String 施設基準様式名パターン = "別\\s*添\\s*" + 数字
-        + "(\\s*の\\s*(別\\s*紙|様\\s*式)\\s*" + 数字 + "(\\s*の\\s*" + 数字 + ")*)?";
+        + "\\s*の\\s*(別\\s*紙|様\\s*式)\\s*" + 数字 + "(\\s*の\\s*" + 数字 + ")*";
     public static final Pattern 医科リンクパターン = Pattern.compile("(?<K>" + 区分番号 + ")|(?<Y>" + 様式名パターン + ")");
     public static final Pattern 調剤リンクパターン = Pattern.compile("(?<K>" + 調剤告示区分番号 + ")|(?<Y>" + 様式名パターン + ")");
     public static final String リンク = "<a href='%s.%s'>%s</a>";

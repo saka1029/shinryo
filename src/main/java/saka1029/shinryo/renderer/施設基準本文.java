@@ -18,6 +18,8 @@ public abstract class 施設基準本文 extends HTML {
 		super(outDir, "k");
 		this.pathPrefix = pathPrefix;
 	}
+	
+	public abstract String anchor(String s, Node n);
 
     public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {
         Token token = node.token;
@@ -34,8 +36,8 @@ public abstract class 施設基準本文 extends HTML {
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
-            lineDirective(token), indent(level, token.number), token.number, token.header,
-            token.body.size() > 0 ? "<br>" : "", token.body.stream().collect(Collectors.joining()));
+            lineDirective(token), indent(level, token.number), token.number, anchor(token.header, node),
+            token.body.size() > 0 ? "<br>" : "", anchor(token.body.stream().collect(Collectors.joining()), node));
         for (Node child : node.children)
             node(child, level + 1, writer, links);
     }
@@ -63,9 +65,9 @@ public abstract class 施設基準本文 extends HTML {
 			    // headerの後半とbodyの出力
                 Token token = node.token;
                 if (!token.header1().isEmpty())
-                    writer.println("<p><b>%s</b></p>", token.header1());
+                    writer.println("<p><b>%s</b></p>", anchor(token.header1(), node));
                 if (token.body.size() > 0)
-                    writer.println("<p>%s</p>", String.join("", token.body));
+                    writer.println("<p>%s</p>", anchor(String.join("", token.body), node));
 			}
 			links.push(new Link(outHtmlFile, title));
             // 子ノードのレンダリング
