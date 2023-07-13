@@ -125,4 +125,22 @@ public class TestPat {
         assertTrue("B001-2".compareTo("B001-12") > 0);
         assertTrue(Pat.区分順序化("B001-2").compareTo(Pat.区分順序化("B001-12")) < 0);
     }
+    
+    static final Pattern 施設基準様式 = Pattern.compile(Pat.施設基準様式名パターン);
+    static String y(String s) {
+        Matcher m = 施設基準様式.matcher(s);
+        if (!m.find())
+            return null;
+        return Pat.正規化(m.group());
+    }
+
+    @Test
+    public void test施設基準様式名パターン() {
+        assertEquals("T3-S4", y("別添３の別紙４"));
+        assertEquals("T7", y("別添７"));
+        assertEquals("T6-S1-2-3", y("別 添６ の 別紙１の２の３"));
+        assertEquals("T7-Y1-2-3", y("別添 ７ の 様式 １ の ２ の ３"));
+        assertEquals("T2-Y1", y("別添2の様式１"));
+        
+    }
 }
