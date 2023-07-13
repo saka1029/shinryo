@@ -19,13 +19,16 @@ public abstract class 施設基準本文 extends HTML {
 		this.pathPrefix = pathPrefix;
 	}
 
-    public void link(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+    public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s%s.html".formatted(pathPrefix, node.path);
         writer.println("%s<p %s><a href='%s'>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, title);
         file(node, title, url, links);
+        if (bodyOnly)
+			for (Node child : node.children)
+				node(child, level + 1, writer, links);
     }
 
     public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {

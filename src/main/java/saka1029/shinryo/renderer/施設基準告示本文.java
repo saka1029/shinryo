@@ -17,7 +17,7 @@ public class 施設基準告示本文 extends 施設基準本文 {
 
     void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         if (LINKS.contains(node.token.type.name))
-            link(node, level, writer, links);
+            link(node, level, writer, links, false);
         else
             text(node, level, writer, links);
     }

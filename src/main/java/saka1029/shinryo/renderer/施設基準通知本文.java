@@ -13,11 +13,13 @@ public class 施設基準通知本文 extends 施設基準本文 {
         super(outDir, "t");
     }
 
-    static final List<String> LINKS = List.of("第数字の", "別添");
+    static final List<String> LINKS = List.of("第数字の");
 
     void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
         if (LINKS.contains(node.token.type.name) && !node.token.header.equals("削除"))
-            link(node, level, writer, links);
+            link(node, level, writer, links, false);
+        else if (node.token.body.size() > 0 && node.children.size() == 0)
+			link(node, level, writer, links, true);
         else
             text(node, level, writer, links);
     }
