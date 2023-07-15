@@ -100,7 +100,7 @@ public class Main {
         Param prev = param.previous();
         Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
             ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
-        LOGGER.info("区分番号一覧生成");
+        LOGGER.info(param.title(点数表) + "区分番号一覧生成");
         new 区分番号一覧(outDir, 点数表).render(oldRoot, kRoot, title, param.年度, prev.年度, "kubun.html");
         イメージコピー(param, 点数表);
     }
