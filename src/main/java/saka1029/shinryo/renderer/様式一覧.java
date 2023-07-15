@@ -40,10 +40,9 @@ public class 様式一覧 extends HTML {
                 if (line.isBlank() || line.matches("\\s*#.*"))
                     continue;
                 様式 e = new 様式(line);
-                writer.println("<!-- %s:%s %s:%s --><p><a href='%s/%s.pdf'>%s %s</a></p>",
-                    Path.of(e.file).getFileName(), e.startPage,
-                    fileName, lineNo,
-                    outDir, e.id, e.name, e.title);
+                writer.println("<!-- %s:%s %s:%s --><p><a href='pdf/%s.pdf'>%s %s</a></p>",
+                    Path.of(e.file).getFileName(), e.startPage, fileName, lineNo,
+                    e.id, e.name, e.title);
                 splitter.split(e.file, Path.of(outDir, "pdf", e.id + ".pdf").toString(), e.startPage, e.endPage);
             }
 //            writer.println("</ul>");
