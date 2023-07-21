@@ -43,16 +43,17 @@ public class HTML {
 	}
 	
 	void menu(TextWriter writer) {
-//		writer.println("<hr>");
-		writer.println("<a href='../../index.html'>トップ</a>");
-		if (点数表.equals("k")) {
-            writer.println("<a href='index.html'>告示</a>");
-            writer.println("<a href='tuti.html'>通知</a>");
-		} else {
-            writer.println("<a href='index.html'>本文</a>");
-            writer.println("<a href='kubun.html'>区分番号一覧</a>");
-		}
-		writer.println("<a href='yoshiki.html'>様式一覧</a>");
+		writer.println("<div id='menu'></div>");
+		writer.println("<script type='text/javascript' src='../../menu.js'></script>");
+//		writer.println("<a href='../../index.html'>トップ</a>");
+//		if (点数表.equals("k")) {
+//            writer.println("<a href='index.html'>告示</a>");
+//            writer.println("<a href='tuti.html'>通知</a>");
+//		} else {
+//            writer.println("<a href='index.html'>本文</a>");
+//            writer.println("<a href='kubun.html'>区分番号一覧</a>");
+//		}
+//		writer.println("<a href='yoshiki.html'>様式一覧</a>");
 	}
 	
     static void head(String title, Node node, TextWriter writer) {

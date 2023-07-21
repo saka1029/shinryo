@@ -50,14 +50,14 @@ public abstract class 施設基準本文 extends HTML {
 			writer.println("<body>");
 			writer.println("<div id='all'>");
 			// パンくずリスト
-			writer.println("<div id='breadcrumb'>");
+//			writer.println("<div id='breadcrumb'>");
 //			String sep = "";
 //			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
 //			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
 //			    sep = "&gt; ";
 //			}
+//			writer.println("</div>"); // id='breadcrumb'
 			menu(writer);
-			writer.println("</div>"); // id='breadcrumb'
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
 			writer.println("<div id='content'>");
