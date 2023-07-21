@@ -9,13 +9,11 @@
     function bodyonload() {
         const loc = window.location;
         const params = new URLSearchParams(loc.search);
-//         const l = params.get("l");
-//         const r = params.get("r");
-//         console.log("l=" + l + " r=" + r);
         left.src = params.get("l");
         right.src = params.get("r");
         right.onload = () => {
-//             console.log("right loaded: " + right.contentWindow.document.title);
+        	   // ローカルで実行した場合、以下の例外が発生する。(Webサーバ経由の場合は問題ない)
+        	   // Uncaught DOMException: Blocked a frame with origin "null" from accessing a cross-origin frame.
             document.title = "比較 " + right.contentWindow.document.title;
         };
     }
