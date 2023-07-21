@@ -27,7 +27,7 @@
     if (年度 != 最新年度)
         links += " <a href='../../" + 最新年度 + "/" + 点数表 + "/" + 種類 + ".html'>"
             + "<font color='red'>最新版</font></a>";
-    if (前年度 != null) {
+    if (前年度 != null && 種類 != "kubun") {
         links += " <a href='../../hikaku.html"
             + "?l=" + 前年度 + "/" + 点数表 + "/" + 種類 + ".html"
             + "&r=" + 年度 + "/" + 点数表 + "/" + 種類 + ".html' target='_top'>旧版と比較</a>";
