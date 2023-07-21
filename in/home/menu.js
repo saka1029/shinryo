@@ -12,8 +12,8 @@
     const 前年度 = PREV[年度];
     const 点数表 = path[1];
     const 種類 = path[2];
-    console.log("年度=" + 年度 + " 点数表=" + 点数表 + " 種類=" + 
-        + " 最新版=" + (年度 == NEW) + " 前年度=" + PREV[年度]);
+//    console.log("年度=" + 年度 + " 点数表=" + 点数表 + " 種類=" + 
+//        + " 最新版=" + (年度 == 最新年度) + " 前年度=" + PREV[年度]);
     var links = "";
     links += " <a href='../../index.html' target='_top'>ホーム</a>";
     if (点数表 == "k") {
