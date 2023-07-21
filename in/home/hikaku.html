@@ -9,12 +9,13 @@
     function bodyonload() {
         const loc = window.location;
         const params = new URLSearchParams(loc.search);
-        const l = params.get("l");
-        const r = params.get("r");
-        left.src =  l;
-        right.src = r;
+//         const l = params.get("l");
+//         const r = params.get("r");
+//         console.log("l=" + l + " r=" + r);
+        left.src = params.get("l");
+        right.src = params.get("r");
         right.onload = () => {
-            console.log("right loaded: " + right.contentWindow.document.title);
+//             console.log("right loaded: " + right.contentWindow.document.title);
             document.title = "比較 " + right.contentWindow.document.title;
         };
     }
