@@ -4,7 +4,7 @@
         console.log("no menu");
         return;
     }
-    console.log("location.href=" + location.href);
+//    console.log("location.href=" + location.href);
     const 最新年度 = "04";
     const PREV = {"04": "02", "02": null};
     const path = location.href.replace(/^.*\/(\d\d\/.\/.*)\.html$/, "$1").split("/");
