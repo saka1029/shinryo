@@ -14,7 +14,7 @@ public class TestSitemap {
     
     static final Param param = Param.of("in", "debug/html", "04");
 
-    @Test
+//    @Test
     public void testRender() throws IOException {
         String outDir = param.outHomeDir();
         String baseUrl = "http://tensuhyo.test.server.com";

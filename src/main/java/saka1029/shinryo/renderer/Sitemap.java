@@ -26,6 +26,7 @@ public class Sitemap {
 	public static void render(String outDir, String baseUrl) throws IOException {
 	    baseUrl = baseUrl.replaceFirst("/$", "");
 	    Path dir = Path.of(outDir);
+	    Files.createDirectories(dir);
 		try (TextWriter writer = new TextWriter(dir.resolve("sitemap.xml"))) {
 			writer.println("<?xml version='1.0' encoding='UTF-8'?>");
 			writer.println("<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>");
