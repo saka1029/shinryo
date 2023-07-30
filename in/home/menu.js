@@ -15,6 +15,14 @@
 //    console.log("年度=" + 年度 + " 点数表=" + 点数表 + " 種類=" + 
 //        + " 最新版=" + (年度 == 最新年度) + " 前年度=" + PREV[年度]);
     var links = "";
+//    links += ""
+//        + "<form id='cse-search-box' action='http://google.com/cse'>\n"
+//        + "    <input type='hidden' name='cx' value='a6474cacc7567404b' />\n"
+//        + "    <input type='hidden' name='ie' value='UTF-8' />\n"
+//        + "    <input type='text' name='q' size='50' placeholder='サイト内検索' />\n"
+//        + "    <input type='submit' name='sa' value='検索' />\n"
+//        + "    <img src='http://www.google.com/cse/images/google_custom_search_smwide.gif' align='middle'>\n"
+//        + "</form>\n";
     links += " <a href='../../index.html' target='_top'>ホーム</a>";
     if (点数表 == "k") {
         links += " <a href='index.html'>告示</a>";
