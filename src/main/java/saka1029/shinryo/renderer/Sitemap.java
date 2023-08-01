@@ -11,6 +11,8 @@ public class Sitemap {
 
 	private static void render(Path file, String url, TextWriter w) throws IOException {
 	    String name = file.getFileName().toString();
+	    if (name.startsWith("."))
+	        return;
 		if (Files.isDirectory(file)) {
 			// WindowsとUnixで同じ順番にするため、ファイル名でソートする。
 			Path[] children = Files.list(file)
