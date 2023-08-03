@@ -1,6 +1,9 @@
 package saka1029.shinryo.renderer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Deque;
@@ -13,6 +16,17 @@ import saka1029.shinryo.parser.Token;
 
 public class HTML {
 
+    static final String GOOGLE_ANALYTICS_PATH = "/GoogleAnalytics.txt";
+    static final String GOOGLE_ANALYTICS;
+    static {
+        try (InputStream is = HTML.class.getResourceAsStream(GOOGLE_ANALYTICS_PATH);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            GOOGLE_ANALYTICS = br.lines().collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     static class Link {
         final String url;
         final String title;
@@ -60,6 +74,7 @@ public class HTML {
         writer.println("<!DOCTYPE html>");
         writer.println("<html lang='ja_JP'>");
         writer.println("<head>");
+        writer.println(GOOGLE_ANALYTICS);
         writer.println("<meta charset='utf-8'>");
         writer.println("<meta name='viewport' content='initial-scale=1.0'>");
         writer.println("<link rel='icon' href='../../favicon.ico' />");
