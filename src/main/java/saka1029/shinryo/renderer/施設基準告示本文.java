@@ -1,7 +1,6 @@
 package saka1029.shinryo.renderer;
 
 import java.io.IOException;
-import java.util.Deque;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -28,10 +27,10 @@ public class 施設基準告示本文 extends 施設基準本文 {
 
     static final List<String> LINKS = List.of("第漢数字", "別表", "別表第");
 
-    void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+    void node(Node node, int level, TextWriter writer) throws IOException {
         if (LINKS.contains(node.token.type.name))
-            link(node, level, writer, links, false);
+            link(node, level, writer, false);
         else
-            text(node, level, writer, links);
+            text(node, level, writer);
     }
 }

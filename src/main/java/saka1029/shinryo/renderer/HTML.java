@@ -39,6 +39,7 @@ public class HTML {
 
     final String outDir;
     final String 点数表;
+    String mainTitle = "";
     
     HTML(String outDir, String 点数表) throws IOException {
         this.outDir = outDir;
@@ -85,10 +86,12 @@ public class HTML {
         writer.println("</head>");
     }
 	
-	static String paths(Node node) {
+	String paths(Node node) {
 	    Deque<String> list = new LinkedList<>();
 	    for (Node p = node.parent; p != null && p.token != null; p = p.parent)
 	        list.addFirst(p.token.number + " " + p.token.header0());
+	    if (!list.isEmpty())
+	        list.addFirst(mainTitle);
 	    return list.stream().collect(Collectors.joining(" / "));
 	}
 }

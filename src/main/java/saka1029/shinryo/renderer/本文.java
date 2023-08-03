@@ -3,9 +3,7 @@ package saka1029.shinryo.renderer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -75,58 +73,50 @@ public class 本文 extends HTML {
         writer.println("</div>");
 	}
 
-    public void link(Node node, int level, TextWriter writer, Deque<Link> links, boolean bodyOnly) throws IOException {
+    public void link(Node node, int level, TextWriter writer, boolean bodyOnly) throws IOException {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
         writer.println("%s<p %s><a href='%s'>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, title);
-        file(node, title, url, links, bodyOnly);
+        file(node, title, url, bodyOnly);
         if (bodyOnly)
 			for (Node child : node.children)
-				node(child, level + 1, writer, links);
+				node(child, level + 1, writer);
     }
 
-    public void text(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+    public void text(Node node, int level, TextWriter writer) throws IOException {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
             lineDirective(token), indent(level, token.number), token.number, linkText(token.header),
             token.body.size() > 0 ? "<br>" : "", linkBodyText(token));
         for (Node child : node.children)
-            node(child, level + 1, writer, links);
+            node(child, level + 1, writer);
     }
 
     static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号");
     static final Set<String> MAIN_TREE_NODES = Set.of("章", "部", "節", "款", "通則");
 
-    public void node(Node node, int level, TextWriter writer, Deque<Link> links) throws IOException {
+    public void node(Node node, int level, TextWriter writer) throws IOException {
         Token token = node.token;
         if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
-            link(node, level, writer, links, false);
+            link(node, level, writer, false);
         else if (MAIN_NODES.contains(token.type.name)) {
             if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
-                link(node, level, writer, links, false);
+                link(node, level, writer, false);
             else if (node.token.body.size() > 0)
-                link(node, level, writer, links, true);
+                link(node, level, writer, true);
             else
-                text(node, level, writer, links);
+                text(node, level, writer);
         } else
-            text(node, level, writer, links);
+            text(node, level, writer);
     }
 
-    public void file(Node node, String title, String outHtmlFile, Deque<Link> links, boolean bodyOnly) throws IOException {
+    public void file(Node node, String title, String outHtmlFile, boolean bodyOnly) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             head(title, node, writer);
 			writer.println("<body>");
 			writer.println("<div id='all'>");
-			// パンくずリスト
-//			writer.println("<div id='breadcrumb'>");
-//			String sep = "";
-//			for (Link link : (Iterable<Link>) () -> links.descendingIterator()) {
-//			    writer.println("%s<a href='%s'>%s</a>", sep, link.url, link.title);
-//			    sep = "&gt; ";
-//			}
-//			writer.println("</div>"); // id='breadcrumb'
 			menu(writer);
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
@@ -141,7 +131,6 @@ public class 本文 extends HTML {
                 if (token.body.size() > 0)
                     writer.println("<p>%s</p>", linkBodyText(token));
 			}
-			links.push(new Link(outHtmlFile, title));
 			// 歯科の区分番号で記述が空の場合、医科の区分番号へリンクする
 			if (kubunMap != null && node.token != null && node.token.type.name.equals("区分番号")
 				&& node.token.header1().isBlank() && node.token.body.isEmpty() && node.children.isEmpty()) {
@@ -155,7 +144,7 @@ public class 本文 extends HTML {
 			if (!bodyOnly) {
 				// 子ノードのレンダリング
 				for (Node child : node.children)
-					node(child, 0, writer, links);
+					node(child, 0, writer);
 			}
 			// 通知ノードのレンダリング
 			if (!node.isTuti && node.tuti != null
@@ -163,7 +152,7 @@ public class 本文 extends HTML {
 			    beginTuti(writer);
                 writer.println("<p>%s</p>", linkBodyText(node.tuti.token));
 			    for (Node child : node.tuti.children)
-                    node(child, 0, writer, links);
+                    node(child, 0, writer);
 			    endTuti(writer);
 			}
 			if (node.isTuti)
@@ -172,13 +161,11 @@ public class 本文 extends HTML {
 			writer.println("</div>"); // id='all'
             writer.println("</body>");
             writer.println("</html>");
-			links.pop();
         }
     }
 
     public void render(Node node, String title, String outHtmlFile) throws IOException {
-        Deque<Link> links = new LinkedList<>();
-        links.add(new Link("../../index.html", "トップ"));
-        file(node, title, outHtmlFile, links, false);
+        this.mainTitle = title;
+        file(node, title, outHtmlFile, false);
     }
 }
