@@ -1,0 +1,6 @@
+#!/bin/sh +xv
+OUT_DIR=../s
+BASE_URL=https://saka1029.github.io/s
+echo ./run -o $OUT_DIR -b $BASE_URL 04 i2
+./run -o $OUT_DIR -b $BASE_URL 04 i2
+
