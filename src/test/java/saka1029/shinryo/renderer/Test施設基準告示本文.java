@@ -5,15 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
-import saka1029.shinryo.common.Trie;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Parser;
 import saka1029.shinryo.parser.施設基準告示読込;
-import saka1029.shinryo.parser.施設基準通知読込;
 
 public class Test施設基準告示本文 {
 

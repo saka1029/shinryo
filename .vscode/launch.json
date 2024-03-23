@@ -1,0 +1,32 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "i2",
+            "args": "06 i2",
+            "request": "launch",
+            "mainClass": "saka1029.shinryo.main.Main",
+            "projectName": "shinryo"
+        },
+        {
+            "type": "java",
+            "name": "all-0",
+            "args": "06 i0 s0 t0 k0",
+            "request": "launch",
+            "mainClass": "saka1029.shinryo.main.Main",
+            "projectName": "shinryo"
+        },
+        {
+            "type": "java",
+            "name": "all-1",
+            "args": "06 i1 s1 t1 k1",
+            "request": "launch",
+            "mainClass": "saka1029.shinryo.main.Main",
+            "projectName": "shinryo"
+        }
+    ]
+}

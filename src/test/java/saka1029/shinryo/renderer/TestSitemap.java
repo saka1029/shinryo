@@ -3,8 +3,6 @@ package saka1029.shinryo.renderer;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.junit.Test;
-
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 

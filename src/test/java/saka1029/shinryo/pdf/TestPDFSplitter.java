@@ -2,8 +2,6 @@ package saka1029.shinryo.pdf;
 
 import java.io.IOException;
 
-import org.junit.Test;
-
 import saka1029.shinryo.common.Param;
 
 public class TestPDFSplitter {
