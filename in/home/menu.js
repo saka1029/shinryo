@@ -5,8 +5,8 @@
         return;
     }
 //    console.log("location.href=" + location.href);
-    const 最新年度 = "04";
-    const PREV = {"04": "02", "02": null};
+    const 最新年度 = "06";
+    const PREV = {"06": "04", "04": "02", "02": null};
     const path = location.href.replace(/^.*\/(\d\d\/.\/.*)\.html$/, "$1").split("/");
     const 年度 = path[0];
     const 前年度 = PREV[年度];
