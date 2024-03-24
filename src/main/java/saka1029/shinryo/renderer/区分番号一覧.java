@@ -52,7 +52,9 @@ public class 区分番号一覧 extends HTML {
                     String oldStr = "旧";
                     String newStr = "新";
                     String compStr = "比較";
-                    String name = newNode.token.number + " " + newNode.token.header0();
+                    String name = newNode != null
+                        ? newNode.token.number + " " + newNode.token.header0()
+                        : oldNode.token.number + " " + oldNode.token.header0();
                     if (oldNode == null || oldNode.token.header0().equals("削除"))
                         oldStr = "－";
                     if (newNode == null || newNode.token.header0().equals("削除"))
