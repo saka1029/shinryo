@@ -14,6 +14,14 @@
         },
         {
             "type": "java",
+            "name": "s2",
+            "args": "06 s2",
+            "request": "launch",
+            "mainClass": "saka1029.shinryo.main.Main",
+            "projectName": "shinryo"
+        },
+        {
+            "type": "java",
             "name": "all-0",
             "args": "06 i0 s0 t0 k0",
             "request": "launch",
