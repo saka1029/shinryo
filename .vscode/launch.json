@@ -6,6 +6,22 @@
     "configurations": [
         {
             "type": "java",
+            "name": "all-0",
+            "args": "06 i0 s0 t0 k0",
+            "request": "launch",
+            "mainClass": "saka1029.shinryo.main.Main",
+            "projectName": "shinryo"
+        },
+        {
+            "type": "java",
+            "name": "all-1",
+            "args": "06 i1 s1 t1 k1",
+            "request": "launch",
+            "mainClass": "saka1029.shinryo.main.Main",
+            "projectName": "shinryo"
+        },
+        {
+            "type": "java",
             "name": "i2",
             "args": "06 i2",
             "request": "launch",
@@ -30,19 +46,11 @@
         },
         {
             "type": "java",
-            "name": "all-0",
-            "args": "06 i0 s0 t0 k0",
+            "name": "k2",
+            "args": "06 k2",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
             "projectName": "shinryo"
         },
-        {
-            "type": "java",
-            "name": "all-1",
-            "args": "06 i1 s1 t1 k1",
-            "request": "launch",
-            "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
-        }
     ]
 }
