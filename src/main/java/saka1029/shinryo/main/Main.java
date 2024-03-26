@@ -41,9 +41,10 @@ public class Main {
         System.err.printf("inDir: 入力ディレクトリ(省略時は'%s')%n", DEFAULT_IN_DIR);
         System.err.printf("outDir: 出力ディレクトリ(省略時は'%s')%n", DEFAULT_OUT_DIR);
         System.err.println("baseUrl: サイトマップ作成時のベースURL(省略時はサイトマップを作成しません)");
-        System.err.println("STEP: [ist][012]");
+        System.err.println("STEP: ([istk][012]) ...");
         System.err.println("   i:医科, s:歯科, t:調剤, k:施設基準, 0:PDF変換, 1:様式生成, 2:HTML生成");
-        System.err.println("   ex) i0:医科PDF変換, t2:調剤HTML生成");
+        System.err.println("   ex) i1 i2 s1 s2");
+        System.err.println("       (医科および歯科の様式およびHTML生成)");
         return new IllegalArgumentException(message);
     }
 
