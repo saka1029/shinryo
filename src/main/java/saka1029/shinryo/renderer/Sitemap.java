@@ -3,15 +3,19 @@ package saka1029.shinryo.renderer;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.Set;
 
 import saka1029.shinryo.common.TextWriter;
 
 public class Sitemap {
 
+	public static final Set<String> EXCLUDE = Set.of("target");
+
 	private static void render(Path file, String url, TextWriter w) throws IOException {
 	    String name = file.getFileName().toString();
-	    if (name.startsWith("."))
+	    if (name.startsWith(".") || EXCLUDE.contains(name))
 	        return;
 		if (Files.isDirectory(file)) {
 			// WindowsとUnixで同じ順番にするため、ファイル名でソートする。
