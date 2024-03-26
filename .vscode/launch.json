@@ -10,7 +10,8 @@
             "args": "06 i0 s0 t0 k0",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
+            "projectName": "shinryo",
+            "vmArgs": "-Djava.util.logging.config.file=logging.properties"
         },
         {
             "type": "java",
@@ -18,7 +19,8 @@
             "args": "06 i1 s1 t1 k1",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
+            "projectName": "shinryo",
+            "vmArgs": "-Djava.util.logging.config.file=logging.properties"
         },
         {
             "type": "java",
@@ -26,7 +28,8 @@
             "args": "06 i2",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
+            "projectName": "shinryo",
+            "vmArgs": "-Djava.util.logging.config.file=logging.properties"
         },
         {
             "type": "java",
@@ -34,7 +37,8 @@
             "args": "06 s2",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
+            "projectName": "shinryo",
+            "vmArgs": "-Djava.util.logging.config.file=logging.properties"
         },
         {
             "type": "java",
@@ -42,7 +46,8 @@
             "args": "06 t2",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
+            "projectName": "shinryo",
+            "vmArgs": "-Djava.util.logging.config.file=logging.properties"
         },
         {
             "type": "java",
@@ -50,7 +55,8 @@
             "args": "06 k2",
             "request": "launch",
             "mainClass": "saka1029.shinryo.main.Main",
-            "projectName": "shinryo"
+            "projectName": "shinryo",
+            "vmArgs": "-Djava.util.logging.config.file=logging.properties"
         },
     ]
 }
