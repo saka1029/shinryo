@@ -42,6 +42,8 @@ public class Common {
         return logger;
     }
 
+    static boolean INIT_LOGGER = false;
+
     /**
      * System.out, System.errの文字セットをUTF-8に変更する。 すべてのロガーのフォーマットをMY_FORMATに変更する。
      * 
@@ -49,13 +51,16 @@ public class Common {
      * （コードページ932のときMS932、65001のときUTF-8） (2)Eclipseの場合はwindows-31jとなる。
      */
     public static void initLogger() {
-        if (!System.out.charset().equals(StandardCharsets.UTF_8))
+        if (INIT_LOGGER)
+            return;
+        // if (!System.out.charset().equals(StandardCharsets.UTF_8))
             System.setOut(new PrintStream(System.out, true, StandardCharsets.UTF_8));
-        if (!System.err.charset().equals(StandardCharsets.UTF_8))
+        // if (!System.err.charset().equals(StandardCharsets.UTF_8))
             System.setErr(new PrintStream(System.err, true, StandardCharsets.UTF_8));
         for (Handler h : Logger.getLogger("").getHandlers())
             if (!h.getFormatter().equals(MY_FORMATTER))
                 h.setFormatter(MY_FORMATTER);
+        INIT_LOGGER = true;
     }
 
     public static boolean inEclipse() {
