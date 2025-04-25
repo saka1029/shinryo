@@ -1,0 +1,27 @@
+
+.baseFrame {
+  display: flex;
+  flex-direction: row;
+
+  width: calc(100% - 1px);
+  height: 95vh;
+  background-color: blueviolet;   /*下地が見えないことを確認する為*/
+}
+
+.leftFrame {
+  width:200px;                  /*幅固定*/
+  border: solid 1px;
+  margin: 0px;
+
+  background-color: orange;   /*確認様色付け*/
+}
+.rightFrame {
+  margin: 0px;
+  padding: 0px;
+  border: solid 1px;
+  overflow: auto;
+
+  background-color: greenyellow;   /*確認様色付け*/
+
+  flex: 1;  /*残りの幅すべて!!!⇒　flex-grow、flex-shrink、flex-basisの3つのプロパティのショートハンド*/
+}
