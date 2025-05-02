@@ -3,16 +3,15 @@
   display: flex;
   flex-direction: row;
 
-  width: calc(100% - 1px);
-  height: 95vh;
+  /* width: calc(100% - 1px); */
+  /* height: 95vh; */
   background-color: blueviolet;   /*下地が見えないことを確認する為*/
 }
 
 .leftFrame {
-  width:200px;                  /*幅固定*/
+  width: 500px;                  /*幅固定*/
   border: solid 1px;
   margin: 0px;
-
   background-color: orange;   /*確認様色付け*/
 }
 .rightFrame {

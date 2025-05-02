@@ -1,0 +1,57 @@
+@charset "UTF-8";
+body {
+    font-family: "ＭＳ ゴシック", "MS Gothic", Osaka－等幅, Osaka-Mono, monospace;
+    text-size-adjust: 100%;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    line-height: 160%;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+li {
+	line-height: 220%;
+}
+.title {
+	color: darkblue;
+}
+.main-li {
+	display: inline-block;
+}
+h1 {
+    line-height: 120%;
+	padding-bottom: 5px;
+}
+a {
+   text-decoration: none;
+   border-bottom: 1px solid blue;
+   padding-bottom: 2px;
+}
+a:active {
+   border-bottom: 1px solid #ff0000;
+   padding-bottom: 2px;
+}
+a:visited {
+   border-bottom: 1px solid #800080;
+   padding-bottom: 2px;
+}
+#all {
+    margin:0 auto;
+    max-width: 640px;
+}
+#menu {
+    border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+	border: 2px darkblue solid;
+/* 	border: none; */
+/*  background-color: #d0f8ff; */
+    padding: 0.5em;
+}
+#tuti {
+    border-radius: 0.25em;
+    -moz-border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    border:none;
+    background-color:#e8e8e8;
+    padding:0.5em;
+}
