@@ -1,0 +1,15 @@
+html,body {
+  height: 100%;
+}
+.split {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+.left {
+  left: 0;
+}
+.right {
+  right: 0;
+  overflow-y: scroll;
+}
