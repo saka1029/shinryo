@@ -9,16 +9,19 @@
 }
 
 .leftFrame {
-  width: 500px;                  /*幅固定*/
+  width: 40%;                  /*幅固定*/
   border: solid 1px;
   margin: 0px;
   background-color: orange;   /*確認様色付け*/
+  overflow-y: scroll;
+  height: 100%;
+/*  position: absolute; */
 }
 .rightFrame {
   margin: 0px;
   padding: 0px;
   border: solid 1px;
-  overflow: auto;
+/*  overflow: auto; */
 
   background-color: greenyellow;   /*確認様色付け*/
 
