@@ -6,9 +6,10 @@
     }
     console.log("location.href=" + location.href);
     console.log("location.pathname=" + location.pathname);
-    const frame = new URLSearchParams(location.search).get("f");
-    // URLにクエリ文字列"?f=1"が付与されているときはメニューを表示しない。
-    if (frame != null) {
+    const inFrame = window != window.parent;
+    console.log(`frame=${inFrame}`);
+    // iframe内の場合はページ先頭にメニューを表示しない。
+    if (inFrame) {
         menu.hidden = true;
         return;
     }
@@ -19,7 +20,7 @@
     const 前年度 = PREV[年度];
     const 点数表 = path[1];
     const 種類 = path[2];
-    console.log(`年度=${年度} 点数表=${点数表} 種類=${種類} 最新版=${年度 == 最新年度} 前年度=${PREV[年度]} frame=${frame}`);
+    console.log(`年度=${年度} 点数表=${点数表} 種類=${種類} 最新版=${年度 == 最新年度} 前年度=${PREV[年度]} frame=${inFrame}`);
     var links = "";
 //    links += ""
 //        + "<form id='cse-search-box' action='http://google.com/cse'>\n"
