@@ -85,7 +85,7 @@ public class 本文 extends HTML {
         String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
         writer.println("%s<p %s><a href='%s'%s>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, target(), title);
-        file(node, title, url, bodyOnly);
+        file(node, title, url, bodyOnly, false);
         if (bodyOnly)
 			for (Node child : node.children)
 				node(child, level + 1, writer);
@@ -118,18 +118,22 @@ public class 本文 extends HTML {
             text(node, level, writer);
     }
 
-    public void file(Node node, String title, String outHtmlFile, boolean bodyOnly) throws IOException {
+    public void file(Node node, String title, String outHtmlFile, boolean bodyOnly, boolean top) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             head(title, node, writer);
 			writer.println("<body>");
             if (!isSingle)
                 writer.println("<div id='all'>");
-			menu(writer);
-			writer.println("<p class='title'>%s</p>", paths(node));
-			writer.println("<h1 class='title'>%s</h1>", title);
+            if (!(isSingle && top)) {
+                menu(writer);
+                writer.println("<p class='title'>%s</p>", paths(node));
+                writer.println("<h1 class='title'>%s</h1>", title);
+            }
 			writer.println("<div id='content'>");
-            if (isSingle)
+            if (isSingle && top) {
                 writer.println("<div id='left-frame'>");
+                writer.println("<h1 class='title'>%s</h1>", title);
+            }
 			if (node.isTuti)
 			    beginTuti(writer);
 			if (node.token != null) {
@@ -166,7 +170,7 @@ public class 本文 extends HTML {
 			}
 			if (node.isTuti)
 			    endTuti(writer);
-            if (isSingle) {
+            if (isSingle && top) {
                 writer.println("</div>"); // id='left-frame'
                 writer.println("<div id='right-frame'>");
                 writer.println("<iframe id='inner-frame' name='inner-frame' frameborder='0'>");
@@ -183,6 +187,6 @@ public class 本文 extends HTML {
 
     public void render(Node node, String title, String outHtmlFile) throws IOException {
         this.mainTitle = title;
-        file(node, title, outHtmlFile, false);
+        file(node, title, outHtmlFile, false, true);
     }
 }
