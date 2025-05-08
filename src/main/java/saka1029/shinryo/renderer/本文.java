@@ -21,6 +21,7 @@ public class 本文 extends HTML {
 
     final Map<String, String> kubunMap;
     final Function<String, String> linker;
+    final boolean isSingle;
     
     /**
      * 
@@ -30,11 +31,12 @@ public class 本文 extends HTML {
      * @param linker
      * @throws IOException
      */
-    public 本文(String outDir, String 点数表, Map<String, String> kubunMap, Function<String, String> linker) throws IOException {
+    public 本文(String outDir, String 点数表, Map<String, String> kubunMap, Function<String, String> linker, boolean isSingle) throws IOException {
         super(outDir, 点数表);
         this.kubunMap = kubunMap;
         Files.createDirectories(Path.of(outDir));
         this.linker = linker;
+        this.isSingle = isSingle;
     }
     
     static final String 区分末尾の括弧 = "[(（][^()（）]*[)）]$";
@@ -73,12 +75,16 @@ public class 本文 extends HTML {
         writer.println("</div>");
 	}
 
+    String target() {
+        return isSingle ? " target='inner-frame'" : "";
+    }
+
     public void link(Node node, int level, TextWriter writer, boolean bodyOnly) throws IOException {
         Token token = node.token;
         String title = "%s %s".formatted(token.number, token.header0());
         String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
-        writer.println("%s<p %s><a href='%s'>%s</a></p>",
-            lineDirective(token), indent(level, token.number), url, title);
+        writer.println("%s<p %s><a href='%s'%s>%s</a></p>",
+            lineDirective(token), indent(level, token.number), url, target(), title);
         file(node, title, url, bodyOnly);
         if (bodyOnly)
 			for (Node child : node.children)
@@ -116,11 +122,14 @@ public class 本文 extends HTML {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             head(title, node, writer);
 			writer.println("<body>");
-			writer.println("<div id='all'>");
+            if (!isSingle)
+                writer.println("<div id='all'>");
 			menu(writer);
 			writer.println("<p class='title'>%s</p>", paths(node));
 			writer.println("<h1 class='title'>%s</h1>", title);
 			writer.println("<div id='content'>");
+            if (isSingle)
+                writer.println("<div id='left-frame'>");
 			if (node.isTuti)
 			    beginTuti(writer);
 			if (node.token != null) {
@@ -157,8 +166,16 @@ public class 本文 extends HTML {
 			}
 			if (node.isTuti)
 			    endTuti(writer);
+            if (isSingle) {
+                writer.println("</div>"); // id='left-frame'
+                writer.println("<div id='right-frame'>");
+                writer.println("<iframe id='inner-frame' name='inner-frame' frameborder='0'>");
+                writer.println("</iframe>");
+                writer.println("</div>"); // id='right-frame'
+            }
 			writer.println("</div>"); // id='content'
-			writer.println("</div>"); // id='all'
+            if (!isSingle)
+                writer.println("</div>"); // id='all'
             writer.println("</body>");
             writer.println("</html>");
         }

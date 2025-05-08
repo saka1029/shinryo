@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.logging.Logger;
 
+// import org.junit.Test;
+
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
@@ -39,7 +41,7 @@ public class Test本文 {
         Node kRoot = Parser.parse(new 医科告示読込(), false, kTxt);
         Node tRoot = Parser.parse(new 医科通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, 点数表, null, Pat.医科リンク).render(kRoot, title, outHtmlFile);
+        new 本文(outDir, 点数表, null, Pat.医科リンク, false).render(kRoot, title, outHtmlFile);
     }
 
 //    @Test
@@ -59,7 +61,7 @@ public class Test本文 {
         Node kRoot = Parser.parse(new 歯科告示読込(), false, kTxt);
         Node tRoot = Parser.parse(new 歯科通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, 点数表, kubunMap, Pat.医科リンク).render(kRoot, title, outHtmlFile);
+        new 本文(outDir, 点数表, kubunMap, Pat.医科リンク, false).render(kRoot, title, outHtmlFile);
     }
 
 //    @Test
@@ -77,6 +79,6 @@ public class Test本文 {
         Node kRoot = Parser.parse(new 調剤告示読込(), false, kTxt);
         Node tRoot = Parser.parse(new 調剤通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, 点数表, null, Pat.調剤リンク).render(kRoot, title, outHtmlFile);
+        new 本文(outDir, 点数表, null, Pat.調剤リンク, false).render(kRoot, title, outHtmlFile);
     }
 }

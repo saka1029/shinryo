@@ -4,16 +4,23 @@
         console.log("no menu");
         return;
     }
-//    console.log("location.href=" + location.href);
+    console.log("location.href=" + location.href);
+    console.log("location.pathname=" + location.pathname);
+    const inFrame = window != window.parent;
+    console.log(`frame=${inFrame}`);
+    // iframe内の場合はページ先頭にメニューを表示しない。
+    if (inFrame) {
+        menu.hidden = true;
+        return;
+    }
     const 最新年度 = "06";
     const PREV = {"06": "04", "04": "02", "02": null};
-    const path = location.href.replace(/^.*\/(\d\d\/.\/.*)\.html$/, "$1").split("/");
+    const path = location.pathname.replace(/^.*\/(\d\d\/.\/.*)\.html$/, "$1").split("/");
     const 年度 = path[0];
     const 前年度 = PREV[年度];
     const 点数表 = path[1];
     const 種類 = path[2];
-//    console.log("年度=" + 年度 + " 点数表=" + 点数表 + " 種類=" + 
-//        + " 最新版=" + (年度 == 最新年度) + " 前年度=" + PREV[年度]);
+    console.log(`年度=${年度} 点数表=${点数表} 種類=${種類} 最新版=${年度 == 最新年度} 前年度=${PREV[年度]} frame=${inFrame}`);
     var links = "";
 //    links += ""
 //        + "<form id='cse-search-box' action='http://google.com/cse'>\n"

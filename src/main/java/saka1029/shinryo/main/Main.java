@@ -97,7 +97,9 @@ public class Main {
         Node kRoot = Parser.parse(kParser, true, kTxt);
         Node tRoot = Parser.parse(tParser, true, tTxt);
         Merger.merge(kRoot, tRoot);
-        new 本文(outDir, 点数表, kubunMap, link).render(kRoot, title, "index.html");
+        new 本文(outDir, 点数表, kubunMap, link, false).render(kRoot, title, "index.html");
+        // single page
+        new 本文(outDir, 点数表, kubunMap, link, true).render(kRoot, title, "single.html");
         Param prev = param.previous();
         Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
             ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
