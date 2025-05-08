@@ -1,17 +1,18 @@
-.split {
+.left-frame {
   position: absolute;
   width: 50%;
   height: 98%;
-}
-.left {
   left: 0;
   overflow-y: scroll;
 }
-.right {
+.right-frame {
+  position: absolute;
+  width: 50%;
+  height: 98%;
   right: 0;
   overflow-y: hedden;
 }
-.frame-box {
+.inner-frame {
   width: 100%;
   height: 98%;
 }
