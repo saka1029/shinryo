@@ -36,7 +36,7 @@ a:visited {
 }
 #all {
     margin:0 auto;
-    max-width: 640px;
+    max-width: 700px;
 }
 #menu {
     border-radius: 0.25em;
@@ -59,6 +59,7 @@ a:visited {
   position: absolute;
   width: 30%;
   height: 98%;
+  margin: 0.5em;
   left: 0;
   overflow-y: scroll;
 }
