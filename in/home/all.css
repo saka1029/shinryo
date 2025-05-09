@@ -58,15 +58,16 @@ a:visited {
 #left-frame {
   position: absolute;
   width: 30%;
-  height: 98%;
+  height: 95%;
   margin: 0.5em;
   left: 0;
   overflow-y: scroll;
+  border-right: solid 5px #e8e8e8;
 }
 #right-frame {
   position: absolute;
   width: 70%;
-  height: 98%;
+  height: 95%;
   right: 0;
   overflow-y: hedden;
 }
