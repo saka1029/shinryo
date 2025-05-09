@@ -37,11 +37,16 @@ public class 本文 extends HTML {
     final boolean isSingle;
     
     /**
+     * 本文及びそこからリンクされるHTMLファイルを生成します。
      * 
      * @param outDir
      * @param kubunMap 歯科の場合、医科の区分名称マップを指定します。
      * 				   医科、調剤の場合はnullを指定します。
      * @param linker
+     * @param isSingle シングルページのHTMLファイルを生成するときtrueを指定します。
+     *                 それ以外の場合はfalseを指定します。
+     *                 この引数の値がtrueの場合はiframeを含むシングルページのHTMLファイルを
+     *                 ひとつだけ生成します。
      * @throws IOException
      */
     public 本文(String outDir, String 点数表, Map<String, String> kubunMap, Function<String, String> linker, boolean isSingle) throws IOException {

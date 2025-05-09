@@ -98,13 +98,15 @@ public class Main {
         Node tRoot = Parser.parse(tParser, true, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, 点数表, kubunMap, link, false).render(kRoot, title, "index.html");
-        // single page
-        new 本文(outDir, 点数表, kubunMap, link, true).render(kRoot, title, "single.html");
+        // シングルページ本文生成
+        new 本文(outDir, 点数表, kubunMap, link, true).render(kRoot, title, "index-single.html");
         Param prev = param.previous();
         Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
             ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
         LOGGER.info(param.title(点数表) + "区分番号一覧生成");
-        new 区分番号一覧(outDir, 点数表).render(oldRoot, kRoot, title, param.年度, prev.年度, "kubun.html");
+        new 区分番号一覧(outDir, 点数表, false).render(oldRoot, kRoot, title, param.年度, prev.年度, "kubun.html");
+        // シングルページ区分番号一覧生成
+        new 区分番号一覧(outDir, 点数表, true).render(oldRoot, kRoot, title, param.年度, prev.年度, "kubun-single.html");
         イメージコピー(param, 点数表);
     }
     

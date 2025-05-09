@@ -12,8 +12,11 @@ import saka1029.shinryo.parser.Pat;
 
 public class 区分番号一覧 extends HTML {
 
-    public 区分番号一覧(String outDir, String 点数表) throws IOException {
+    final boolean isSingle;
+
+    public 区分番号一覧(String outDir, String 点数表, boolean isSingle) throws IOException {
         super(outDir, 点数表);
+        this.isSingle = isSingle;
     }
 
     List<Node> listKubun(Node root) {
@@ -24,6 +27,10 @@ public class 区分番号一覧 extends HTML {
                     list.add(node);
             });
         return list;
+    }
+
+    String target() {
+        return isSingle ? " target='inner-frame'" : "";
     }
 
     /**
@@ -65,18 +72,20 @@ public class 区分番号一覧 extends HTML {
                         name = oldNode.token.number + " " + oldNode.token.header0();
                     String oldLink;
                     if (!oldStr.equals("－"))
-                        oldLink = "%s<a href='../../%s/%s/%s.html'>%s</a>".formatted(lineDirective(oldNode.token), 旧年度, 点数表, oldNode.id, oldStr);
+                        oldLink = "%s<a href='../../%s/%s/%s.html'%s>%s</a>".formatted(
+                            lineDirective(oldNode.token), 旧年度, 点数表, oldNode.id, target(), oldStr);
                     else
                         oldLink = oldStr;
                     String newLink;
                     if (!newStr.equals("－"))
-                        newLink = "%s<a href='%s.html'>%s</a>".formatted(lineDirective(newNode.token), newNode.id, newStr);
+                        newLink = "%s<a href='%s.html'%s>%s</a>".formatted(
+                            lineDirective(newNode.token), newNode.id, target(), newStr);
                     else
                         newLink = newStr;
                     String compLink;
                     if (!compStr.equals("－－"))
-                        compLink = "<a href='../../hikaku.html?l=%s/%s/%s.html&r=%s/%s/%s.html'>%s</a>".formatted(
-                            旧年度, 点数表, oldNode.id, 年度, 点数表, newNode.id, compStr);
+                        compLink = "<a href='../../hikaku.html?l=%s/%s/%s.html&r=%s/%s/%s.html'%s>%s</a>".formatted(
+                            旧年度, 点数表, oldNode.id, 年度, 点数表, newNode.id, target(), compStr);
                     else
                         compLink = compStr;
                     writer.println("<p style='margin-left:5.5em;text-indent:-5.5em'>%s %s %s %s</p>", oldLink, newLink, compLink, name);
@@ -114,13 +123,23 @@ public class 区分番号一覧 extends HTML {
                     // パンくずリスト
                     writer.println("<div id='breadcrumb'>");
 //                    writer.println("<a href='../../index.html'>トップ</a>");
-                    menu(writer);
+                    if (!isSingle)
+                        menu(writer);
                     writer.println("</div>"); // id=breacdcrumb
                     writer.println("<div id='content'>");
+                    if (isSingle) 
+                        writer.println("<div id='left-frame'>");
                     writer.println("<h1 class='title'>%s</h1>", fullTitle);
 //                    writer.println("<ul>");
                     matching();
 //                    writer.println("</ul>");
+                    if (isSingle) {
+                        writer.println("</div>"); // id=left-frame
+                        writer.println("<div id='right-frame'>");
+                        writer.println("<iframe id='inner-frame' name='inner-frame' frameborder='0'>");
+                        writer.println("</ifreme>");
+                        writer.println("</div>"); // id=right-frame
+                    }
                     writer.println("</div>"); // id=content
                     writer.println("</div>"); // id=all
                     writer.println("</body>");
