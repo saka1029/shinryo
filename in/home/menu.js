@@ -4,8 +4,8 @@
         console.log("no menu");
         return;
     }
-    console.log("location.href=" + location.href);
-    console.log("location.pathname=" + location.pathname);
+    // console.log("location.href=" + location.href);
+    // console.log("location.pathname=" + location.pathname);
     const inFrame = window != window.parent;
     console.log(`frame=${inFrame}`);
     // iframe内の場合はページ先頭にメニューを表示しない。

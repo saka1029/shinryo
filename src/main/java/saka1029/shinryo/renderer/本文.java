@@ -15,6 +15,19 @@ import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Pat;
 import saka1029.shinryo.parser.Token;
 
+/**
+ * <pre>
+ * (call graph)       +---------+
+ *                    v         |
+ * render -> file -> node -+-> text
+ *            ^       ^    +-> link
+ *            |       |         |
+ *            |       +---------+
+ *            |                 |
+ *            +-----------------+
+ * 
+ * </pre>
+ */
 public class 本文 extends HTML {
 
 	static final Logger LOGGER = Logger.getLogger(本文.class.getName());
@@ -85,7 +98,8 @@ public class 本文 extends HTML {
         String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
         writer.println("%s<p %s><a href='%s'%s>%s</a></p>",
             lineDirective(token), indent(level, token.number), url, target(), title);
-        file(node, title, url, bodyOnly, false);
+        if (!isSingle)
+            file(node, title, url, bodyOnly);
         if (bodyOnly)
 			for (Node child : node.children)
 				node(child, level + 1, writer);
@@ -118,19 +132,18 @@ public class 本文 extends HTML {
             text(node, level, writer);
     }
 
-    public void file(Node node, String title, String outHtmlFile, boolean bodyOnly, boolean top) throws IOException {
+    public void file(Node node, String title, String outHtmlFile, boolean bodyOnly) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
             head(title, node, writer);
 			writer.println("<body>");
-            if (!isSingle)
-                writer.println("<div id='all'>");
-            if (!(isSingle && top)) {
+            writer.println("<div id='all'>");
+            if (!isSingle) {
                 menu(writer);
                 writer.println("<p class='title'>%s</p>", paths(node));
                 writer.println("<h1 class='title'>%s</h1>", title);
             }
 			writer.println("<div id='content'>");
-            if (isSingle && top) {
+            if (isSingle) {
                 writer.println("<div id='left-frame'>");
                 writer.println("<h1 class='title'>%s</h1>", title);
             }
@@ -170,7 +183,7 @@ public class 本文 extends HTML {
 			}
 			if (node.isTuti)
 			    endTuti(writer);
-            if (isSingle && top) {
+            if (isSingle) {
                 writer.println("</div>"); // id='left-frame'
                 writer.println("<div id='right-frame'>");
                 writer.println("<iframe id='inner-frame' name='inner-frame' frameborder='0'>");
@@ -178,8 +191,7 @@ public class 本文 extends HTML {
                 writer.println("</div>"); // id='right-frame'
             }
 			writer.println("</div>"); // id='content'
-            if (!isSingle)
-                writer.println("</div>"); // id='all'
+            writer.println("</div>"); // id='all'
             writer.println("</body>");
             writer.println("</html>");
         }
@@ -187,6 +199,6 @@ public class 本文 extends HTML {
 
     public void render(Node node, String title, String outHtmlFile) throws IOException {
         this.mainTitle = title;
-        file(node, title, outHtmlFile, false, true);
+        file(node, title, outHtmlFile, false);
     }
 }

@@ -1,9 +1,14 @@
 @echo off
 setlocal
 
+set OUT_DIR=debug
+set BASE_URL=http://localhost:8000/debug
+
 java -Djava.util.logging.config.file=logging.properties ^
-    -cp target/shinryo-1.0-jar-with-dependencies.jar ^
+    -cp target/classes;target/dependency/* ^
     saka1029.shinryo.main.Main ^
+    -o %OUT_DIR% ^
+    -b %BASE_URL% ^
     %*
 
 endlocal

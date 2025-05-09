@@ -36,7 +36,7 @@ a:visited {
 }
 #all {
     margin:0 auto;
-    /* max-width: 640px; */
+    max-width: 640px;
 }
 #menu {
     border-radius: 0.25em;
