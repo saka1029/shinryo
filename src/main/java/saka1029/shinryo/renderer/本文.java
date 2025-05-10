@@ -150,6 +150,7 @@ public class 本文 extends HTML {
 			writer.println("<div id='content'>");
             if (isSingle) {
                 writer.println("<div id='left-frame'>");
+                menu(writer);
                 writer.println("<h1 class='title'>%s</h1>", title);
             }
 			if (node.isTuti)

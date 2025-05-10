@@ -46,7 +46,7 @@
             alert("このページは旧版です。「最新版」をクリックしてください。");
         };
     }
-    if (前年度 != null && 種類 != "kubun") {
+    if (前年度 != null && 種類 != "kubun" && 種類 != "index-single" && 種類 != "kubun-single") {
         links += " <a href='../../hikaku.html"
             + "?l=" + 前年度 + "/" + 点数表 + "/" + 種類 + ".html"
             + "&r=" + 年度 + "/" + 点数表 + "/" + 種類 + ".html' target='_top'>旧版と比較</a>";
