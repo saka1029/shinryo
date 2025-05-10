@@ -48,4 +48,8 @@
             + "&r=" + 年度 + "/" + 点数表 + "/" + 種類 + ".html' target='_top'>旧版と比較</a>";
     }
     menu.innerHTML = links;
+    if (年度 != 最新年度)
+        window.onload = function() {
+            alert("このページは旧版です。「最新版」をクリックしてください。");
+        };
 })();
