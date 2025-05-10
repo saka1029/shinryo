@@ -7,7 +7,7 @@
     // console.log("location.href=" + location.href);
     // console.log("location.pathname=" + location.pathname);
     const inFrame = window != window.parent;
-    console.log(`frame=${inFrame}`);
+    // console.log(`frame=${inFrame}`);
     // iframe内の場合はページ先頭にメニューを表示しない。
     if (inFrame) {
         menu.hidden = true;
@@ -20,7 +20,7 @@
     const 前年度 = PREV[年度];
     const 点数表 = path[1];
     const 種類 = path[2];
-    console.log(`年度=${年度} 点数表=${点数表} 種類=${種類} 最新版=${年度 == 最新年度} 前年度=${PREV[年度]} frame=${inFrame}`);
+    // console.log(`年度=${年度} 点数表=${点数表} 種類=${種類} 最新版=${年度 == 最新年度} 前年度=${PREV[年度]} frame=${inFrame}`);
     var links = "";
 //    links += ""
 //        + "<form id='cse-search-box' action='http://google.com/cse'>\n"
@@ -39,17 +39,17 @@
         links += " <a href='kubun.html'>区分</a>";
     }
     links += " <a href='yoshiki.html'>様式</a>";
-    if (年度 != 最新年度)
+    if (年度 != 最新年度) {
         links += " <a href='../../" + 最新年度 + "/" + 点数表 + "/" + 種類 + ".html'>"
             + "<font color='red'>最新版</font></a>";
+        window.onload = function() {
+            alert("このページは旧版です。「最新版」をクリックしてください。");
+        };
+    }
     if (前年度 != null && 種類 != "kubun") {
         links += " <a href='../../hikaku.html"
             + "?l=" + 前年度 + "/" + 点数表 + "/" + 種類 + ".html"
             + "&r=" + 年度 + "/" + 点数表 + "/" + 種類 + ".html' target='_top'>旧版と比較</a>";
     }
     menu.innerHTML = links;
-    if (年度 != 最新年度)
-        window.onload = function() {
-            alert("このページは旧版です。「最新版」をクリックしてください。");
-        };
 })();
