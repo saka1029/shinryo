@@ -127,8 +127,10 @@ public class 区分番号一覧 extends HTML {
                         menu(writer);
                     writer.println("</div>"); // id=breacdcrumb
                     writer.println("<div id='content'>");
-                    if (isSingle) 
+                    if (isSingle) {
                         writer.println("<div id='left-frame'>");
+                        menu(writer);
+                    }
                     writer.println("<h1 class='title'>%s</h1>", fullTitle);
 //                    writer.println("<ul>");
                     matching();

@@ -78,7 +78,8 @@ public class Main {
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "様式一覧生成");
-        new 様式一覧(param.outDir(点数表), 点数表).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表, false).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表, true).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki-single.html");
     }
 
     static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link)

@@ -17,7 +17,7 @@ public class Test様式一覧 {
         String 点数表 = "i";
         String inCsvFile = param.txt(点数表, "ye");
         String title = param.title(点数表);
-        new 様式一覧(param.outDir(点数表), 点数表).render(inCsvFile, title, "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表, false).render(inCsvFile, title, "yoshiki.html");
     }
 
 //    @Test
@@ -25,7 +25,7 @@ public class Test様式一覧 {
         String 点数表 = "s";
         String inCsvFile = param.txt(点数表, "ye");
         String title = param.title(点数表);
-        new 様式一覧(param.outDir(点数表), 点数表).render(inCsvFile, title, "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表, false).render(inCsvFile, title, "yoshiki.html");
     }
 
 //    @Test
@@ -33,7 +33,7 @@ public class Test様式一覧 {
         String 点数表 = "t";
         String inCsvFile = param.txt(点数表, "ye");
         String title = param.title(点数表);
-        new 様式一覧(param.outDir(点数表), 点数表).render(inCsvFile, title, "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表, false).render(inCsvFile, title, "yoshiki.html");
     }
 
 }

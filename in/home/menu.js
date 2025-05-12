@@ -31,25 +31,27 @@
 //        + "    <img src='http://www.google.com/cse/images/google_custom_search_smwide.gif' align='middle'>\n"
 //        + "</form>\n";
     links += " <a href='../../index.html' target='_top'>ホーム</a>";
+    if (年度 != 最新年度) {
+        links += ` <a href='../../${最新年度}/${点数表}/${種類}.html'><font color='red'>最新版</font></a>`;
+        window.onload = function() { alert("このページは旧版です。「最新版」をクリックしてください。"); };
+    }
     if (点数表 == "k") {
         links += " <a href='index.html'>告示</a>";
         links += " <a href='tuti.html'>通知</a>";
+    } else if (種類 == "index-single" || 種類 == "kubun-single" || 種類 == "yoshiki-single") {
+        links += " <a href='index-single.html'>本文</a>";
+        links += " <a href='kubun-single.html'>区分</a>";
     } else {
         links += " <a href='index.html'>本文</a>";
         links += " <a href='kubun.html'>区分</a>";
     }
-    links += " <a href='yoshiki.html'>様式</a>";
-    if (年度 != 最新年度) {
-        links += " <a href='../../" + 最新年度 + "/" + 点数表 + "/" + 種類 + ".html'>"
-            + "<font color='red'>最新版</font></a>";
-        window.onload = function() {
-            alert("このページは旧版です。「最新版」をクリックしてください。");
-        };
-    }
-    if (前年度 != null && 種類 != "kubun" && 種類 != "index-single" && 種類 != "kubun-single") {
-        links += " <a href='../../hikaku.html"
-            + "?l=" + 前年度 + "/" + 点数表 + "/" + 種類 + ".html"
-            + "&r=" + 年度 + "/" + 点数表 + "/" + 種類 + ".html' target='_top'>旧版と比較</a>";
+    if (種類 == "index-single" || 種類 == "kubun-single" || 種類 == "yoshiki-single")
+        links += " <a href='yoshiki-single.html'>様式</a>";
+    else
+        links += " <a href='yoshiki.html'>様式</a>";
+    if (前年度 != null && 種類 != "kubun" && 種類 != "index-single" && 種類 != "kubun-single" && 種類 != "yoshiki-single") {
+        links += ` <a href='../../hikaku.html?l=${前年度}/${点数表}/${種類}.html`
+            + `&r=${年度}/${点数表}/${種類}.html' target='_top'>旧版と比較</a>`;
     }
     menu.innerHTML = links;
 })();
