@@ -78,3 +78,10 @@ a:visited {
   width: 100%;
   height: 100%;
 }
+/* ページ内検索 */
+.s-high {
+  background-color:yellow;
+}
+.s-hide {
+  display: none;
+}

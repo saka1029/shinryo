@@ -53,5 +53,53 @@
         links += ` <a href='../../hikaku.html?l=${前年度}/${点数表}/${種類}.html`
             + `&r=${年度}/${点数表}/${種類}.html' target='_top'>旧版と比較</a>`;
     }
+    links += "   <input id='page-sarch-input' type='text' placeholder='ページ内検索' />";
     menu.innerHTML = links;
+    const pageSearchInput = document.getElementById("page-sarch-input");
+    pageSearchInput.addEventListener("input", pageSarch);
+    const paras = document.getElementsByTagName("p");
+    const highs = document.getElementsByClassName("s-high");
+    const hides = document.getElementsByClassName("s-hide");
+    function pageSarch() {
+        // for (let i = 0; i < paras.length; i++) {
+        //     console.log(`paras[${i}].textContent=${paras[i].textContent}`);
+        // }
+        // 表示をリセットする。
+        for (const e of highs)
+            e.outerHTML = e.textContent;
+        for (const e of hides)
+            e.classList.remove("s-hide");
+        const rawSearchWord = pageSearchInput.value;
+        if (rawSearchWord === '') return;
+        // かなカナ両方にマッチするように変換
+        const searchWord = rawSearchWord
+            .replace(/[\u3041-\u3096\u30a1-\u30f6]/g, (match) => {
+                if (/[\u3041-\u3096]/.test(match)) {
+                    return `[${match}${String.fromCharCode(
+                        match.charCodeAt(0) + 0x60)}]`;
+            }
+            return `[${String.fromCharCode( match.charCodeAt(0) - 0x60)}${match}]`;
+        });
+        // タグ内のtextContentにマッチ
+        // const contentRegexp = new RegExp(`(?<=\\>)[\\s\\S]*(${searchWord})[\\s\\S]*(?=\\<)`, 'gi');
+        const contentRegexp = new RegExp(`[\\s\\S]*(${searchWord})[\\s\\S]*`, 'gi');
+        // 検索文字列そのままにマッチ
+        const rawRegexp = new RegExp(searchWord, 'gi');
+        // 各要素に適用
+        for (const partEl of paras) {
+            if (rawRegexp.test(partEl.textContent)) {
+                partEl.innerHTML = partEl.innerHTML.replace(
+                    contentRegexp,
+                    (partMatch) => {
+                        let tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
+                            return `<span class="s-high">${spanMatch}</span>`;
+                        });
+                        console.log(`tempHtml=${tempHtml}`);
+                        return tempHtml;
+                    }
+                );
+            } else
+                partEl.classList.add('s-hide');
+        }
+    }
 })();
