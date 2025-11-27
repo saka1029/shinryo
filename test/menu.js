@@ -58,15 +58,17 @@
     const pageSearchInput = document.getElementById("page-sarch-input");
     pageSearchInput.addEventListener("input", pageSarch);
     const paras = document.getElementsByTagName("p");
-    const highs = document.getElementsByClassName("s-high");
-    const hides = document.getElementsByClassName("s-hide");
     function pageSarch() {
         // for (let i = 0; i < paras.length; i++) {
         //     console.log(`paras[${i}].textContent=${paras[i].textContent}`);
         // }
         // 表示をリセットする。
-        for (const e of highs)
+        const highs = document.getElementsByClassName("s-high");
+        const hides = document.getElementsByClassName("s-hide");
+        for (const e of highs) {
+            console.log(`e.textContent=${e.textContent} outerHTML=${e.outerHTML}`);
             e.outerHTML = e.textContent;
+        }
         for (const e of hides)
             e.classList.remove("s-hide");
         const rawSearchWord = pageSearchInput.value;
@@ -94,7 +96,7 @@
                         let tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
                             return `<span class="s-high">${spanMatch}</span>`;
                         });
-                        console.log(`tempHtml=${tempHtml}`);
+                        // console.log(`tempHtml=${tempHtml}`);
                         return tempHtml;
                     }
                 );
