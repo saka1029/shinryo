@@ -21,7 +21,7 @@ li {
 } */
 
 h1 {
-    line-height: 120%;
+  line-height: 120%;
 	padding-bottom: 5px;
 }
 a {
@@ -38,25 +38,25 @@ a:visited {
    padding-bottom: 2px;
 }
 #all {
-    margin:0 auto;
-    max-width: 700px;
+  margin:0 auto;
+  max-width: 700px;
 }
 #menu {
-    border-radius: 0.25em;
-    -moz-border-radius: 0.25em;
-    -webkit-border-radius: 0.25em;
+  border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
 	border: 2px darkblue solid;
 /* 	border: none; */
 /*  background-color: #d0f8ff; */
     padding: 0.5em;
 }
 #tuti {
-    border-radius: 0.25em;
-    -moz-border-radius: 0.25em;
-    -webkit-border-radius: 0.25em;
-    border:none;
-    background-color:#e8e8e8;
-    padding:0.5em;
+  border-radius: 0.25em;
+  -moz-border-radius: 0.25em;
+  -webkit-border-radius: 0.25em;
+  border:none;
+  background-color:#e8e8e8;
+  padding:0.5em;
 }
 #left-frame {
   position: absolute;
@@ -84,18 +84,16 @@ a:visited {
   display: inline-flex;
   align-items: center;
 }
+#search-word-input {
+  height: 1.8em;
+}
 #clear-input {
   position: absolute;
   display: block;
   right: 3px;
-  width: 15px;
-  height: 15px;
+  width: 1.5em;
+  height: 1.5em;
   border-radius: 50%;
-  color: #fff;
-  background-color: #ccc;
-  font: 13px monospace;
-  text-align: center;
-  line-height: 1em;
   cursor: pointer;
 }
 .s-highlight{

@@ -55,7 +55,7 @@
     }
     links += " <span id='search-word-box'>"
             + "<input id='search-word-input' type='text' placeholder='ページ内検索'/>"
-            + "<span id='clear-input'>x</span>"
+            + "<span id='clear-input'><img src='../../clear-button-in-textbox.svg'/></span>"
             + "</span>";
     menu.innerHTML = links;
 
