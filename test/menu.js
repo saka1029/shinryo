@@ -121,5 +121,6 @@
                 partEl.classList.add('s-hide');
             }
         });
+        // }
     }
 })();
