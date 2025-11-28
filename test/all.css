@@ -79,9 +79,28 @@ a:visited {
   height: 100%;
 }
 /* ページ内検索 */
-.s-high {
+#search-word-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+#clear-input {
+  position: absolute;
+  display: block;
+  right: 3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #ccc;
+  font: 13px monospace;
+  text-align: center;
+  line-height: 1em;
+  cursor: pointer;
+}
+.s-highlight{
   background-color:yellow;
 }
-.s-hide {
+.s-hide{
   display: none;
 }
