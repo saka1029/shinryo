@@ -76,10 +76,18 @@
 
     function normalizeSearchWord(rawWord) {
         const searchWord = rawWord
-            .replace(/[\u3041-\u3096\u30a1-\u30f6]/g, (match) => {
+            .replace(/[\u002d\u30fc\uff0dA-Za-z0-9\u3041-\u3096\u30a1-\u30f6]/g, (match) => {
+                if (/[\u002d\u30fc\uff0d]/.test(match))
+                    // \u002d: 半角ハイフン、\u30fc: 長音記号、\uff0d: 全角ハイフン
+                    return `[\u002d\u30fc\uff0d]`;
+                else if (/[A-Za-z0-9]/.test(match))
+                    // 半角英数字の場合は全角も含める
+                    return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0xFEE0)}]`;
                 if (/[\u3041-\u3096]/.test(match))
+                    // ひらがなの場合はカタカナも含める
                     return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0x60)}]`;
                 else
+                    // カタカナの場合はひらがなも含める
                     return `[${match}${String.fromCharCode(match.charCodeAt(0) - 0x60)}]`;
             });
         return searchWord;
@@ -94,14 +102,17 @@
         //本処理
         const rawSearchWord = searchWordInput.value;
         if (rawSearchWord === '') return;
-        // 英数字は全角半角両方に、かなカナ両方にマッチするように変換
+        // 検索文字列を正規化する
         const searchWord = normalizeSearchWord(rawSearchWord);
-        // console.log(`searchWord=${rawSearchWord}->${searchWord}`);
-        // タグ内のtextContentにマッチ
+        console.log(`searchWord=${rawSearchWord}->${searchWord}`);
+        // innerHTMLのテキスト部分だけにマッチするように調整する
+        // ex) '(?<=AA)BB' : 直前にAAがあるBBのみにマッチする。
+        //     ただしAAはマッチする対象に含まれない。
         const contentRegexp = new RegExp(
             // `(?<=\\>)[\\s\\S]*(${searchWord})[\\s\\S]*(?=\\<)`,
             // `>[^>]*(${searchWord})[^<]*`,
-            `[\\s\\S]*(${searchWord})[\\s\\S]*`,
+            // `[\\s\\S]*(${searchWord})[\\s\\S]*`,
+            `(?<=>[^<>]*)(${searchWord})`, // タグの外にある文字列にマッチ
             'gi'
         );
         // 検索文字列そのままにマッチ
@@ -112,7 +123,7 @@
                 partEl.innerHTML = partEl.innerHTML.replace(
                     contentRegexp,
                     (partMatch) => {
-                        let tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
+                        const tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
                             // console.log(`spanMatch=${spanMatch}`);
                             return `<span class="s-highlight">${spanMatch}</span>`;
                         });
