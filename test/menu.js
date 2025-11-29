@@ -55,72 +55,73 @@
     }
     links += " <span id='search-word-box'>"
             + "<input id='search-word-input' type='text' placeholder='ページ内検索'/>"
-            + "<span id='clear-input'><img src='../../clear-button-in-textbox.svg'/></span>"
+            + "<span id='search-clear-button'><img src='../../clear-button-in-textbox.svg'/></span>"
             + "</span>";
     menu.innerHTML = links;
 
     // ページ内検索機能
     // see https://mo2nabe.com/js-search-in-page/
-    const samplePartEls = document.getElementsByTagName('p');
-    const highlightEls = document.getElementsByClassName('s-highlight');
-    const hideEls = document.getElementsByClassName('s-hide');
+    const searchParas = document.getElementsByTagName('p');
+    const searchHighs = document.getElementsByClassName('s-highlight');
+    const searchHides = document.getElementsByClassName('s-hide');
     const searchWordInput = document.getElementById('search-word-input');
-    const clearInputBtn = document.getElementById('clear-input');
+    const searchClearButton = document.getElementById('search-clear-button');
 
-    searchWordInput.addEventListener('input', showHighlight);
-    clearInputBtn.addEventListener('click', function() {
+    searchWordInput.addEventListener('input', searchHighlight);
+    searchClearButton.addEventListener('click', function() {
         searchWordInput.value = "";
         searchWordInput.focus();
-        showHighlight();
+        searchHighlight();
     });
 
-    function showHighlight() {
+    function normalizeSearchWord(rawWord) {
+        const searchWord = rawWord
+            .replace(/[\u3041-\u3096\u30a1-\u30f6]/g, (match) => {
+                if (/[\u3041-\u3096]/.test(match))
+                    return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0x60)}]`;
+                else
+                    return `[${match}${String.fromCharCode(match.charCodeAt(0) - 0x60)}]`;
+            });
+        return searchWord;
+    }
+
+    function searchHighlight() {
         //リセット処理
-        [...highlightEls].forEach((el) => {
+        for (const el of [...searchHighs])
             el.outerHTML = el.textContent;
-        });
-        [...hideEls].forEach((el) => {
+        for (const el of [...searchHides])
             el.classList.remove('s-hide');
-        });
         //本処理
         const rawSearchWord = searchWordInput.value;
         if (rawSearchWord === '') return;
-        // かなカナ両方にマッチするように変換
-        const searchWord = rawSearchWord
-            .replace(/[\u3041-\u3096\u30a1-\u30f6]/g, (match) => {
-            if (/[\u3041-\u3096]/.test(match)) {
-                return `[${match}${String.fromCharCode(
-                match.charCodeAt(0) + 0x60
-                )}]`;
-            }
-            return `[${String.fromCharCode(
-                match.charCodeAt(0) - 0x60
-            )}${match}]`;
-            });
+        // 英数字は全角半角両方に、かなカナ両方にマッチするように変換
+        const searchWord = normalizeSearchWord(rawSearchWord);
+        // console.log(`searchWord=${rawSearchWord}->${searchWord}`);
         // タグ内のtextContentにマッチ
         const contentRegexp = new RegExp(
             // `(?<=\\>)[\\s\\S]*(${searchWord})[\\s\\S]*(?=\\<)`,
+            // `>[^>]*(${searchWord})[^<]*`,
             `[\\s\\S]*(${searchWord})[\\s\\S]*`,
             'gi'
         );
         // 検索文字列そのままにマッチ
         const rawRegexp = new RegExp(searchWord, 'gi');
         // 各要素に適用
-        [...samplePartEls].forEach((partEl) => {
+        for (const partEl of [...searchParas]) {
             if (rawRegexp.test(partEl.textContent)) {
                 partEl.innerHTML = partEl.innerHTML.replace(
                     contentRegexp,
                     (partMatch) => {
-                    let tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
-                        return `<span class="s-highlight">${spanMatch}</span>`;
-                    });
-                    return tempHtml;
+                        let tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
+                            // console.log(`spanMatch=${spanMatch}`);
+                            return `<span class="s-highlight">${spanMatch}</span>`;
+                        });
+                        return tempHtml;
                     }
                 );
             } else {
                 partEl.classList.add('s-hide');
             }
-        });
-        // }
+        }
     }
 })();
