@@ -123,7 +123,7 @@
                 partEl.innerHTML = partEl.innerHTML.replace(
                     contentRegexp,
                     (partMatch) => {
-                        let tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
+                        const tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
                             // console.log(`spanMatch=${spanMatch}`);
                             return `<span class="s-highlight">${spanMatch}</span>`;
                         });
