@@ -27,14 +27,13 @@ public class HashEncoder<V> {
         List<Entry<V>> sequence = new ArrayList<>();
         new Object() {
             void search(int start) {
-                // System.out.printf("start=%d%n", start);
+                System.out.printf("start=%d%n", start);
                 if (start >= length) {
                     if(filter.test(sequence))
                         result.add(new ArrayList<>(sequence));
                 } else
                     for (int i = start + 1; i <= length; ++i) {
-                        String word = text.substring(start, i);
-                        V data = map.get(word);
+                        V data = map.get(text.substring(start, i));
                         // System.out.printf("start=%d,i=%d,word=%s, data=%s%n", start, i, word, data);
                         if (data == null)
                             continue;
