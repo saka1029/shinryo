@@ -35,8 +35,7 @@ public class TrieEncoder<V> {
 
     public void put(String word, V data) {
         Node<V> node = root;
-        int[] chars = word.codePoints().toArray();
-        for (int c : chars)
+        for (int c : word.codePoints().toArray())
             node = node.addChild(c, new Node<V>(null));
         node.data = data;
     } 
