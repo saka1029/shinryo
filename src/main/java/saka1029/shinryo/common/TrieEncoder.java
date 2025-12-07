@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 public class TrieEncoder<V> {
@@ -26,32 +25,7 @@ public class TrieEncoder<V> {
         }
     }
 
-    public static class Entry<V> {
-        public final int start;
-        public final int end;
-        public final V data;
-
-        public Entry(int start, int end, V data) {
-            this.start = start;
-            this.end = end;
-            this.data = data;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(start, end, data);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            return this == obj || obj instanceof Entry<?> e &&
-                start == e.start && end == e.end && Objects.equals(data, e.data);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Entry(%d, %d, %s)", start, end, data);
-        }
+    public static record Entry<V>(int start, int end, V data) {
     }
 
     final Node<V> root = new Node<>();
