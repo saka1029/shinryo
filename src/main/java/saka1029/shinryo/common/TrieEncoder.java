@@ -31,6 +31,16 @@ public class TrieEncoder<V> {
         node.data = data;
     } 
 
+    public V get(String word) {
+        Node<V> node = root;
+        for (int c : word.codePoints().toArray()) {
+            node = node.children.get(c);
+            if (node == null)
+                return null;
+        }
+        return node.data;
+    }
+
     @Override
     public String toString() {
         return String.format("TrieEncoder(%s)", root);
