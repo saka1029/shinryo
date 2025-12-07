@@ -66,9 +66,10 @@ public class TrieEncoder<V> {
                 return entries;
             }
             void search(int index) {
-                if (index >= length && filter.test(sequence))
-                    result.add(new ArrayList<>(sequence));
-                else
+                if (index >= length) {
+                    if (filter.test(sequence))
+                        result.add(new ArrayList<>(sequence));
+                } else
                     for (Entry<V> entry : getFrom(index)) {
                         sequence.add(entry);
                         search(entry.end);
