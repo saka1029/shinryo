@@ -33,7 +33,8 @@ public class Param {
         "i", "医科診療報酬点数表",
         "s", "歯科診療報酬点数表",
         "t", "調剤診療報酬点数表",
-        "k", "施設基準");
+        "k", "施設基準",
+        "b", "傷病名");
 
     public final String inDir, outDir;
     public final String 元号;
