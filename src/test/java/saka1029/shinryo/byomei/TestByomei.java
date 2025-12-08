@@ -1,7 +1,8 @@
 package saka1029.shinryo.byomei;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.io.IOException;
-import java.nio.file.Path;
 
 import org.junit.Test;
 
@@ -11,9 +12,11 @@ public class TestByomei {
 
     @Test
     public void testByomei() throws IOException {
-        Path path = Path.of("in/06/b/txt");
-        String[] files = Param.files(path, ".txt");
-        for (String e : files)
-            System.out.println(e);
+        Param param = Param.of("in", "debug/html", "06");
+        String[] inFiles = param.inFiles("b", "txt", ".txt");
+        assertArrayEquals(new String[] {
+            "in/06/b/txt/b_20250601.txt",
+            "in/06/b/txt/z_20250601.txt"},
+            inFiles);
     }
 }
