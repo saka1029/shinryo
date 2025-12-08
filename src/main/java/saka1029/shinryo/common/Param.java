@@ -69,13 +69,21 @@ public class Param {
             .toArray(String[]::new);
     }
 
-    public String[] pdf(String 点数表, String type) throws IOException {
-        return files(Path.of(inDir, 年度, 点数表, "pdf", type), ".pdf");
+    public String[] inFiles(String 点数表, String path, String ext) throws IOException {
+        return files(Path.of(inDir, 年度, 点数表, path), ext);
     }
 
-    public String txt(String 点数表, String name) {
-        return Path.of(inDir, 年度, 点数表, "txt", name + ".txt").toString();
+    public String inFile(String 点数表, String path) throws IOException {
+        return Path.of(inDir, 年度, 点数表, path).toString();
     }
+
+    // public String[] pdf(String 点数表, String type) throws IOException {
+    //     return files(Path.of(inDir, 年度, 点数表, "pdf", type), ".pdf");
+    // }
+
+    // public String txt(String 点数表, String name) {
+    //     return Path.of(inDir, 年度, 点数表, "txt", name + ".txt").toString();
+    // }
 
     public String inDir(String 点数表, String dir) {
         return Path.of(inDir, 年度, 点数表, dir).toString();

@@ -58,41 +58,52 @@ public class Main {
     static void PDF変換(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "PDF変換");
         LOGGER.info("告示PDF変換");
-        new PDF(true).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
+        // new PDF(true).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
+        new PDF(true).テキスト変換(param.inFile(点数表, "txt/k.txt"), param.inFiles(点数表, "pdf/k", ".pdf"));
         LOGGER.info("通知PDF変換");
-        new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
+        // new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
+        new PDF(true).テキスト変換(param.inFile(点数表, "txt/t.txt"), param.inFiles(点数表, "pdf/t", ".pdf"));
         LOGGER.info("様式PDF変換");
-        様式.様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
+        // 様式.様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
+        様式.様式一覧変換(param.inFile(点数表, "txt/y.txt"), param.inFiles(点数表, "pdf/y", ".pdf"));
     }
 
     static void 施設基準PDF変換(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "PDF変換");
         LOGGER.info("告示PDF変換");
         // 縦書き
-        new PDF(false).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
+        // new PDF(false).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
+        new PDF(false).テキスト変換(param.inFile(点数表, "txt/k.txt"), param.inFiles(点数表, "pdf/k", ".pdf"));
         LOGGER.info("通知PDF変換");
-        new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
+        // new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
+        new PDF(true).テキスト変換(param.inFile(点数表, "txt/t.txt"), param.inFiles(点数表, "pdf/t", ".pdf"));
         LOGGER.info("様式PDF変換");
-        様式.施設基準様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
+        // 様式.施設基準様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
+        様式.施設基準様式一覧変換(param.inFile(点数表, "txt/y.txt"), param.inFiles(点数表, "pdf/y", ".pdf"));
     }
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "様式一覧生成");
-        new 様式一覧(param.outDir(点数表), 点数表, false).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki.html");
-        new 様式一覧(param.outDir(点数表), 点数表, true).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki-single.html");
+        // new 様式一覧(param.outDir(点数表), 点数表, false).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki.html");
+        new 様式一覧(param.outDir(点数表), 点数表, false).render(param.inFile(点数表, "txt/ye.txt"), param.title(点数表), "yoshiki.html");
+        // new 様式一覧(param.outDir(点数表), 点数表, true).render(param.txt(点数表, "ye"), param.title(点数表), "yoshiki-single.html");
+        new 様式一覧(param.outDir(点数表), 点数表, true).render(param.inFile(点数表, "txt/ye.txt"), param.title(点数表), "yoshiki-single.html");
     }
 
     static void HTML生成(Param param, String 点数表, Parser kParser, Parser tParser, Function<String, String> link)
         throws IOException {
         LOGGER.info(param.title(点数表) + "HTML生成");
-        String kTxt = param.txt(点数表, "ke");
-        String tTxt = param.txt(点数表, "te");
+        // String kTxt = param.txt(点数表, "ke");
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
+        // String tTxt = param.txt(点数表, "te");
+        String tTxt = param.inFile(点数表, "txt/te.txt");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
         Map<String, String> kubunMap = null;
         // 歯科の場合は医科の区分番号のマップを作成する。歯科以外の場合はkubunMap = null
         if (点数表.equals("s")) {
-            Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
+            // Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
+            Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.inFile("i", "txt/ke.txt"));
             kubunMap = 本文.区分名称マップ(ikaRoot);
         }
         Node kRoot = Parser.parse(kParser, true, kTxt);
@@ -102,8 +113,10 @@ public class Main {
         // シングルページ本文生成
         new 本文(outDir, 点数表, kubunMap, link, true).render(kRoot, title, "index-single.html");
         Param prev = param.previous();
-        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
-            ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
+        // Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke")))
+        Node oldRoot = Files.exists(Path.of(prev.inFile(点数表, "txt/ke.txt")))
+            // ? Parser.parse(kParser, false, prev.txt(点数表, "ke")) : null;
+            ? Parser.parse(kParser, false, prev.inFile(点数表, "txt/ke.txt")) : null;
         LOGGER.info(param.title(点数表) + "区分番号一覧生成");
         new 区分番号一覧(outDir, 点数表, false).render(oldRoot, kRoot, title, param.年度, prev.年度, "kubun.html");
         // シングルページ区分番号一覧生成
@@ -118,8 +131,10 @@ public class Main {
         String title = param.title(点数表);
         String kTitle = title + "(告示)";
         String tTitle = title + "(通知)";
-        String kTxt = param.txt(点数表, "ke");
-        String tTxt = param.txt(点数表, "te");
+        // String kTxt = param.txt(点数表, "ke");
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
+        // String tTxt = param.txt(点数表, "te");
+        String tTxt = param.inFile(点数表, "txt/te.txt");
         LOGGER.info(kTitle);
         Node kRoot = Parser.parse(new 施設基準告示読込(), true, kTxt);
         LOGGER.info(tTitle);

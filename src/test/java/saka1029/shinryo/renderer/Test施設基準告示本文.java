@@ -21,7 +21,7 @@ public class Test施設基準告示本文 {
     public void testRender() throws IOException {
         logger.info(Common.methodName());
         String 点数表 = "k";
-        String kTxt = param.txt(点数表, "ke");
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表) + "(告示)";
         String outHtmlFile = "index.html";

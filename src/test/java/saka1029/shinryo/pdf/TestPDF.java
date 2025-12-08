@@ -14,48 +14,48 @@ public class TestPDF {
 //    @Test
     public void test医科告示() throws IOException {
         String 点数表 = "i";
-        String[] inPdfFiles = param.pdf(点数表, "k");
-        String outTxtFile = param.txt(点数表, "k");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/k", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/k.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 
 //    @Test
     public void test医科通知() throws IOException {
         String 点数表 = "i";
-        String[] inPdfFiles = param.pdf(点数表, "t");
-        String outTxtFile = param.txt(点数表, "t");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/t", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/t.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 
 //    @Test
     public void test歯科告示() throws IOException {
         String 点数表 = "s";
-        String[] inPdfFiles = param.pdf(点数表, "k");
-        String outTxtFile = param.txt(点数表, "k");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/k", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/k.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 
 //    @Test
     public void test歯科通知() throws IOException {
         String 点数表 = "s";
-        String[] inPdfFiles = param.pdf(点数表, "t");
-        String outTxtFile = param.txt(点数表, "t");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/t", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/t.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 
 //    @Test
     public void test調剤告示() throws IOException {
         String 点数表 = "t";
-        String[] inPdfFiles = param.pdf(点数表, "k");
-        String outTxtFile = param.txt(点数表, "k");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/k", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/k.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 
 //    @Test
     public void test調剤通知() throws IOException {
         String 点数表 = "t";
-        String[] inPdfFiles = param.pdf(点数表, "t");
-        String outTxtFile = param.txt(点数表, "t");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/t", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/t.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 

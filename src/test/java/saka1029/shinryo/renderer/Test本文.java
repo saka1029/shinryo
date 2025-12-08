@@ -30,8 +30,8 @@ public class Test本文 {
     public void test医科() throws IOException {
         logger.info(Common.methodName());
         String 点数表 = "i";
-        String kTxt = param.txt(点数表, "ke");
-        String tTxt = param.txt(点数表, "te");
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
+        String tTxt = param.inFile(点数表, "txt/te.txt");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
         String outHtmlFile = "index.html";
@@ -48,11 +48,11 @@ public class Test本文 {
     public void test歯科() throws IOException {
     	logger.info(Common.methodName());
         String 点数表 = "s";
-        String kTxt = param.txt(点数表, "ke");
-        String tTxt = param.txt(点数表, "te");
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
+        String tTxt = param.inFile(点数表, "txt/te.txt");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
-        Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
+        Node ikaRoot = Parser.parse(new 医科告示読込(), false, param.inFile("i", "txt/ke.txt"));
         Map<String, String> kubunMap = 本文.区分名称マップ(ikaRoot);
         String outHtmlFile = "index.html";
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
@@ -68,8 +68,8 @@ public class Test本文 {
     public void test調剤() throws IOException {
     	logger.info(Common.methodName());
         String 点数表 = "t";
-        String kTxt = param.txt(点数表, "ke");
-        String tTxt = param.txt(点数表, "te");
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
+        String tTxt = param.inFile(点数表, "txt/te.txt");
         String outDir = param.outDir(点数表);
         String title = param.title(点数表);
         String outHtmlFile = "index.html";

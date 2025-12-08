@@ -23,24 +23,24 @@ public class Test様式 {
 //    @Test
     public void test医科() throws IOException {
         String 点数表 = "i";
-        String[] inPdfFiles = param.pdf(点数表, "y");
-        String outTextFile = param.txt(点数表, "y");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/y", ".pdf");
+        String outTextFile = param.inFile(点数表, "txt/y.txt");
         様式.様式一覧変換(outTextFile, inPdfFiles);
     }
 
 //    @Test
     public void test歯科() throws IOException {
         String 点数表 = "s";
-        String[] inPdfFiles = param.pdf(点数表, "y");
-        String outTextFile = param.txt(点数表, "y");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/y", ".pdf");
+        String outTextFile = param.inFile(点数表, "txt/y.txt");
         様式.様式一覧変換(outTextFile, inPdfFiles);
     }
 
 //    @Test
     public void test調剤() throws IOException {
         String 点数表 = "t";
-        String[] inPdfFiles = param.pdf(点数表, "y");
-        String outTextFile = param.txt(点数表, "y");
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/y", ".pdf");
+        String outTextFile = param.inFile(点数表, "txt/y.txt");
         様式.様式一覧変換(outTextFile, inPdfFiles);
     }
 

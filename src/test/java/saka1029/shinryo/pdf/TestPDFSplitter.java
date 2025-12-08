@@ -10,7 +10,7 @@ public class TestPDFSplitter {
 
 //    @Test
     public void testSplit() throws IOException {
-        String inPdfFile = param.pdf("i", "y")[0];
+        String inPdfFile = param.inFiles("i", "pdf/y", ".pdf")[0];
         try (PDFSplitter splitter = new PDFSplitter()) {
             splitter.split(inPdfFile, param.outFile("i-y-1.pdf"), 1, 1);
             splitter.split(inPdfFile, param.outFile("i-y-2.pdf"), 2, 4);

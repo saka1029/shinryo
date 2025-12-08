@@ -33,8 +33,8 @@ public class TestMerger {
 //	@Test
 	public void test医科() throws IOException {
         LOGGER.info(Common.methodName());
-        Node kRoot = Parser.parse(new 医科告示読込(), false, param.txt("i", "ke"));
-        Node tRoot = Parser.parse(new 医科通知読込(), false, param.txt("i", "te"));
+        Node kRoot = Parser.parse(new 医科告示読込(), false, param.inFile("i", "txt/ke.txt"));
+        Node tRoot = Parser.parse(new 医科通知読込(), false, param.inFile("i", "txt/te.txt"));
         Merger.merge(kRoot, tRoot);
         kRoot.summary(param.outFile("i-tree-merged.txt"));
 	}
@@ -42,8 +42,8 @@ public class TestMerger {
 //	@Test
 	public void test歯科() throws IOException {
         LOGGER.info(Common.methodName());
-        Node kRoot = Parser.parse(new 歯科告示読込(), false, param.txt("s", "ke"));
-        Node tRoot = Parser.parse(new 歯科通知読込(), false, param.txt("s", "te"));
+        Node kRoot = Parser.parse(new 歯科告示読込(), false, param.inFile("s", "txt/ke.txt"));
+        Node tRoot = Parser.parse(new 歯科通知読込(), false, param.inFile("s", "txt/te.txt"));
         Merger.merge(kRoot, tRoot);
         kRoot.summary(param.outFile("s-tree-merged.txt"));
 	}
@@ -51,8 +51,8 @@ public class TestMerger {
 //	@Test
 	public void test調剤() throws IOException {
         LOGGER.info(Common.methodName());
-        Node kRoot = Parser.parse(new 調剤告示読込(), false, param.txt("t", "ke"));
-        Node tRoot = Parser.parse(new 調剤通知読込(), false, param.txt("t", "te"));
+        Node kRoot = Parser.parse(new 調剤告示読込(), false, param.inFile("t", "txt/ke.txt"));
+        Node tRoot = Parser.parse(new 調剤通知読込(), false, param.inFile("t", "txt/te.txt"));
         Merger.merge(kRoot, tRoot);
         kRoot.summary(param.outFile("t-tree-merged.txt"));
 	}
@@ -66,7 +66,7 @@ public class TestMerger {
 //            if (n.token != null && n.token.header.endsWith("の施設基準"))
 //                LOGGER.info("%s %s %s".formatted(n.path, n.token.type.name, n.token.header));
 //        });
-        Node tRoot = Parser.parse(new 施設基準通知読込(), false, param.txt(点数表, "te"));
+        Node tRoot = Parser.parse(new 施設基準通知読込(), false, param.inFile(点数表, "txt/te.txt"));
         tRoot.visit(n -> {
             if (n.token != null && n.token.type.name.equals("第数字の"))
                 LOGGER.info("%s %s %s".formatted(n.path, n.token.type.name, n.token.header));

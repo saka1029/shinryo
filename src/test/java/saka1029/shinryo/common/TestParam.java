@@ -1,5 +1,6 @@
 package saka1029.shinryo.common;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -27,9 +28,9 @@ public class TestParam {
         assertEquals("04", p.年度);
         assertEquals("令和", p.旧元号);
         assertEquals("02", p.旧年度);
-        assertEquals(Path.of("in/04/i/txt/k.txt"), Path.of(p.txt("i", "k")));
-        assertEquals(Path.of("in/04/i/txt/t.txt"), Path.of(p.txt("i", "t")));
-        assertEquals(Path.of("in/04/i/txt/y.txt"), Path.of(p.txt("i", "y")));
+        assertEquals(Path.of("in/04/i/txt/k.txt"), Path.of(p.inFile("i", "txt/k.txt")));
+        assertEquals(Path.of("in/04/i/txt/t.txt"), Path.of(p.inFile("i", "txt/t.txt")));
+        assertEquals(Path.of("in/04/i/txt/y.txt"), Path.of(p.inFile("i", "txt/y.txt")));
         assertEquals(Path.of("out/04/i"), Path.of(p.outDir("i")));
         assertEquals(Path.of("out/04/i/index.html"), Path.of(p.outFile("i", "index.html")));
         assertEquals(Path.of("out/04"), Path.of(p.outDir()));
@@ -43,9 +44,9 @@ public class TestParam {
         assertEquals("04", p.年度);
         assertEquals("令和", p.旧元号);
         assertEquals("02", p.旧年度);
-        assertEquals(Path.of("IN/04/i/txt/k.txt"), Path.of(p.txt("i", "k")));
-        assertEquals(Path.of("IN/04/i/txt/t.txt"), Path.of(p.txt("i", "t")));
-        assertEquals(Path.of("IN/04/i/txt/y.txt"), Path.of(p.txt("i", "y")));
+        assertEquals(Path.of("IN/04/i/txt/k.txt"), Path.of(p.inFile("i", "txt/k.txt")));
+        assertEquals(Path.of("IN/04/i/txt/t.txt"), Path.of(p.inFile("i", "txt/t.txt")));
+        assertEquals(Path.of("IN/04/i/txt/y.txt"), Path.of(p.inFile("i", "txt/y.txt")));
         assertEquals(Path.of("OUT/04/i"), Path.of(p.outDir("i")));
         assertEquals(Path.of("OUT/04/i/index.html"), Path.of(p.outFile("i", "index.html")));
         assertEquals(Path.of("OUT/04"), Path.of(p.outDir()));
@@ -65,5 +66,14 @@ public class TestParam {
         assertEquals("平成", preprepre.元号);
         assertEquals("IN", preprepre.inDir);
         assertEquals("OUT", preprepre.outDir);
+    }
+
+    @Test
+    public void testInFile() throws IOException {
+        Param param = Param.of("in", "out", "06");
+        assertArrayEquals(new String[]{"in/06/i/pdf/k/001218731.pdf"},
+            param.inFiles("i", "pdf/k", ".pdf"));
+        assertEquals("in/06/i/txt/k.txt", param.inFile("i", "txt/k.txt"));
+
     }
 }

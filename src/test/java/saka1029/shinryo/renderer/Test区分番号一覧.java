@@ -25,9 +25,9 @@ public class Test区分番号一覧 {
     public void test歯科() throws IOException {
         String 点数表 = "s";
         Param prev = param.previous();
-        Node newRoot = Parser.parse(new 歯科告示読込(), false, param.txt(点数表, "ke"));
-        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ?
-            Parser.parse(new 歯科告示読込(), false, prev.txt(点数表, "ke")) : null;
+        Node newRoot = Parser.parse(new 歯科告示読込(), false, param.inFile(点数表, "txt/ke.txt"));
+        Node oldRoot = Files.exists(Path.of(prev.inFile(点数表, "txt/ke.txt"))) ?
+            Parser.parse(new 歯科告示読込(), false, prev.inFile(点数表, "txt/ke.txt")) : null;
         new 区分番号一覧(param.outDir(点数表), 点数表, false).render(oldRoot, newRoot, param.title(点数表), param.年度, prev.年度, "kubun.html");
     }
 
@@ -35,9 +35,9 @@ public class Test区分番号一覧 {
     public void test調剤() throws IOException {
         String 点数表 = "t";
         Param prev = param.previous();
-        Node newRoot = Parser.parse(new 調剤告示読込(), false, param.txt(点数表, "ke"));
-        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ?
-            Parser.parse(new 調剤告示読込(), false, prev.txt(点数表, "ke")) : null;
+        Node newRoot = Parser.parse(new 調剤告示読込(), false, param.inFile(点数表, "txt/ke.txt"));
+        Node oldRoot = Files.exists(Path.of(prev.inFile(点数表, "txt/ke.txt"))) ?
+            Parser.parse(new 調剤告示読込(), false, prev.inFile(点数表, "txt/ke.txt")) : null;
         new 区分番号一覧(param.outDir(点数表), 点数表, false).render(oldRoot, newRoot, param.title(点数表), param.年度, prev.年度, "kubun.html");
     }
     
@@ -45,9 +45,9 @@ public class Test区分番号一覧 {
     public void test医科() throws IOException {
         String 点数表 = "i";
         Param prev = param.previous();
-        Node newRoot = Parser.parse(new 医科告示読込(), false, param.txt(点数表, "ke"));
-        Node oldRoot = Files.exists(Path.of(prev.txt(点数表, "ke"))) ?
-            Parser.parse(new 医科告示読込(), false, prev.txt(点数表, "ke")) : null;
+        Node newRoot = Parser.parse(new 医科告示読込(), false, param.inFile(点数表, "txt/ke.txt"));
+        Node oldRoot = Files.exists(Path.of(prev.inFile(点数表, "txt/ke.txt"))) ?
+            Parser.parse(new 医科告示読込(), false, prev.inFile(点数表, "txt/ke.txt")) : null;
         new 区分番号一覧(param.outDir(点数表), 点数表, false).render(oldRoot, newRoot, param.title(点数表), param.年度, prev.年度, "kubun.html");
     }
 
