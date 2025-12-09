@@ -1,29 +1,20 @@
-const dictionary = {
-    a: "A",
-    b: "B",
-    c: "C",
-    ab: "AB",
-    bc: "BC",
-    abc: "ABC"
-}
-
-function encode(text, filter = null) {
+function encode(text) {
     const length = text.length;
     const result = [];
     const sequence = [];
 
     function search(start) {
         if (start >= length) {
-            if (filter == null || filter(sequence))
+            if (sequence.filter(e => e.data.length == 7).length == 1)
                 result.push(sequence.slice());
         } else
             for (let i = start + 1; i <= length; ++i) {
                 const key = text.substring(start, i);
-                const data = dictionary[key];
+                const data = BYOMEI[key];
                 // console.log(`start=${start}, i=${i}, key=${key}, data=${data}`)
                 if (data === undefined)
                     continue;
-                sequence.push({start: start, end: i, key: key, data: data});
+                sequence.push({key: key, data: data});
                 search(i);
                 sequence.pop();
             }
@@ -36,6 +27,7 @@ function run() {
     const input = document.getElementById("input").value;
     // alert(input);
     const result = encode(input);
+    // console.log(`input=${input} result=${result}`);
     // let str = JSON.stringify(result);
     let str = "";
     for (const line of result) {
