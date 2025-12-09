@@ -13,7 +13,7 @@ public class ByomeiGenerator {
     static final Charset 文字コード = Charset.forName("Shift_JIS");
     static final String 未コード化傷病名コード = "0000999";
 
-    void generate(String outFile, String[] inFiles) throws IOException {
+    public void generate(String outFile, String[] inFiles) throws IOException {
         try (TextWriter w = new TextWriter(outFile)) {
             w.println("const BYOMEI = {");
             for (String in : inFiles) {

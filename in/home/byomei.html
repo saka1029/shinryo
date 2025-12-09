@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <title>傷病名のコード化</title>
+    <script type="text/javascript" src="byomei_dict.js"></script>
+    <script type="text/javascript" src="byomei.js"></script>
+</head>
+<body>
+    <h1>傷病名のコード化</h1>
+    <p>傷病名から傷病名コードと修飾語コードを求めます。</p>
+    <input type="text" id="input" placeholder="傷病名"
+        onkeydown="if (event.key === 'Enter') run()">
+    <button id="button" name="コード化" onclick="run()">コード化</button>
+    <pre>
+    <div id="result"></div>
+    </pre>
+</body>
+</html>

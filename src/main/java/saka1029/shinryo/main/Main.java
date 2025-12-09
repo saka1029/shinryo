@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
+import saka1029.shinryo.byomei.ByomeiGenerator;
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 import saka1029.shinryo.parser.Node;
@@ -146,6 +147,10 @@ public class Main {
     
     static void 終了(Param param, String baseUrl) throws IOException {
         LOGGER.info("ホームファイルコピー");
+        LOGGER.info("傷病名コード化ページ作成");
+        String[] inFiles = Param.files(Path.of(param.inDir, "byomei"), ".txt");
+        String outFile = Path.of(param.inDir, "home/byomei_dict.js").toString();
+        new ByomeiGenerator().generate(outFile, inFiles);
         Common.copyTree(param.inHomeDir(), param.outHomeDir());
         if (baseUrl != null) {
             LOGGER.info("サイトマップ作成");
