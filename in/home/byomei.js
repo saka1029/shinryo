@@ -30,12 +30,20 @@ function clearInput() {
     run();
 }
 
+function byomeiLength(line) {
+    for (const e of line)
+        if (e.data.length == 7)
+            return e.key.length;
+    return 0;
+}
+
 function run() {
     const input = document.getElementById("byomei-word-input").value;
     // alert(input);
     const result = encode(input);
     // console.log(`input=${input} result=${result}`);
     // let str = JSON.stringify(result);
+    result.sort((a, b) => byomeiLength(b) - byomeiLength(a));
     let str = "";
     for (const line of result) {
         for (const e of line)
