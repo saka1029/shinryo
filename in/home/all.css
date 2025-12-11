@@ -87,6 +87,9 @@ a:visited {
 #search-word-input {
   height: 2.0em;
 }
+#search-word-button {
+  height: 2.5em;
+}
 #search-clear-button {
   position: absolute;
   display: block;

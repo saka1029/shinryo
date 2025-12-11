@@ -23,8 +23,15 @@ function encode(text) {
     return result;
 }
 
+function clearInput() {
+    const input = document.getElementById("search-word-input");
+    input.value = "";
+    input.focus();
+    run();
+}
+
 function run() {
-    const input = document.getElementById("input").value;
+    const input = document.getElementById("search-word-input").value;
     // alert(input);
     const result = encode(input);
     // console.log(`input=${input} result=${result}`);
