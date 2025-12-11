@@ -105,3 +105,24 @@ a:visited {
 .s-hide{
   display: none;
 }
+/* 傷病名コード化 */
+#byomei-word-box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+#byomei-word-input {
+  height: 2.0em;
+}
+#byomei-word-button {
+  height: 2.5em;
+}
+#byomei-clear-button {
+  position: absolute;
+  display: block;
+  right: 3px;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  cursor: pointer;
+}

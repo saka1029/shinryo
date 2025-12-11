@@ -24,14 +24,14 @@ function encode(text) {
 }
 
 function clearInput() {
-    const input = document.getElementById("search-word-input");
+    const input = document.getElementById("byomei-word-input");
     input.value = "";
     input.focus();
     run();
 }
 
 function run() {
-    const input = document.getElementById("search-word-input").value;
+    const input = document.getElementById("byomei-word-input").value;
     // alert(input);
     const result = encode(input);
     // console.log(`input=${input} result=${result}`);

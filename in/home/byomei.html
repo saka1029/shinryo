@@ -25,14 +25,14 @@
     </div>
     <h1>傷病名のコード化</h1>
     <p>傷病名から傷病名コードと修飾語コードを求めます。</p>
-    <span id='search-word-box'>
-        <input type="text" id="search-word-input" placeholder="傷病名" size="60"
+    <span id='byomei-word-box'>
+        <input type="text" id="byomei-word-input" placeholder="傷病名" size="60"
             onkeydown="if (event.key === 'Enter') run()">
-        <span id='search-clear-button' onclick="clearInput()">
+        <span id='byomei-clear-button' onclick="clearInput()">
             <img src='clear-button-in-textbox.svg'/>
         </span>
     </span>
-    <button id="search-word-button" name="コード化" onclick="run()">コード化</button>
+    <button id="byomei-word-button" name="コード化" onclick="run()">コード化</button>
     <pre>
     <div id="result"></div>
     </pre>
