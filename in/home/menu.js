@@ -83,7 +83,7 @@
                 else if (/[A-Za-z0-9]/.test(match))
                     // 半角英数字の場合は全角も含める
                     return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0xFEE0)}]`;
-                if (/[\u3041-\u3096]/.test(match))
+                else if (/[\u3041-\u3096]/.test(match))
                     // ひらがなの場合はカタカナも含める
                     return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0x60)}]`;
                 else
@@ -104,7 +104,6 @@
         if (rawSearchWord === '') return;
         // 検索文字列を正規化する
         const searchWord = normalizeSearchWord(rawSearchWord);
-        console.log(`searchWord=${rawSearchWord}->${searchWord}`);
         // innerHTMLのテキスト部分だけにマッチするように調整する
         // ex) '(?<=AA)BB' : 直前にAAがあるBBのみにマッチする。
         //     ただしAAはマッチする対象に含まれない。
@@ -112,23 +111,19 @@
             // `(?<=\\>)[\\s\\S]*(${searchWord})[\\s\\S]*(?=\\<)`,
             // `>[^>]*(${searchWord})[^<]*`,
             // `[\\s\\S]*(${searchWord})[\\s\\S]*`,
-            `(?<=>[^<>]*)(${searchWord})`, // タグの外にある文字列にマッチ
-            'gi'
+            `(?<=>[^<]*)(${searchWord})`, // タグの外にある文字列にマッチ
+            "gi"
         );
         // 検索文字列そのままにマッチ
-        const rawRegexp = new RegExp(searchWord, 'gi');
+        const rawRegexp = new RegExp(searchWord, "gi");
+        // console.log(`rawSearchWord=${rawSearchWord}, searchWord=${searchWord}`);
+        // console.log(`contentRegexp=${contentRegexp}, rawRegexp=${rawRegexp}`);
         // 各要素に適用
         for (const partEl of [...searchParas]) {
             if (rawRegexp.test(partEl.textContent)) {
-                partEl.innerHTML = partEl.innerHTML.replace(
+                partEl.outerHTML = partEl.outerHTML.replace(
                     contentRegexp,
-                    (partMatch) => {
-                        const tempHtml = partMatch.replace(rawRegexp, (spanMatch) => {
-                            // console.log(`spanMatch=${spanMatch}`);
-                            return `<span class="s-highlight">${spanMatch}</span>`;
-                        });
-                        return tempHtml;
-                    }
+                    (partMatch) => `<span class="s-highlight">${partMatch}</span>`
                 );
             } else {
                 partEl.classList.add('s-hide');
