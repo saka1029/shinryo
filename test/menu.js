@@ -113,8 +113,8 @@
         );
         // 検索文字列そのままにマッチ
         const rawRegexp = new RegExp(searchWord, "gi");
-        console.log(`rawSearchWord=${rawSearchWord}, searchWord=${searchWord}`);
-        console.log(`contentRegexp=${contentRegexp}, rawRegexp=${rawRegexp}`);
+        // console.log(`rawSearchWord=${rawSearchWord}, searchWord=${searchWord}`);
+        // console.log(`contentRegexp=${contentRegexp}, rawRegexp=${rawRegexp}`);
         // 各要素に適用
         for (const partEl of [...searchParas]) {
             if (rawRegexp.test(partEl.textContent)) {
