@@ -76,19 +76,16 @@
 
     function normalizeSearchWord(rawWord) {
         const searchWord = rawWord
-            .replace(/[\u002d\u30fc\uff0dA-Za-z0-9\u3041-\u3096\u30a1-\u30f6]/g, (match) => {
-                if (/[\u002d\u30fc\uff0d]/.test(match))
-                    // \u002d: 半角ハイフン、\u30fc: 長音記号、\uff0d: 全角ハイフン
-                    return `[\u002d\u30fc\uff0d]`;
-                else if (/[A-Za-z0-9]/.test(match))
-                    // 半角英数字の場合は全角も含める
-                    return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0xFEE0)}]`;
-                else if (/[\u3041-\u3096]/.test(match))
-                    // ひらがなの場合はカタカナも含める
-                    return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0x60)}]`;
-                else
-                    // カタカナの場合はひらがなも含める
-                    return `[${match}${String.fromCharCode(match.charCodeAt(0) - 0x60)}]`;
+            .replace(/([\u002d\u30fc\uff0d])|([A-Za-z0-9])|([\u3041-\u3096])|([\u30a1-\u30f6])/g,
+                (match, hyphen, hankaku, hiragana, katakana) => {
+                    if (hyphen != undefined)    // \u002d: 半角ハイフン、\u30fc: 長音記号、\uff0d: 全角ハイフン
+                        return `[\u002d\u30fc\uff0d]`;
+                    else if (hankaku != undefined) // 半角英数字の場合は全角も含める
+                        return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0xFEE0)}]`;
+                    else if (hiragana != undefined) // ひらがなの場合はカタカナも含める
+                        return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0x60)}]`;
+                    else                         // カタカナの場合はひらがなも含める
+                        return `[${match}${String.fromCharCode(match.charCodeAt(0) - 0x60)}]`;
             });
         return searchWord;
     }
@@ -116,8 +113,8 @@
         );
         // 検索文字列そのままにマッチ
         const rawRegexp = new RegExp(searchWord, "gi");
-        // console.log(`rawSearchWord=${rawSearchWord}, searchWord=${searchWord}`);
-        // console.log(`contentRegexp=${contentRegexp}, rawRegexp=${rawRegexp}`);
+        console.log(`rawSearchWord=${rawSearchWord}, searchWord=${searchWord}`);
+        console.log(`contentRegexp=${contentRegexp}, rawRegexp=${rawRegexp}`);
         // 各要素に適用
         for (const partEl of [...searchParas]) {
             if (rawRegexp.test(partEl.textContent)) {
