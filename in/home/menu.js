@@ -92,9 +92,9 @@
 
     function searchHighlight() {
         //リセット処理
-        for (const el of [...searchHighs])
+        for (const el of [...searchHighs])  // ハイライト削除
             el.outerHTML = el.textContent;
-        for (const el of [...searchHides])
+        for (const el of [...searchHides])  // 除外した行を復活
             el.classList.remove('s-hide');
         //本処理
         const rawSearchWord = searchWordInput.value;
@@ -104,20 +104,10 @@
         // innerHTMLのテキスト部分だけにマッチするように調整する
         // ex) '(?<=AA)BB' : 直前にAAがあるBBのみにマッチする。
         //     ただしAAはマッチする対象に含まれない。
-        const contentRegexp = new RegExp(
-            // `(?<=\\>)[\\s\\S]*(${searchWord})[\\s\\S]*(?=\\<)`,
-            // `>[^>]*(${searchWord})[^<]*`,
-            // `[\\s\\S]*(${searchWord})[\\s\\S]*`,
-            `(?<=>[^<]*)(${searchWord})`, // タグの外にある文字列にマッチ
-            "gi"
-        );
-        // 検索文字列そのままにマッチ
-        const rawRegexp = new RegExp(searchWord, "gi");
-        console.log(`rawSearchWord=${rawSearchWord}, searchWord=${searchWord}`);
-        console.log(`contentRegexp=${contentRegexp}, rawRegexp=${rawRegexp}`);
-        // 各要素に適用
+        const contentRegexp = new RegExp(`(?<=>[^<]*)(${searchWord})`, "gi");
         for (const partEl of [...searchParas]) {
-            if (rawRegexp.test(partEl.textContent)) {
+            // 事前にnew RegExp(searchWord, "gi")を実行して変数に代入しておくとなぜかうまく行かない
+            if (new RegExp(searchWord, "gi").test(partEl.textContent)) {
                 partEl.outerHTML = partEl.outerHTML.replace(
                     contentRegexp,
                     (partMatch) => `<span class="s-highlight">${partMatch}</span>`
