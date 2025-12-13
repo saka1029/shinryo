@@ -14,7 +14,7 @@ function normalizeSearchWord(rawWord) {
     return searchWord;
 }
 
-const rawSearchWord = "0";
+const rawSearchWord = "00";
 const searchWord = normalizeSearchWord(rawSearchWord);
 const contentRegexp = new RegExp(`(?<=>[^<]*)(${searchWord})`, "gi");
 const rawRegexp = new RegExp(searchWord, "gi");
