@@ -105,9 +105,9 @@
         // ex) '(?<=AA)BB' : 直前にAAがあるBBのみにマッチする。
         //     ただしAAはマッチする対象に含まれない。
         const contentRegexp = new RegExp(`(?<=>[^<]*)(${searchWord})`, "gi");
+        // textContent検索用の正規表現
         const rawRegexp = new RegExp(searchWord, "gi");
         for (const partEl of [...searchParas]) {
-            // 事前にnew RegExp(searchWord, "gi")を実行して変数に代入しておくとなぜかうまく行かない
             if (rawRegexp.test(partEl.textContent)) {
                 partEl.outerHTML = partEl.outerHTML.replace(
                     contentRegexp,
@@ -116,6 +116,7 @@
             } else {
                 partEl.classList.add('s-hide');
             }
+            // RegExpの状態をリセットする
             rawRegexp.lastIndex = 0;
         }
     }
