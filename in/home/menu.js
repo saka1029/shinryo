@@ -101,23 +101,22 @@
         if (rawSearchWord === '') return;
         // 検索文字列を正規化する
         const searchWord = normalizeSearchWord(rawSearchWord);
+        // textContent検索用の正規表現
+        const rawRegexp = new RegExp(searchWord, "gi");
         // innerHTMLのテキスト部分だけにマッチするように調整する
         // ex) '(?<=AA)BB' : 直前にAAがあるBBのみにマッチする。
         //     ただしAAはマッチする対象に含まれない。
         const contentRegexp = new RegExp(`(?<=>[^<]*)(${searchWord})`, "gi");
-        // textContent検索用の正規表現
-        const rawRegexp = new RegExp(searchWord, "gi");
         for (const partEl of [...searchParas]) {
-            if (rawRegexp.test(partEl.textContent)) {
+            // RegExpの状態をリセットする
+            rawRegexp.lastIndex = 0;
+            if (rawRegexp.test(partEl.textContent))
                 partEl.outerHTML = partEl.outerHTML.replace(
                     contentRegexp,
                     (partMatch) => `<span class="s-highlight">${partMatch}</span>`
                 );
-            } else {
+            else
                 partEl.classList.add('s-hide');
-            }
-            // RegExpの状態をリセットする
-            rawRegexp.lastIndex = 0;
         }
     }
 })();
