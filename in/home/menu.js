@@ -80,9 +80,11 @@
 
     function normalizeSearchWord(rawWord) {
         const searchWord = rawWord
-            .replace(/([\u002d\u30fc\uff0d])|([\u0021-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007E])|([A-Za-z0-9])|([\uFF01\uFF0F\uFF1A-\uFF20\uFF3B-\uFF40\uFF5B-\uFF5E])|([Ａ-Ｚａ-ｚ０-９])|([\u3041-\u3096])|([\u30a1-\u30f6])/g,
-                (match, hyphen, hanSpecial, hanAlpha, zenSpecial, zenAlpha, hiragana, katakana) => {
-                    if (hyphen != undefined)    // \u002d: 半角ハイフン、\u30fc: 長音記号、\uff0d: 全角ハイフン
+            .replace(/([\\\\])|([\u002d\u30fc\uff0d])|([\u0021-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007E])|([A-Za-z0-9])|([\uFF01\uFF0F\uFF1A-\uFF20\uFF3B-\uFF40\uFF5B-\uFF5E])|([Ａ-Ｚａ-ｚ０-９])|([\u3041-\u3096])|([\u30a1-\u30f6])/g,
+                (match, backslash, hyphen, hanSpecial, hanAlpha, zenSpecial, zenAlpha, hiragana, katakana) => {
+                    if (backslash != undefined)    // バックスラッシュの場合
+                        return `[\\\\]`;
+                    else if (hyphen != undefined)    // \u002d: 半角ハイフン、\u30fc: 長音記号、\uff0d: 全角ハイフン
                         return `[\u002d\u30fc\uff0d]`;
                     else if (hanSpecial != undefined) // 半角特殊文字の場合はエスケープして全角も含める
                         return `[\\${match}${shiftChar(match, 0xFEE0)}]`;
@@ -111,7 +113,7 @@
         if (rawSearchWord === '') return;
         // 検索文字列を正規化する
         const searchWord = normalizeSearchWord(rawSearchWord);
-        // console.log(`searchWord=${searchWord}`);
+        console.log(`searchWord=${searchWord}`);
         // textContent検索用の正規表現
         const rawRegexp = new RegExp(searchWord, "gi");
         // innerHTMLのテキスト部分だけにマッチするように調整する
