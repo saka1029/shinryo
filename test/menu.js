@@ -113,7 +113,7 @@
         if (rawSearchWord === '') return;
         // 検索文字列を正規化する
         const searchWord = normalizeSearchWord(rawSearchWord);
-        console.log(`searchWord=${searchWord}`);
+        // console.log(`searchWord=${searchWord}`);
         // textContent検索用の正規表現
         const rawRegexp = new RegExp(searchWord, "gi");
         // innerHTMLのテキスト部分だけにマッチするように調整する
