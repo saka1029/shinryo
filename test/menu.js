@@ -74,20 +74,24 @@
         searchHighlight();
     });
 
+    function shiftChar(c, offset) {
+        return String.fromCharCode(c.charCodeAt(0) + offset);
+    }
+
     function normalizeSearchWord(rawWord) {
         const searchWord = rawWord
-            .replace(/([\u002d\u30fc\uff0d])|([A-Za-z0-9])|([Ａ-Ｚａ-ｚ０-９])|([\u3041-\u3096])|([\u30a1-\u30f6])/g,
+            .replace(/([\u002d\u30fc\uff0d])|([\u0021-\u007E])|([\uFF01-\uFF5E])|([\u3041-\u3096])|([\u30a1-\u30f6])/g,
                 (match, hyphen, hankaku, zenkaku, hiragana, katakana) => {
                     if (hyphen != undefined)    // \u002d: 半角ハイフン、\u30fc: 長音記号、\uff0d: 全角ハイフン
                         return `[\u002d\u30fc\uff0d]`;
                     else if (hankaku != undefined) // 半角英数字の場合は全角も含める
-                        return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0xFEE0)}]`;
+                        return `[\\${match}${shiftChar(match, 0xFEE0)}]`;
                     else if (zenkaku != undefined) // 全角英数字の場合は半角も含める
-                        return `[${match}${String.fromCharCode(match.charCodeAt(0) - 0xFEE0)}]`;
+                        return `[${match}\\${shiftChar(match, -0xFEE0)}]`;
                     else if (hiragana != undefined) // ひらがなの場合はカタカナも含める
-                        return `[${match}${String.fromCharCode(match.charCodeAt(0) + 0x60)}]`;
+                        return `[${match}${shiftChar(match, 0x60)}]`;
                     else                         // カタカナの場合はひらがなも含める
-                        return `[${match}${String.fromCharCode(match.charCodeAt(0) - 0x60)}]`;
+                        return `[${match}${shiftChar(match, -0x60)}]`;
             });
         return searchWord;
     }
