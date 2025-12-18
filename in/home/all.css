@@ -17,8 +17,10 @@ li {
 .main-li {
 	display: inline-block;
 }
-/* .a-pc {
-} */
+.a-pc {
+  width: 1.0em;
+  height: 1.0em;
+}
 
 h1 {
   line-height: 120%;
