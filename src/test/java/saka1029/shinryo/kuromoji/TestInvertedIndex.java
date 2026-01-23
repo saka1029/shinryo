@@ -2,6 +2,7 @@ package saka1029.shinryo.kuromoji;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ public class TestInvertedIndex {
         logger.info(Common.methodName());
         String inTxtFile = param.inFile("i", "txt/ke.txt");
         String outTxtFile = param.outDir("ik-index.txt");
+        Path.of(outTxtFile).getParent().toFile().mkdirs();
         Node root = new 医科告示読込().parse(inTxtFile);
         try (PrintWriter w = new PrintWriter(outTxtFile)) {
             index(root, null, w::println);
