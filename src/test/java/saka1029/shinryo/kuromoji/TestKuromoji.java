@@ -22,6 +22,7 @@ public class TestKuromoji {
 
     @Test
     public void testKuromoji() {
+        logger.info("*** " + Common.methodName());
         Tokenizer tokenizer = new Tokenizer() ;
         List<Token> tokens = tokenizer.tokenize(TEXT.replaceAll("\\s+", ""));
         for (Token token : tokens)
@@ -32,6 +33,7 @@ public class TestKuromoji {
 
     @Test
     public void testWordSequences() {
+        logger.info("*** " + Common.methodName());
         Tokenizer tokenizer = new Tokenizer() ;
         List<Token> tokens = tokenizer.tokenize(TEXT.replaceAll("\\s+", ""));
         StringBuilder noun = new StringBuilder();
