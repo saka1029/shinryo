@@ -32,6 +32,12 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.28</version>
         </dependency>
+        <dependency>
+            <groupId>com.worksap.nlp</groupId>
+            <artifactId>sudachi</artifactId>
+            <version>0.7.5</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
