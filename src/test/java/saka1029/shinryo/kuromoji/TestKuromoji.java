@@ -38,6 +38,7 @@ public class TestKuromoji {
         List<Token> tokens = tokenizer.tokenize(TEXT.replaceAll("\\s+", ""));
         StringBuilder noun = new StringBuilder();
         for (Token token : tokens)
+            // if (token.getPartOfSpeechLevel1().equals("名詞") && !token.getPartOfSpeechLevel2().equals("接尾")) {
             if (token.getPartOfSpeechLevel1().equals("名詞")) {
                 noun.append(token.getSurface());
             } else {
