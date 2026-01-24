@@ -3,6 +3,7 @@ package saka1029.shinryo.kuromoji;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -20,17 +21,20 @@ public class TestInvertedIndex {
     static final Logger logger = Common.logger(TestInvertedIndex.class);
     
     static final Param param = Param.of("in", "debug/out", "06");
+    static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則");
 
-    static void index(Node node, String kubun, Consumer<String> out) throws IOException {
+    static void index(Node node, String url, Consumer<String> out) throws IOException {
         if (!node.isRoot()) {
             Token t = node.token;
-            String url = kubun != null ? kubun : (node.path + ".html");
-            if (kubun == null && t.type.name.equals("区分番号"))
-                url = kubun = node.id +".html";
+            if (t.type.name.equals("区分番号"))
+                url = node.id + ".html";
+            else if (MAIN_NODES.contains(t.type.name))
+                url = node.path + ".html";
+            // else 親のURLを継承
             out.accept("%s:%s %s".formatted(url, t.number, t.header + t.body.stream().collect(Collectors.joining())));
         }
         for (Node child : node.children)
-            index(child, kubun, out);
+            index(child, url, out);
     }
 
    @Test
