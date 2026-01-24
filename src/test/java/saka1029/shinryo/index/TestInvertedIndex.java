@@ -1,18 +1,16 @@
-package saka1029.shinryo.kuromoji;
+package saka1029.shinryo.index;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
-
-import com.atilika.kuromoji.ipadic.Tokenizer;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
@@ -26,25 +24,25 @@ public class TestInvertedIndex {
     
     static final Param param = Param.of("in", "debug/out", "06");
     static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則");
+    static final Pattern WORD = Pattern.compile(
+        "[0-9０-９]*"
+        + "[A-Za-zＡ-Ｚａ-ｚ"
+        + "\\p{InGreek}\\p{IsHan}\\p{IsKatakana}"
+        + "\\uFF0D"        // 全角ハイフンマイナス
+        + "\\u30FC"        // 全角長音
+        + "\\u2014"        // EMダッシュ
+        + "\\u2015"        // 全角のダッシュ
+        + "\\u2212"        // 全角のマイナス
+        + "]+"
+        + "[0-9０-９]*"
+        + "|[0-9,０-９]+点");
 
-    static List<String> words(String text) {
-        List<String> result = new ArrayList<>();
-        Tokenizer tokenizer = new Tokenizer() ;
-        List<com.atilika.kuromoji.ipadic.Token> tokens = tokenizer.tokenize(text.replaceAll("\\s+", ""));
-        StringBuilder noun = new StringBuilder();
-        for (com.atilika.kuromoji.ipadic.Token token : tokens)
-            // if (token.getPartOfSpeechLevel1().equals("名詞") && !token.getPartOfSpeechLevel2().equals("接尾")) {
-            if (token.getPartOfSpeechLevel1().equals("名詞")) {
-                noun.append(token.getSurface());
-            } else {
-                if (noun.length() > 0) {
-                    result.add(noun.toString());
-                    noun.setLength(0);
-                }
-            }
-        if (noun.length() > 0)
-            result.add(noun.toString());
-        return result;
+    static List<String> tokenize(String text) {
+        return WORD.matcher(text).results()
+            .map(m -> m.group())
+            .filter(w -> w.length() >= 3)
+            .filter(w -> !w.startsWith("区分番号"))
+            .toList();
     }
 
     static void index(Node node, String url, Consumer<String> out) throws IOException {
@@ -56,9 +54,8 @@ public class TestInvertedIndex {
             } else if (MAIN_NODES.contains(t.type.name))
                 url = node.path + ".html";
             // else 親のURLを継承
-            // out.accept("%s:%s %s".formatted(url, t.number, t.header + t.body.stream().collect(Collectors.joining())));
-            List<String> words = words(t.header + t.body.stream().collect(Collectors.joining()));
-            out.accept("%s:%s".formatted(url, words.stream().collect(Collectors.joining(" "))));
+            List<String> words = tokenize(t.header + " " + t.body.stream().collect(Collectors.joining()));
+            out.accept("%s:%s".formatted(url, words.stream().collect(Collectors.joining(", "))));
         }
         for (Node child : node.children)
             index(child, url, out);

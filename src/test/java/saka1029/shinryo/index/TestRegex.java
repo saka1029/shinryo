@@ -17,6 +17,7 @@ public class TestRegex {
     static final Pattern ZENKAKU_ALPHABET = Pattern.compile("[Ａ-Ｚａ-ｚ]+");
     static final Pattern ZENKAKU_HIRAGANA = Pattern.compile("\\p{IsHiragana}+");
     static final Pattern ZENKAKU_KATAKANA = Pattern.compile("\\p{IsKatakana}+");
+    static final Pattern GREEK = Pattern.compile("\\p{InGreek}+");
 
     List<String> findAll(Pattern pattern, String text) {
         return pattern.matcher(text).results().map(m -> m.group()).toList();
@@ -24,11 +25,12 @@ public class TestRegex {
 
     @Test
     public void testRegex() {
-        String text = "abc漢字あいうカキクＤＦＧ123ｘｙｚ４５６";
+        String text = "abc漢字あいうカキクＤＦＧ123ｘｙｚαβγ４５６";
         assertEquals(List.of("漢字"), findAll(KANJI, text));
         assertEquals(List.of("ＤＦＧ", "ｘｙｚ"), findAll(ZENKAKU_ALPHABET, text));
         assertEquals(List.of("あいう"), findAll(ZENKAKU_HIRAGANA, text));
         assertEquals(List.of("カキク"), findAll(ZENKAKU_KATAKANA, text));
+        assertEquals(List.of("αβγ"), findAll(GREEK, text));
     }   
 
 }
