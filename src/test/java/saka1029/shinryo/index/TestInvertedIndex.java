@@ -46,6 +46,7 @@ public class TestInvertedIndex {
             .map(m -> m.group())
             .filter(w -> w.length() >= 3)
             .filter(w -> !w.startsWith("区分番号"))
+            .map(w -> w.replaceAll("[及又]$", ""))
             .toList();
     }
 
