@@ -1,7 +1,6 @@
 package saka1029.shinryo.index;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.List;
@@ -9,12 +8,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
+
+import com.cm55.kanhira.KakasiDictReader;
+import com.cm55.kanhira.Kanhira;
+import com.cm55.kanhira.KanwaDict;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
@@ -37,8 +39,8 @@ public class TestInvertedIndex {
         + "\\u2014"        // EMダッシュ
         + "\\u2015"        // 全角のダッシュ
         + "\\u2212"        // 全角のマイナス
+        + "0-9０-９*"
         + "]+"
-        + "[0-9０-９]*"
         + "|[0-9,０-９]+点");
 
     static List<String> tokenize(String text) {
@@ -68,6 +70,9 @@ public class TestInvertedIndex {
 
    @Test
     public void test医科告示読込() throws IOException {
+        KanwaDict dict = KakasiDictReader.load("dict/kakasidict.utf8.txt", "UTF-8");
+        Kanhira kakasi = new Kanhira(new KanwaDict[] { dict });
+ 
         logger.info(Common.methodName());
         String inTxtFile = param.inFile("i", "txt/ke.txt");
         String outTxtFile = param.outDir("ik-index.txt");
@@ -80,8 +85,10 @@ public class TestInvertedIndex {
         int refCount = 0;
         for (Map.Entry<String, Set<String>> entry : index.entrySet()) {
             refCount += entry.getValue().size();
-            logger.info("%s %s".formatted(
-                entry.getKey(), entry.getValue().stream().collect(Collectors.joining(", "))));
+            logger.info("%s(%s) %s".formatted(
+                entry.getKey(),
+                kakasi.convert(entry.getKey()),
+                entry.getValue().stream().collect(Collectors.joining(", "))));
         }
         logger.info("words=%d ref=%s".formatted(index.size(), refCount));
 
