@@ -3,8 +3,12 @@ package saka1029.shinryo.index;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -45,7 +49,7 @@ public class TestInvertedIndex {
             .toList();
     }
 
-    static void index(Node node, String url, Consumer<String> out) throws IOException {
+    static void index(Node node, String url, BiConsumer<String, String> out) throws IOException {
         if (!node.isRoot()) {
             Token t = node.token;
             if (t.type.name.equals("区分番号")) {
@@ -54,8 +58,8 @@ public class TestInvertedIndex {
             } else if (MAIN_NODES.contains(t.type.name))
                 url = node.path + ".html";
             // else 親のURLを継承
-            List<String> words = tokenize(t.header + " " + t.body.stream().collect(Collectors.joining()));
-            out.accept("%s:%s".formatted(url, words.stream().collect(Collectors.joining(", "))));
+            for (String word : tokenize(t.header + " " + t.body.stream().collect(Collectors.joining())))
+                out.accept(url, word);
         }
         for (Node child : node.children)
             index(child, url, out);
@@ -68,8 +72,17 @@ public class TestInvertedIndex {
         String outTxtFile = param.outDir("ik-index.txt");
         Path.of(outTxtFile).getParent().toFile().mkdirs();
         Node root = new 医科告示読込().parse(inTxtFile);
-        try (PrintWriter w = new PrintWriter(outTxtFile)) {
-            index(root, null, w::println);
+        Map<String, Set<String>> index = new TreeMap<>();
+        index(root, null, (url, word) -> {
+            index.computeIfAbsent(word, k -> new HashSet<>()).add(url);
+        });
+        int refCount = 0;
+        for (Map.Entry<String, Set<String>> entry : index.entrySet()) {
+            refCount += entry.getValue().size();
+            logger.info("%s %s".formatted(
+                entry.getKey(), entry.getValue().stream().collect(Collectors.joining(", "))));
         }
+        logger.info("words=%d ref=%s".formatted(index.size(), refCount));
+
     }
 }
