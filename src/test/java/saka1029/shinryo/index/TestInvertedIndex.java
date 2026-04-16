@@ -20,6 +20,7 @@ import com.cm55.kanhira.KanwaDict;
 
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
+import saka1029.shinryo.common.TextWriter;
 import saka1029.shinryo.parser.Node;
 import saka1029.shinryo.parser.Token;
 import saka1029.shinryo.parser.医科告示読込;
@@ -82,15 +83,16 @@ public class TestInvertedIndex {
         index(root, null, (url, word) -> {
             index.computeIfAbsent(word, k -> new HashSet<>()).add(url);
         });
-        int refCount = 0;
-        for (Map.Entry<String, Set<String>> entry : index.entrySet()) {
-            refCount += entry.getValue().size();
-            logger.info("%s(%s) %s".formatted(
-                entry.getKey(),
-                kakasi.convert(entry.getKey()),
-                entry.getValue().stream().collect(Collectors.joining(", "))));
+        try (TextWriter writer = new TextWriter(outTxtFile)) {
+            int refCount = 0;
+            for (Map.Entry<String, Set<String>> entry : index.entrySet()) {
+                refCount += entry.getValue().size();
+                writer.println("%s(%s) %s",
+                    entry.getKey(),
+                    kakasi.convert(entry.getKey()),
+                    entry.getValue().stream().collect(Collectors.joining(", ")));
+            }
+            writer.println("words=%d ref=%s", index.size(), refCount);
         }
-        logger.info("words=%d ref=%s".formatted(index.size(), refCount));
-
     }
 }
