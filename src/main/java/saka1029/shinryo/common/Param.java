@@ -27,6 +27,8 @@ public class Param {
         add("令和", "04", "令和", "02");
         add("令和", "06", "令和", "04");
         add("令和", "08", "令和", "06");
+        add("令和", "10", "令和", "08");
+        add("令和", "12", "令和", "10");
     }
     
     public static Map<String, String> TITLES = Map.of(
