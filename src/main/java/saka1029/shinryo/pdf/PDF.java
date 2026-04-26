@@ -46,7 +46,7 @@ public class PDF {
     public static final float PAGE_WIDTH = 596F, PAGE_HEIGHT = 842F;
 
     public final boolean horizontal;
-    public final 文書属性 文書属性;
+    public 文書属性 文書属性;
 
     public float 行併合範囲割合 = 0.6F;
     public float ルビ割合 = 0.6F;
@@ -185,7 +185,8 @@ public class PDF {
                 parse(doc, fileElements, i + 1);
         }
         List<TreeMap<Float, List<Element>>> fileLines = 行分割(fileElements);
-        文書属性 文書属性 = this.文書属性 == null ? 文書属性(fileLines) : this.文書属性;
+        if (文書属性 == null)
+            文書属性 = 文書属性(fileLines);
         LOGGER.info(inPdfPath + ":" + 文書属性);
         int pageNo = 0;
         for (TreeMap<Float, List<Element>> lines : fileLines) {
