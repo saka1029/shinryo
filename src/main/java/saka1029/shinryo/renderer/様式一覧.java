@@ -54,8 +54,10 @@ public class 様式一覧 extends HTML {
                 writer.println("<!-- %s:%s %s:%s --><p><a href='pdf/%s.pdf'%s>%s %s</a></p>",
                     Path.of(e.file).getFileName(), e.startPage, fileName, lineNo,
                     e.id, target(), e.name, e.title);
-                if (!isSingle)
+                if (!isSingle) {
+                    // System.out.println("split id=%s start=%d end=%d".formatted(e.id, e.startPage, e.endPage));
                     splitter.split(e.file, Path.of(outDir, "pdf", e.id + ".pdf").toString(), e.startPage, e.endPage);
+                }
             }
             if (isSingle) {
                 writer.println("</div>"); // id=left-frame
