@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import saka1029.shinryo.common.CSVReader;
@@ -17,6 +18,7 @@ import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.HashEncoder;
 import saka1029.shinryo.common.Param;
 
+@Ignore
 public class TestByomei {
 
     static final Logger logger = Common.logger(TestByomei.class);

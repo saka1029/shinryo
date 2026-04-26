@@ -58,7 +58,7 @@ public class TestInvertedIndex {
             Token t = node.token;
             if (t.type.name.equals("区分番号")) {
                 url = node.id + ".html";
-                logger.info(url);
+                // logger.info(url);
             } else if (MAIN_NODES.contains(t.type.name))
                 url = node.path + ".html";
             // else 親のURLを継承

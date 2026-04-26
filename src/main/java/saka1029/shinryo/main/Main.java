@@ -72,14 +72,15 @@ public class Main {
     static void 施設基準PDF変換(Param param, String 点数表) throws IOException {
         LOGGER.info(param.title(点数表) + "PDF変換");
         LOGGER.info("告示PDF変換");
-        // 縦書き
-        // new PDF(false).テキスト変換(param.txt(点数表, "k"), param.pdf(点数表, "k"));
-        new PDF(false).テキスト変換(param.inFile(点数表, "txt/k.txt"), param.inFiles(点数表, "pdf/k", ".pdf"));
+        // 令和8年度のみ文書属性を固定値で与える。
+        if (param.元号.equals("令和") && param.年度.equals("08")) {
+            PDF.文書属性 b = new PDF.文書属性(false, 103.0F, 31.0F, 14.0F, 18.0F, 8.4F);
+            new PDF(b).テキスト変換(param.inFile(点数表, "txt/k.txt"), param.inFiles(点数表, "pdf/k", ".pdf"));
+        } else
+            new PDF(false).テキスト変換(param.inFile(点数表, "txt/k.txt"), param.inFiles(点数表, "pdf/k", ".pdf"));
         LOGGER.info("通知PDF変換");
-        // new PDF(true).テキスト変換(param.txt(点数表, "t"), param.pdf(点数表, "t"));
         new PDF(true).テキスト変換(param.inFile(点数表, "txt/t.txt"), param.inFiles(点数表, "pdf/t", ".pdf"));
         LOGGER.info("様式PDF変換");
-        // 様式.施設基準様式一覧変換(param.txt(点数表, "y"), param.pdf(点数表, "y"));
         様式.施設基準様式一覧変換(param.inFile(点数表, "txt/y.txt"), param.inFiles(点数表, "pdf/y", ".pdf"));
     }
 

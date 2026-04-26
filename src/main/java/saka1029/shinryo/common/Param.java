@@ -98,6 +98,7 @@ public class Param {
         return outDir;
     }
 
+    public float 行間隔規定値 = 14F;
     public String outDir() {
         return Path.of(outDir, 年度).toString();
     }
@@ -120,5 +121,11 @@ public class Param {
     
     public Param previous() {
         return Param.of(inDir, outDir, ALL_YEARS.get(ALL_YEARS.indexOf(年度) - 1));
+    }
+
+    @Override
+    public String toString() {
+        return "Param(inDir=%s, outDir=%s, 元号=%s, 年度=%s, 旧元号=%s, 旧年度=%s)".formatted(
+            inDir, outDir, 元号, 年度, 旧元号, 旧年度);
     }
 }

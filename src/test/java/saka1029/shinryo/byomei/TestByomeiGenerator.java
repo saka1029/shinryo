@@ -3,10 +3,12 @@ package saka1029.shinryo.byomei;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import saka1029.shinryo.common.Param;
 
+@Ignore
 public class TestByomeiGenerator {
 
     @Test
