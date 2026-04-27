@@ -56,11 +56,19 @@ public class PDF {
     public Pattern ページ番号パターン = Pattern.compile("^\\s*\\S*\\s*-\\s*\\d+\\s*-\\s*$");
     public DebugElement debugElement = null;
 
+    /**
+     * 文書属性を実際に処理するPDFファイルを統計分析して取得します。
+     * @param horizontal
+     */
     public PDF(boolean horizontal) {
         this.horizontal = horizontal;
         this.文書属性 = null;
     }
 
+    /**
+     * 文書属性をコンストラクタで与えます。
+     * @param 文書属性
+     */
     public PDF(文書属性 文書属性) {
         this.horizontal = 文書属性.横書き;
         this.文書属性 = 文書属性;
