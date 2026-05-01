@@ -14,7 +14,7 @@ public class 施設基準告示本文 extends 施設基準本文 {
         super(outDir, "k");
     }
     
-    static final Pattern 別表参照 = Pattern.compile("別\\s*表\\s*第(" + Pat.漢数字の + ")");
+    static final Pattern 別表参照 = Pattern.compile("別\\s*表\\s*第\\s*(" + Pat.漢数字の + ")");
     
     @Override
     public String anchor(String s, Node n) {
