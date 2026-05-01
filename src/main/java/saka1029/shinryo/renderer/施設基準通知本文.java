@@ -27,18 +27,24 @@ public class 施設基準通知本文 extends 施設基準本文 {
         return "<a href='pdf/%s.pdf'>%s</a>".formatted(Pat.正規化(head + txt), txt);
     }
 
-    static String 施設基準様式変換(String s, Pattern all, Pattern sub) {
-        String[] h = {null};
-        return all.matcher(s).replaceAll(
-            m -> sub.matcher(m.group()).replaceAll(
-                n -> n.group("H") != null
-                    ? anchor((h[0] = n.group("H")) + n.group("B0"))
-                    : n.group("C") + anchor(h[0], n.group("B1"))));
-    }
-	
+    /**
+     * 令和８年施設基準(通知) 特掲診療料の施設基準等 第９ 在宅療養支援診療所 ４届け出に関する事項
+     * における以下の参照パターンに対応する。
+     * <ul>
+     * <li>別添２の様式 11 及び様式11の３</li>
+     * <li>別添２の様式 11、様式11の３及び様式11 の５</li>
+     * </ul>
+     * この中の様式11、様式11の3、様式11の5へのリンクは
+     * それぞれ先頭に「別添２」を付与する必要がある。
+     */
 	@Override
 	public String anchor(String s, Node n) {
-	    return 施設基準様式変換(s, ALL_PAT, SUB_PAT);
+        String[] h = {null};
+        return ALL_PAT.matcher(s).replaceAll(
+            m -> SUB_PAT.matcher(m.group()).replaceAll(
+                p -> p.group("H") != null
+                    ? anchor((h[0] = p.group("H")) + p.group("B0"))
+                    : p.group("C") + anchor(h[0], p.group("B1"))));
 	}
 	
     static final List<String> LINKS = List.of("第数字の");
