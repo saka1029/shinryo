@@ -11,6 +11,7 @@ import saka1029.shinryo.parser.Token;
 public abstract class 施設基準本文 extends HTML {
 
     final String pathPrefix;
+    final boolean fillHeader = true;
     
 	施設基準本文(String outDir, String pathPrefix) throws IOException {
 		super(outDir, "k");
@@ -35,7 +36,9 @@ public abstract class 施設基準本文 extends HTML {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
             lineDirective(token), indent(level, token.number), token.number, anchor(token.header, node),
-            token.body.size() > 0 ? "<br>" : "", anchor(token.body.stream().collect(Collectors.joining()), node));
+            // token.body.size() > 0 ? "<br>" : "",
+            "",     // headerとbodyの間に<br>を置きません。
+            anchor(token.body.stream().collect(Collectors.joining()), node));
         for (Node child : node.children)
             node(child, level + 1, writer);
     }
