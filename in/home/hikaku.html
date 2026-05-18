@@ -23,7 +23,7 @@
         rightFrame.src = params.get("r");
         leftLink.href = params.get("l");
         rightLink.href = params.get("r");
-        body.onload = () => {
+        rightFrame.onload = () => {
         	   // ローカルで実行した場合、以下の例外が発生する。(Webサーバ経由の場合は問題ない)
         	   // Uncaught DOMException: Blocked a frame with origin "null" from accessing a cross-origin frame.
             document.title = "比較 " + right.contentWindow.document.title;
