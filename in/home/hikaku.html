@@ -19,8 +19,10 @@
     function bodyonload() {
         const loc = window.location;
         const params = new URLSearchParams(loc.search);
-        left.src = params.get("l");
-        right.src = params.get("r");
+        leftFrame.src = params.get("l");
+        rightFrame.src = params.get("r");
+        leftLink.href = params.get("l");
+        rightLink.href = params.get("r");
         right.onload = () => {
         	   // ローカルで実行した場合、以下の例外が発生する。(Webサーバ経由の場合は問題ない)
         	   // Uncaught DOMException: Blocked a frame with origin "null" from accessing a cross-origin frame.
@@ -31,14 +33,22 @@
 <style type='text/css'>
     html, body { height: 100%; margin: 0px; padding: 0px; }
     #content { height: 100%; margin: 0px; padding: 0px; }
-    #left { float:left; margin: 0px; padding: 0px; border: 0; }
-    #right { float:right; margin: 0px; padding: 0px; border: 0; }
+    header { display: flex; justify-content: space-between; }
+    main { display: flex; height: 100%;}
+    #leftFrame { float: left; margin: 0px; padding: 0px; border: 0; }
+    #rightFrame { float: right; margin: 0px; padding: 0px; border: 0; }
 </style>
 </head>
 <body onload='bodyonload()'>
 <div id='content'>
-<iframe id='left' title='left' width='50%' height='100%' >iframe対応のブラウザが必要です</iframe>
-<iframe id='right' title='right' width='50%' height='100%' >iframe対応のブラウザが必要です</iframe>
+    <header>
+        <a id='leftLink' href='#'>左のページへ</a>
+        <a id='rightLink' href='#'>右のページへ</a>
+    </header>
+    <main>
+        <iframe id='leftFrame' title='left' width='50%' height='100%' >iframe対応のブラウザが必要です</iframe>
+        <iframe id='rightFrame' title='right' width='50%' height='100%' >iframe対応のブラウザが必要です</iframe>
+    </main>
 </div>
 </body>
 </html>
