@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-public class Test半角前後の空白 {
+public class Test半角全角間空白削除 {
 
     static Pattern 半角全角間空白 = Pattern.compile(
             "(?<=[^\u0001-\u007E])\\s+(?=[\\dA-Za-z])"
