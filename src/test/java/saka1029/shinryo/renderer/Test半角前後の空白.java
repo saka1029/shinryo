@@ -20,6 +20,7 @@ public class Test半角前後の空白 {
     public void test半角前後の空白() {
         assertEquals("あいう20えお", 半角全角間空白削除("あいう  20  えお"));
         assertEquals("abc 20 days", 半角全角間空白削除("abc 20 days"));
+        assertEquals("It is like a finger", 半角全角間空白削除("It is like a finger"));
     }
 
     @Test
