@@ -17,6 +17,14 @@ public class Pat {
     private Pat() {
     }
 
+    public static final String 全角 = "[^\u0001-\u007E]";
+    public static final String 半角英数 = "[\\dA-Za-z]";
+    public static final Pattern 全半角間空白 = Pattern.compile(
+        "(?<=" + 全角 + ")\\s(?=" + 半角英数 + ")|(?<=" + 半角英数 + ")\\s(?=" + 全角 + ")");
+    public static String 全半角間空白削除(String s) {
+        return 全半角間空白.matcher(s).replaceAll("");
+    }
+
     public static final String パス区切り = "_";
     public static final String 数 = "[0-9０-９]";
     public static final String 数字 = 数 + "+";

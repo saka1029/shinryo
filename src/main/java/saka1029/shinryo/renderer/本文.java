@@ -77,7 +77,7 @@ public class 本文 extends HTML {
     }
 	
 	String linkText(String text) {
-	    return linker.apply(text);
+	    return linker.apply(Pat.全半角間空白削除(text));
 	}
 
 	String linkBodyText(Token token) {

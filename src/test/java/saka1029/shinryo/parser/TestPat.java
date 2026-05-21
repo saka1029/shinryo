@@ -125,21 +125,29 @@ public class TestPat {
         assertTrue("B001-2".compareTo("B001-12") > 0);
         assertTrue(Pat.区分順序化("B001-2").compareTo(Pat.区分順序化("B001-12")) < 0);
     }
-    
-//     static final Pattern 施設基準様式 = 施設基準通知本文.施設基準様式名パターン;
-//     static String y(String s) {
-//         Matcher m = 施設基準様式.matcher(s);
-//         if (!m.find())
-//             return null;
-//         return Pat.正規化(m.group());
-//     }
 
-//     @Test
-//     public void test施設基準様式名パターン() {
-//         assertEquals("T3-S4", y("別添３の別紙４"));
-// //        assertEquals("T7", y("別添７"));
-//         assertEquals("T6-S1-2-3", y("別 添６ の 別紙１の２の３"));
-//         assertEquals("T7-Y1-2-3", y("別添 ７ の 様式 １ の ２ の ３"));
-//         assertEquals("T2-Y1", y("別添2の様式１"));
-//     }
+    @Test
+    public void test全半角間空白削除() {
+        assertEquals("あいう20えお", Pat.全半角間空白削除("あいう  20  えお"));
+        assertEquals("abc 20 days", Pat.全半角間空白削除("abc 20 days"));
+        assertEquals("It is like a finger", Pat.全半角間空白削除("It is like a finger"));
+    }
+
+    @Test
+    public void testA000() {
+        String s = """
+            (14) 患者が任意に診療を中止し、１月以上経過した後、再び同一の保険医療機関において診
+            療を受ける場合には、その診療が同一病名又は同一症状によるものであっても、その際の診療は、
+            初診として取り扱う。なお、この場合において、１月の期間の計算は、
+            例えば、２月 10 日～３月９日、９月 15 日～10月 14 日等と計算する。
+            """;
+        String e = """
+            (14) 患者が任意に診療を中止し、１月以上経過した後、再び同一の保険医療機関において診
+            療を受ける場合には、その診療が同一病名又は同一症状によるものであっても、その際の診療は、
+            初診として取り扱う。なお、この場合において、１月の期間の計算は、
+            例えば、２月10日～３月９日、９月15日～10月14日等と計算する。
+            """;
+        assertEquals(e, Pat.全半角間空白削除(s));
+    }
+    
 }
