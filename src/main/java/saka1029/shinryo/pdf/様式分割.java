@@ -1,6 +1,7 @@
 package saka1029.shinryo.pdf;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +15,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 
 import saka1029.shinryo.common.Common;
 
-public class 様式分割 {
+public class 様式分割 implements Closeable {
 
     static final Logger logger = Common.logger(様式分割.class);
 
@@ -28,6 +29,7 @@ public class 様式分割 {
     }
 
     final Map<FilePage, FilePage> map = new HashMap<>();
+    final Map<File, PDDocument> opened = new HashMap<>();
 
     public 様式分割(String yeTxt, String ysTxt) throws IOException {
         if (ysTxt == null)
@@ -58,29 +60,29 @@ public class 様式分割 {
         }
     }
 
-    public void split(String file, Path outFile, int startPage, int endPage) throws IOException {
-        Map<File, PDDocument> opened = new HashMap<>();
-        try {
-            logger.info("outFile=" + outFile);
-            try (PDDocument doc = new PDDocument()) {
-                for (int i = startPage; i <= endPage; ++i) {
-                    FilePage filePage = new FilePage(file, i);
-                    if (map.containsKey(filePage))
-                        filePage = map.get(filePage);
-                    logger.info("addPage=" + filePage);
-                    PDDocument source = opened.get(filePage.file);
-                    if (source == null) {
-                        source = PDDocument.load(filePage.file);
-                        opened.put(filePage.file, source);
-                    }
-                    doc.addPage(source.getPage(filePage.page - 1));
+    public void split(String file, String outFile, int startPage, int endPage) throws IOException {
+        // logger.info("outFile=" + outFile);
+        try (PDDocument doc = new PDDocument()) {
+            for (int i = startPage; i <= endPage; ++i) {
+                FilePage fp = new FilePage(file, i);
+                if (map.containsKey(fp))
+                    fp = map.get(fp);
+                // logger.info("addPage=" + fp);
+                PDDocument source = opened.get(fp.file);
+                if (source == null) {
+                    source = PDDocument.load(fp.file);
+                    opened.put(fp.file, source);
                 }
-                doc.save(outFile.toFile());
+                doc.addPage(source.getPage(fp.page - 1));
             }
-        } finally {
-            for (PDDocument d : opened.values())
-                d.close();
+            doc.save(new File(outFile));
         }
+    }
+
+    @Override
+    public void close() throws IOException {
+        for (PDDocument d : opened.values())
+            d.close();
     }
 
 }

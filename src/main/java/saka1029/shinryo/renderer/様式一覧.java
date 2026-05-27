@@ -7,8 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import saka1029.shinryo.common.TextWriter;
-import saka1029.shinryo.pdf.PDFSplitter;
 import saka1029.shinryo.pdf.様式;
+import saka1029.shinryo.pdf.様式分割;
 
 public class 様式一覧 extends HTML {
 
@@ -23,11 +23,11 @@ public class 様式一覧 extends HTML {
         return isSingle ? " target='inner-frame'" : "";
     }
 
-    public void render(String inCsvFile, String title, String outHtmlFile) throws IOException {
+    public void render(String yeTxt, String ysTxt, String title, String outHtmlFile) throws IOException {
         String fullTitle = title + " 様式一覧";
-        try (BufferedReader reader = Files.newBufferedReader(Path.of(inCsvFile), StandardCharsets.UTF_8);
+        try (BufferedReader reader = Files.newBufferedReader(Path.of(yeTxt), StandardCharsets.UTF_8);
             TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile));
-            PDFSplitter splitter = new PDFSplitter()) {
+            様式分割 splitter = new 様式分割(yeTxt, ysTxt)) {
             head(fullTitle, null, writer);
             writer.println("<body>");
             writer.println("<div id='all'>");
@@ -43,9 +43,11 @@ public class 様式一覧 extends HTML {
                 menu(writer);
             }
             writer.println("<h1 class='title'>%s</h1>", fullTitle);
-            String fileName = Path.of(inCsvFile).getFileName().toString();
+            String fileName = Path.of(yeTxt).getFileName().toString();
             String line;
             int lineNo = 0;
+            Path outPdfDir = Path.of(outDir, "pdf");
+            Files.createDirectories(outPdfDir);
             while ((line = reader.readLine()) != null) {
                 ++lineNo;
                 if (line.isBlank() || line.matches("\\s*#.*"))
@@ -56,7 +58,7 @@ public class 様式一覧 extends HTML {
                     e.id, target(), e.name, e.title);
                 if (!isSingle) {
                     // System.out.println("split id=%s start=%d end=%d".formatted(e.id, e.startPage, e.endPage));
-                    splitter.split(e.file, Path.of(outDir, "pdf", e.id + ".pdf").toString(), e.startPage, e.endPage);
+                    splitter.split(e.file, outPdfDir.resolve(e.id + ".pdf").toString(), e.startPage, e.endPage);
                 }
             }
             if (isSingle) {

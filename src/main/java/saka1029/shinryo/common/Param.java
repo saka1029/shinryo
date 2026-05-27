@@ -78,6 +78,11 @@ public class Param {
         return Path.of(inDir, 年度, 点数表, path).toString();
     }
 
+    public String inFileOrNull(String 点数表, String path) throws IOException {
+        Path p = Path.of(inDir, 年度, 点数表, path);
+        return Files.exists(p) ? p.toString() : null;
+    }
+
     // public String[] pdf(String 点数表, String type) throws IOException {
     //     return files(Path.of(inDir, 年度, 点数表, "pdf", type), ".pdf");
     // }
