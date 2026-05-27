@@ -28,4 +28,15 @@ public class TestMain {
         Main.main(new String[] {
             "-i", "in", "-o", "debug", "-b", BASE_URL, "08", "i2"});
     }
+
+    /**
+     * 以下のコマンドのデバッグ実行
+     * java saka1029.shinryo.main.Main -i in -o debug 08 k1
+     */
+    @Test
+    public void test08K1Debug() throws IOException {
+        Main.main(new String[] {
+            "-i", "in", "-o", "debug", "-b", BASE_URL, "08", "k1"});
+    }
+
 }
