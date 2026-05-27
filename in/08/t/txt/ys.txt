@@ -1,0 +1,5 @@
+in/08/t/pdf/y/001686841.pdf,2,in/08/change/2026-05-26/kaiteikankei_r080501_1.pdf,25
+in/08/t/pdf/y/001686841.pdf,3,in/08/change/2026-05-26/kaiteikankei_r080501_1.pdf,26
+in/08/t/pdf/y/001686841.pdf,4,in/08/change/2026-05-26/kaiteikankei_r080501_1.pdf,27
+in/08/t/pdf/y/001686841.pdf,5,in/08/change/2026-05-26/kaiteikankei_r080501_1.pdf,28
+in/08/t/pdf/y/001686841.pdf,6,in/08/change/2026-05-26/kaiteikankei_r080501_1.pdf,29
