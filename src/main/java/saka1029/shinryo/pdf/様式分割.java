@@ -27,12 +27,11 @@ public class 様式分割 {
         }
     }
 
-    // final String yeTxt, ysTxt;
     final Map<FilePage, FilePage> map = new HashMap<>();
 
     public 様式分割(String yeTxt, String ysTxt) throws IOException {
-        // this.yeTxt = yeTxt;
-        // this.ysTxt = ysTxt;
+        if (ysTxt == null)
+            return;
         Map<FilePage, FilePage> subst = new HashMap<>();
         try (BufferedReader reader = Files.newBufferedReader(Path.of(ysTxt), StandardCharsets.UTF_8)) {
             String line;
