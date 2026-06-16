@@ -20,11 +20,15 @@ public class 施設基準通知本文 extends 施設基準本文 {
     static final Pattern ALL_PAT = Pattern.compile(別添 + 別紙 + "(" + 及び + 別紙 + ")*");
     static final Pattern SUB_PAT = Pattern.compile("(?<H>" + 別添 + ")(?<B0>" + 別紙 + ")|(?<C>" + 及び +")(?<B1>" + 別紙 + ")");
 
-    static String anchor(String txt) {
-        return "<a href='pdf/%s.pdf'>%s</a>".formatted(Pat.正規化(txt), txt);
+    // static String anchor(String kt, String txt) {
+    //     return "<a href='pdf/K%s-%s.pdf'>%s</a>".formatted(kt, Pat.正規化(txt), txt);
+    // }
+
+    static String anchor(String kt, String txt) {
+        return "<a href='pdf/K%s-%s.pdf'>%s</a>".formatted(kt, Pat.正規化(txt), txt);
     }
-    static String anchor(String head, String txt) {
-        return "<a href='pdf/%s.pdf'>%s</a>".formatted(Pat.正規化(head + txt), txt);
+    static String anchor(String kt, String head, String txt) {
+        return "<a href='pdf/K%s-%s.pdf'>%s</a>".formatted(kt, Pat.正規化(head + txt), txt);
     }
 
     /**
@@ -42,9 +46,16 @@ public class 施設基準通知本文 extends 施設基準本文 {
         String[] h = {null};
         return ALL_PAT.matcher(s).replaceAll(
             m -> SUB_PAT.matcher(m.group()).replaceAll(
-                p -> p.group("H") != null
-                    ? anchor((h[0] = p.group("H")) + p.group("B0"))
-                    : p.group("C") + anchor(h[0], p.group("B1"))));
+                p -> {
+                    String kt = n.path.substring(0, 1); 
+                    if (p.group("H") != null)
+                        return anchor(kt, (h[0] = p.group("H")) + p.group("B0"));
+                    else
+                        return p.group("C") + anchor(kt, h[0], p.group("B1"));
+                }));
+                // p -> p.group("H") != null
+                //     ? anchor((h[0] = p.group("H")) + p.group("B0"))
+                //     : p.group("C") + anchor(h[0], p.group("B1"))));
 	}
 	
     static final List<String> LINKS = List.of("第数字の");

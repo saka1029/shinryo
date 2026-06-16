@@ -66,6 +66,8 @@ public class 様式 {
         + "\\s*(?:の\\s*(?:(?:\\d|\\s+)+))?" // 様式番号2
         + "\\s*(?:の\\s*(?:(?:\\d|\\s+)+))?" // 様式番号3
         + ")\\s*[)）]?(?:\\s+(.+))?"); // 様式タイトル (group2)
+    
+    static final Pattern 特掲診療料 = Pattern.compile("^\\s*第[１1]\\s*特掲診療料の施設基準等\\s*$");
 
     static String standardPath(String path) {
         return path.replaceAll("\\\\", "/");
@@ -109,12 +111,15 @@ public class 様式 {
             for (String inPdfFile : inPdfFiles) {
 //                out.printf("#file %s\n", inPdfFile);
                 List<List<String>> pageLines = new PDF(true).read(inPdfFile);
+                String 基本特掲 = "K1-";
                 String betten = ""; // 直前の「別添n」
                 int startPage = -1;
                 String name = null, id = null, title = null;
                 int i = 0;
                 for (int pageCount = pageLines.size(); i < pageCount; ++i) {
                     List<String> lines = pageLines.get(i);
+                    if (lines.stream().anyMatch(line -> 特掲診療料.matcher(line).find()))
+                        基本特掲 = "K2-";
                     for (int j = 0, lineCount = Math.min(様式名出現最大行, lines.size()); j < lineCount; ++j) {
                         String norm = Normalizer.normalize(lines.get(j), Form.NFKD);
                         Matcher m = 施設基準様式名パターン.matcher(norm);
@@ -130,7 +135,8 @@ public class 様式 {
                             if (title == null && j + 1 < lines.size())
                                 title = lines.get(j + 1);
                             title = title.replaceAll("\\s+", "");
-                            id = Pat.正規化(name.startsWith("別添") ? name : betten + "の" + name);
+                            id = 基本特掲 + Pat.正規化(name.startsWith("別添") ? name : betten + "の" + name);
+                            System.out.println("id=" + id);
                         }
                     }
                 }

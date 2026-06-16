@@ -31,12 +31,32 @@ public class TestMain {
 
     /**
      * 以下のコマンドのデバッグ実行
+     * java saka1029.shinryo.main.Main -i in -o debug 08 k0
+     */
+    @Test
+    public void test08K0Debug() throws IOException {
+        Main.main(new String[] {
+            "-i", "in", "-o", "debug", "-b", BASE_URL, "08", "k0"});
+    }
+
+    /**
+     * 以下のコマンドのデバッグ実行
      * java saka1029.shinryo.main.Main -i in -o debug 08 k1
      */
     @Test
     public void test08K1Debug() throws IOException {
         Main.main(new String[] {
             "-i", "in", "-o", "debug", "-b", BASE_URL, "08", "k1"});
+    }
+
+    /**
+     * 以下のコマンドのデバッグ実行
+     * java saka1029.shinryo.main.Main -i in -o debug 08 k2
+     */
+    @Test
+    public void test08K2Debug() throws IOException {
+        Main.main(new String[] {
+            "-i", "in", "-o", "debug", "-b", BASE_URL, "08", "k2"});
     }
 
 }
