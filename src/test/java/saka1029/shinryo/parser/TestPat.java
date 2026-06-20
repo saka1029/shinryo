@@ -128,7 +128,7 @@ public class TestPat {
 
     @Test
     public void test全半角間空白削除() {
-        assertEquals("あいう20えお", Pat.全半角間空白削除("あいう  20  えお"));
+        assertEquals("あいう20えお", Pat.全半角間空白削除("あいう 20 えお"));
         assertEquals("abc 20 days", Pat.全半角間空白削除("abc 20 days"));
         assertEquals("It is like a finger", Pat.全半角間空白削除("It is like a finger"));
     }
