@@ -137,10 +137,10 @@ public class TestPat {
     public static final String 半角 = "[\\dA-Za-z]";
     public static final Pattern 全半角間空白 = Pattern.compile(
         "(?<=" + 全角 + ")\\s(?=" + 半角 + ")|(?<=" + 半角 + ")\\s(?=" + 全角 + ")");
-    public static final Pattern ヘッダ = Pattern.compile(
+    public static final Pattern ヘッダ除外 = Pattern.compile(
         "(^\\s*\\S*\\s+)?(.*)", Pattern.DOTALL);
     public static String 全半角間空白削除ヘッダ除外(String s) {
-        return ヘッダ.matcher(s).replaceFirst(m ->
+        return ヘッダ除外.matcher(s).replaceFirst(m ->
             m.group(1) + 全半角間空白.matcher(m.group(2)).replaceAll(""));
     }
 

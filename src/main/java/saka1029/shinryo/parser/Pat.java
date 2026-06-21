@@ -24,6 +24,12 @@ public class Pat {
     public static String 全半角間空白削除(String s) {
         return 全半角間空白.matcher(s).replaceAll("");
     }
+    public static final Pattern ヘッダ除外 = Pattern.compile(
+        "(^\\s*\\S*\\s+)?(.*)", Pattern.DOTALL);
+    public static String 全半角間空白削除ヘッダ除外(String s) {
+        return ヘッダ除外.matcher(s).replaceFirst(m ->
+            m.group(1) + 全半角間空白.matcher(m.group(2)).replaceAll(""));
+    }
 
     public static final String パス区切り = "_";
     public static final String 数 = "[0-9０-９]";
