@@ -133,6 +133,25 @@ public class TestPat {
         assertEquals("It is like a finger", Pat.全半角間空白削除("It is like a finger"));
     }
 
+    public static final String 全角 = "[^\u0001-\u007E]";
+    public static final String 半角 = "[\\dA-Za-z]";
+    public static final Pattern 全半角間空白 = Pattern.compile(
+        "(?<=" + 全角 + ")\\s(?=" + 半角 + ")|(?<=" + 半角 + ")\\s(?=" + 全角 + ")");
+    public static final Pattern ヘッダ = Pattern.compile(
+        "(^\\s*\\S*\\s+)?(.*)", Pattern.DOTALL);
+    public static String 全半角間空白削除ヘッダ除外(String s) {
+        return ヘッダ.matcher(s).replaceFirst(m ->
+            m.group(1) + 全半角間空白.matcher(m.group(2)).replaceAll(""));
+    }
+
+    @Test
+    public void test全半角間空白削除ヘッダ除外() {
+        assertEquals("あいう 20えお", 全半角間空白削除ヘッダ除外("あいう 20 えお"));
+        assertEquals("abc 20 days", 全半角間空白削除ヘッダ除外("abc 20 days"));
+        assertEquals("It is like a finger", 全半角間空白削除ヘッダ除外("It is like a finger"));
+        assertEquals("20 これは2026年6月21日です。", 全半角間空白削除ヘッダ除外("20 これは 2026 年 6 月 21 日です。"));
+    }
+
     @Test
     public void testA000() {
         String s = """
@@ -148,6 +167,7 @@ public class TestPat {
             例えば、２月10日～３月９日、９月15日～10月14日等と計算する。
             """;
         assertEquals(e, Pat.全半角間空白削除(s));
+        assertEquals(e, 全半角間空白削除ヘッダ除外(s));
     }
     
 }
