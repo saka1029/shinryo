@@ -102,7 +102,7 @@ public class Pat {
 
     public static String 正規化(String s) {
         s = s.replaceAll("\\s", "");
-        s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款|例", "");
+        s = s.replaceAll("[()（）]|まで|区分|別表|第|部|章|節|款|例|問", "");
         s = s.replaceAll("[のー－―‐-]", "-");
         s = s.replaceAll("へ", "ヘ"); // ひらがなの「へ」をカタカナの「ヘ」に変換する。
         s = s.replaceAll("から|及び|、", "x");
@@ -190,7 +190,7 @@ public class Pat {
     }
 
     public static String numberNoHeader(String number) {
-        return "\\s*(?<N>" + number + ")(?<H>)\\s*";
+        return "\\s*(?<N>" + number + ")(?<H>.*)";
     }
 
     public static String number(String number) {

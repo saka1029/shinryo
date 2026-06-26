@@ -94,8 +94,10 @@ public abstract class Parser {
 		this.token = get();
 		Node root = Node.root(isTuti);
 		parse(root);
-	    if (token != null)
-            throw error("未処理のトークン: %s", tokens.get(index - 1));
+	    if (token != null) {
+			Token prev = index - 2 < 0 ? null : tokens.get(index - 2);
+            throw error("未処理のトークン: %s 直前のトークン: %s", tokens.get(index - 1), prev);
+		}
 		return root;
 	}
 	
