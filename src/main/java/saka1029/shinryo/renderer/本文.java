@@ -119,7 +119,7 @@ public class 本文 extends HTML {
             node(child, level + 1, writer);
     }
 
-    static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号");
+    static final Set<String> MAIN_NODES = Set.of("章", "部", "節", "款", "通則", "区分番号", "分類", "名称");
     static final Set<String> MAIN_TREE_NODES = Set.of("章", "部", "節", "款", "通則");
 
     public void node(Node node, int level, TextWriter writer) throws IOException {

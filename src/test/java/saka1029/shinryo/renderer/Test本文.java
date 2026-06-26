@@ -6,6 +6,8 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.junit.Test;
+
 // import org.junit.Test;
 
 import saka1029.shinryo.common.Common;
@@ -17,6 +19,7 @@ import saka1029.shinryo.parser.医科告示読込;
 import saka1029.shinryo.parser.医科通知読込;
 import saka1029.shinryo.parser.歯科告示読込;
 import saka1029.shinryo.parser.歯科通知読込;
+import saka1029.shinryo.parser.疑義解釈読込;
 import saka1029.shinryo.parser.調剤告示読込;
 import saka1029.shinryo.parser.調剤通知読込;
 
@@ -80,5 +83,21 @@ public class Test本文 {
         Node tRoot = Parser.parse(new 調剤通知読込(), false, tTxt);
         Merger.merge(kRoot, tRoot);
         new 本文(outDir, 点数表, null, Pat.調剤リンク, false).render(kRoot, title, outHtmlFile);
+    }
+
+   @Test
+    public void test疑義解釈() throws IOException {
+    	logger.info(Common.methodName());
+        Param param = Param.of("in", "debug/html", "08");
+        String 点数表 = "g";
+        String kTxt = param.inFile(点数表, "txt/ke.txt");
+        String outDir = param.outDir(点数表);
+        String title = param.title(点数表);
+        String outHtmlFile = "index.html";
+        Common.copyTree(param.inHomeDir(), param.outHomeDir());
+        if (Files.exists(Path.of(param.inDir(点数表, "img"))))
+            Common.copyTree(param.inDir(点数表, "img"), param.outDir(点数表, "img"));
+        Node kRoot = Parser.parse(new 疑義解釈読込(), false, kTxt);
+        new 本文(outDir, 点数表, null, s -> s, false).render(kRoot, title, outHtmlFile);
     }
 }
