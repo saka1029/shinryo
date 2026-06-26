@@ -21,6 +21,7 @@ public class 疑義解釈読込 extends Parser {
 
     // 本文の行末に「関係」があると"分類"と解釈されるので、次行の先頭を送り込むなどしてke.txtを編集する必要がある。
 	public static final TokenType 分類 = new TokenType("分類", Pat.number("\\S+関係"), Pat.固定値id("b"));
+    // 名称が省略されていることがあるので、適宜補う必要がある。
 	public static final TokenType 名称 = new TokenType("名称", Pat.number("【\\S+】"), Pat.固定値id("n"));
 	public static final TokenType 問 = new TokenType("問", Pat.numberHeader("問\\s?" + Pat.数字ハイフン), Pat.数字id);
 	public static final TokenType 答 = new TokenType("答", Pat.numberNoHeader("（答）"), Pat.固定値id("a"));
