@@ -35,6 +35,7 @@ public class Pat {
     public static final String 数 = "[0-9０-９]";
     public static final String 数字 = 数 + "+";
     public static final String 数字の = repeat(数字, "の", 数字);
+    public static final String 数字ハイフン = repeat(数字, "[ー－―‐-]", 数字);
     public static final String 左括弧 = "[(（]";
     public static final String 右括弧 = "[)）]";
     public static final String 括弧数字 = paren(数字);
@@ -186,6 +187,10 @@ public class Pat {
 
     public static String numberHeader(String number) {
         return "\\s*(?<N>" + number + ")\\s+(?<H>.*)\\s*";
+    }
+
+    public static String numberNoHeader(String number) {
+        return "\\s*(?<N>" + number + ")(?<H>)\\s*";
     }
 
     public static String number(String number) {

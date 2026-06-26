@@ -3,6 +3,8 @@ package saka1029.shinryo.pdf;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+// import org.junit.Test;
+
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 
@@ -56,6 +58,15 @@ public class TestPDF {
         String 点数表 = "t";
         String[] inPdfFiles = param.inFiles(点数表, "pdf/t", ".pdf");
         String outTxtFile = param.inFile(点数表, "txt/t.txt");
+        new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
+    }
+
+//    @Test
+    public void test令和8年疑義解釈() throws IOException {
+        Param param = Param.of("in", "debug/out", "08");
+        String 点数表 = "g";
+        String[] inPdfFiles = param.inFiles(点数表, "pdf/k", ".pdf");
+        String outTxtFile = param.inFile(点数表, "txt/k.txt");
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 

@@ -3,6 +3,10 @@ package saka1029.shinryo.parser;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.junit.Test;
+
+// import org.junit.Test;
+
 import saka1029.shinryo.common.Common;
 import saka1029.shinryo.common.Param;
 
@@ -82,5 +86,14 @@ public class TestParser {
         String outTxtFile = param.outDir("kt-tree.txt");
         Node root = new 施設基準通知読込().parse(inTxtFile);
         root.summary(outTxtFile);
+    }
+
+   @Test
+    public void test疑義解釈読込() throws IOException {
+        logger.info(Common.methodName());
+        Param param = Param.of("in", "debug/out", "08");
+        String inTxtFile = param.inFile("g", "txt/ke.txt");
+        Node root = new 疑義解釈読込().parse(inTxtFile);
+        logger.info(root.toString());
     }
 }
