@@ -65,6 +65,11 @@ public class PDF {
         this.文書属性 = null;
     }
 
+    public PDF(boolean horizontal, Pattern ページ番号パターン) {
+        this(horizontal);
+        this.ページ番号パターン = ページ番号パターン;
+    }
+
     /**
      * 文書属性をコンストラクタで与えます。
      * @param 文書属性

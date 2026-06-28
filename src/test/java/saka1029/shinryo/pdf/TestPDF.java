@@ -2,6 +2,9 @@ package saka1029.shinryo.pdf;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
+import org.junit.Test;
 
 // import org.junit.Test;
 
@@ -61,13 +64,14 @@ public class TestPDF {
         new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
     }
 
-//    @Test
+   @Test
     public void test令和8年疑義解釈() throws IOException {
         Param param = Param.of("in", "debug/out", "08");
         String 点数表 = "g";
         String[] inPdfFiles = param.inFiles(点数表, "pdf/k", ".pdf");
         String outTxtFile = param.inFile(点数表, "txt/k.txt");
-        new PDF(true).テキスト変換(outTxtFile, inPdfFiles);
+        Pattern ページ番号パターン = Pattern.compile("^\\s*(\\S{1,3}|\\S\\s\\S\\S)[ー－―‐-]\\d+$");
+        new PDF(true, ページ番号パターン).テキスト変換(outTxtFile, inPdfFiles);
     }
 
 }

@@ -53,18 +53,18 @@ public class 疑義解釈本文 extends HTML {
     }
 
     public void node(Node node, int level, TextWriter writer) throws IOException {
-        Token token = node.token;
-        if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
-            link(node, level, writer, false);
-        else if (MAIN_NODES.contains(token.type.name)) {
-            if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
-                link(node, level, writer, false);
-            else if (node.token.body.size() > 0)
-                link(node, level, writer, true);
-            else
-                text(node, level, writer);
-        } else
-            text(node, level, writer);
+        // Token token = node.token;
+        // if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
+        //     link(node, level, writer, false);
+        // else if (MAIN_NODES.contains(token.type.name)) {
+        //     if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
+        //         link(node, level, writer, false);
+        //     else if (node.token.body.size() > 0)
+        //         link(node, level, writer, true);
+        //     else
+        //         text(node, level, writer);
+        // } else
+        //     text(node, level, writer);
     }
 
     public void file(Node node, String title, String outHtmlFile, boolean bodyOnly) throws IOException {
