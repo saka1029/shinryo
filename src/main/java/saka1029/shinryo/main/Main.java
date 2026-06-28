@@ -42,10 +42,11 @@ public class Main {
         System.err.printf("inDir: 入力ディレクトリ(省略時は'%s')%n", DEFAULT_IN_DIR);
         System.err.printf("outDir: 出力ディレクトリ(省略時は'%s')%n", DEFAULT_OUT_DIR);
         System.err.println("baseUrl: サイトマップ作成時のベースURL(省略時はサイトマップを作成しません)");
-        System.err.println("STEP: ([istk][012]) ...");
-        System.err.println("   i:医科, s:歯科, t:調剤, k:施設基準, 0:PDF変換, 1:様式生成, 2:HTML生成");
+        System.err.println("STEP: ([istkg][012]) ...");
+        System.err.println("   i:医科, s:歯科, t:調剤, k:施設基準, g:疑義解釈, 0:PDF変換, 1:様式生成, 2:HTML生成");
         System.err.println("   ex) i1 i2 s1 s2");
         System.err.println("       (医科および歯科の様式およびHTML生成)");
+        System.err.println("   ただし'g1'は何も処理しません");
         return new IllegalArgumentException(message);
     }
 
@@ -82,6 +83,12 @@ public class Main {
         new PDF(true).テキスト変換(param.inFile(点数表, "txt/t.txt"), param.inFiles(点数表, "pdf/t", ".pdf"));
         LOGGER.info("様式PDF変換");
         様式.施設基準様式一覧変換(param.inFile(点数表, "txt/y.txt"), param.inFiles(点数表, "pdf/y", ".pdf"));
+    }
+
+    static void 疑義解釈PDF変換(Param param) throws IOException {
+        String 点数表 = "g";
+        LOGGER.info(param.title(点数表) + "PDF変換");
+        new PDF(true).疑義解釈テキスト変換(param.inFile(点数表, "txt/k.txt"), param.inFiles(点数表, "pdf/k", ".pdf"));
     }
 
     static void 様式一覧生成(Param param, String 点数表) throws IOException {
@@ -145,6 +152,8 @@ public class Main {
         new 施設基準告示本文(outDir).render(kRoot, kTitle, "index.html");
         new 施設基準通知本文(outDir).render(tRoot, tTitle, "tuti.html");
         イメージコピー(param, 点数表);
+    }
+    static void 疑義解釈HTML生成(Param param) {
     }
     
     static void 終了(Param param, String baseUrl) throws IOException {
@@ -212,6 +221,9 @@ public class Main {
                 case "k0": 施設基準PDF変換(param, "k"); break;
                 case "k1": 様式一覧生成(param, "k"); break;
                 case "k2": 施設基準HTML生成(param); break;
+                case "g0": 疑義解釈PDF変換(param); break;
+                case "g1": LOGGER.info("STEP g1はありません"); break;
+                case "g2": 疑義解釈HTML生成(param); break;
                 default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
         終了(param, baseUrl);

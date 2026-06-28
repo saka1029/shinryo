@@ -70,8 +70,7 @@ public class TestPDF {
         String 点数表 = "g";
         String[] inPdfFiles = param.inFiles(点数表, "pdf/k", ".pdf");
         String outTxtFile = param.inFile(点数表, "txt/k.txt");
-        Pattern ページ番号パターン = Pattern.compile("^\\s*(\\S{1,3}|\\S\\s\\S\\S)[ー－―‐-]\\d+$");
-        new PDF(true, ページ番号パターン).テキスト変換(outTxtFile, inPdfFiles);
+        new PDF(true).疑義解釈テキスト変換(outTxtFile, inPdfFiles);
     }
 
 }

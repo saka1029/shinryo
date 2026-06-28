@@ -65,11 +65,6 @@ public class PDF {
         this.文書属性 = null;
     }
 
-    public PDF(boolean horizontal, Pattern ページ番号パターン) {
-        this(horizontal);
-        this.ページ番号パターン = ページ番号パターン;
-    }
-
     /**
      * 文書属性をコンストラクタで与えます。
      * @param 文書属性
@@ -236,6 +231,11 @@ public class PDF {
                 }
             }
         }
+    }
+
+    public void 疑義解釈テキスト変換(String outTxtFile, String... inPdfFiles) throws IOException {
+        ページ番号パターン = Pattern.compile("^\\s*(\\S\\s?){1,3}[ー－―‐-]\\d+$");
+        テキスト変換(outTxtFile, inPdfFiles);
     }
 
     public static void ページ分割(String inPdfFile, String outPdfFile, int startPage, int endPage) throws IOException {
