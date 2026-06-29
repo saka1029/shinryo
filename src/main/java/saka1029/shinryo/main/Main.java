@@ -163,7 +163,7 @@ public class Main {
         String txt = param.inFile(点数表, "txt/ke.txt");
         Node root = Parser.parse(new 疑義解釈読込(), true, txt);
         new 疑義解釈本文(outDir, root).render(title, "index.html", false);
-        new 疑義解釈本文(outDir, root).render(title, "index-single.html", false);
+        new 疑義解釈本文(outDir, root).render(title, "index-single.html", true);
     }
     
     static void 終了(Param param, String baseUrl) throws IOException {

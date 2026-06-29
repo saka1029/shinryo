@@ -115,26 +115,26 @@ public class 疑義解釈本文 extends HTML {
                 menu(writer);
                 writer.println("<h1 class='title'>%s</h1>", title);
             }
-			if (!isSingle) {
-				// 子ノードのレンダリング
-                int b = 0;
-                for (Entry<NameNode, Map<NameNode, List<Node>>> 分類 : 疑義解釈.entrySet()) {
-                    ++b;
-                    writer.println("%s<p %s>%s</p>",
-                        lineDirective(分類.getKey().node.token), indent(0, ""), 分類.getKey().name);
-                    int n = 0;
-                    for (Entry<NameNode, List<Node>> 名称 : 分類.getValue().entrySet()) {
-                        ++n;
-                        writer.println("%s<p %s><a href='b%d_n%d.html'>%s</a></p>",
-                            lineDirective(名称.getKey().node.token), indent(1, ""), b, n, 名称.getKey().name);
+            // 子ノードのレンダリング
+            int b = 0;
+            for (Entry<NameNode, Map<NameNode, List<Node>>> 分類 : 疑義解釈.entrySet()) {
+                ++b;
+                writer.println("%s<p %s>%s</p>",
+                    lineDirective(分類.getKey().node.token), indent(0, ""), 分類.getKey().name);
+                int n = 0;
+                for (Entry<NameNode, List<Node>> 名称 : 分類.getValue().entrySet()) {
+                    ++n;
+                    writer.println("%s<p %s><a%s href='b%d_n%d.html'>%s</a></p>",
+                        lineDirective(名称.getKey().node.token), indent(1, ""),
+                        isSingle ? " target='inner-frame'" : "", b, n, 名称.getKey().name);
+                    if (!isSingle)
                         file(分類.getKey().name + "<br>" + 名称.getKey().name, b, n, 名称.getValue());
-                    }
                 }
-			}
+            }
             if (isSingle) {
                 writer.println("</div>"); // id='left-frame'
                 writer.println("<div id='right-frame'>");
-                writer.println("<iframe id='inner-frame' name='inner-frame' frameborder='0'>");
+                writer.println("<iframe id='inner-frame' name='inner-frame' src='../../iframe-default.html' frameborder='0'>");
                 writer.println("</iframe>");
                 writer.println("</div>"); // id='right-frame'
             }

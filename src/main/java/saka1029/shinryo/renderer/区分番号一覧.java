@@ -138,7 +138,7 @@ public class 区分番号一覧 extends HTML {
                     if (isSingle) {
                         writer.println("</div>"); // id=left-frame
                         writer.println("<div id='right-frame'>");
-                        writer.println("<iframe id='inner-frame' name='inner-frame' frameborder='0'>");
+                        writer.println("<iframe id='inner-frame' name='inner-frame' src='../../iframe-default.html' frameborder='0'>");
                         writer.println("</ifreme>");
                         writer.println("</div>"); // id=right-frame
                     }
