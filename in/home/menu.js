@@ -53,7 +53,7 @@
         links += " <a href='yoshiki-single.html'>様式</a>";
     else
         links += " <a href='yoshiki.html'>様式</a>";
-    if (点数表 != "g")
+    if (点数表 == "g")
         /* do nothing */;
     else if (前年度 != null && 種類 != "kubun" && 種類 != "index-single" && 種類 != "kubun-single" && 種類 != "yoshiki-single") {
         links += ` <a href='../../hikaku.html?l=${前年度}/${点数表}/${種類}.html`
