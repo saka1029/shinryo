@@ -19,10 +19,16 @@ import saka1029.shinryo.parser.Token;
 public class 疑義解釈本文 extends HTML {
 
     record NameNode(String name, Node node) {
+
         @Override
         public final boolean equals(Object arg0) {
             return arg0 instanceof NameNode right
                 && Objects.equals(name, right.name);
+        }
+
+        @Override
+        public final int hashCode() {
+            return name.hashCode();
         }
     }
 
