@@ -41,15 +41,16 @@
     } else if (種類 == "index-single" || 種類 == "kubun-single" || 種類 == "yoshiki-single") {
         links += " <a href='index-single.html'>本文</a>";
         links += " <a href='kubun-single.html'>区分</a>";
-    } else {
+    } else if (点数表 != "g") {
         links += " <a href='index.html'>本文</a>";
         links += " <a href='kubun.html'>区分</a>";
     }
     if (種類 == "index-single" || 種類 == "kubun-single" || 種類 == "yoshiki-single")
         links += " <a href='yoshiki-single.html'>様式</a>";
-    else
+    else if (点数表 != "g")
         links += " <a href='yoshiki.html'>様式</a>";
-    if (前年度 != null && 種類 != "kubun" && 種類 != "index-single" && 種類 != "kubun-single" && 種類 != "yoshiki-single") {
+    if (前年度 != null && 種類 != "kubun" && 種類 != "index-single" && 種類 != "kubun-single" && 種類 != "yoshiki-single"
+        && 点数表 != "g") {
         links += ` <a href='../../hikaku.html?l=${前年度}/${点数表}/${種類}.html`
             + `&r=${年度}/${点数表}/${種類}.html' target='_top'>旧版と比較</a>`;
     }

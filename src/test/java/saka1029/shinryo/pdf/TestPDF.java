@@ -2,7 +2,6 @@ package saka1029.shinryo.pdf;
 
 import java.io.IOException;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import org.junit.Test;
 

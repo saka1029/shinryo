@@ -2,6 +2,13 @@ package saka1029.shinryo.renderer;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import saka1029.shinryo.common.TextWriter;
@@ -11,70 +18,95 @@ import saka1029.shinryo.parser.Token;
 
 public class 疑義解釈本文 extends HTML {
 
-    boolean isSingle;
+    record NameNode(String name, Node node) {
+        @Override
+        public final boolean equals(Object arg0) {
+            return arg0 instanceof NameNode right
+                && Objects.equals(name, right.name);
+        }
+    }
 
-    疑義解釈本文(String outDir, String 点数表, boolean isSingle) throws IOException {
-        super(outDir, 点数表);
-        this.isSingle = isSingle;
+    final Map<NameNode, Map<NameNode, List<Node>>> 疑義解釈;
+
+    public 疑義解釈本文(String outDir, Node root) throws IOException {
+        super(outDir, "g");
+        this.疑義解釈 = 分類(root);
     }
 	
-	String linkText(String text) {
+    /**
+     * 疑義のツリーを
+     * 分類および名称でソートします。
+     */
+    static Map<NameNode, Map<NameNode, List<Node>>> 分類(Node root) {
+        Map<NameNode, Map<NameNode, List<Node>>> result = new LinkedHashMap<>();
+        Consumer<Node> visitor = new Consumer<>() {
+            Map<NameNode, List<Node>> 分類 = null;
+            List<Node> 名称 = null;
+            @Override
+            public void accept(Node node) {
+                if (node.token == null) return;
+                NameNode nn = new NameNode(node.token.number, node);
+                switch (node.token.type.name) {
+                    case "分類":
+                        分類 = result.computeIfAbsent(nn, k -> new LinkedHashMap<>());
+                        break;
+                    case "名称":
+                        名称 = 分類.computeIfAbsent(nn, k -> new ArrayList<>());
+                        break;
+                    case "問":
+                        名称.add(node);
+                        break;
+                }
+            }
+        };
+        root.visit(visitor);
+        return result;
+    }
+
+	String text(String text) {
 	    return Pat.全半角間空白削除(text);
 	}
 
-	String linkBodyText(Token token) {
-	    return linkText(token.body.stream().collect(Collectors.joining()));
+	String bodyText(Token token) {
+	    return token.body.stream().collect(Collectors.joining());
 	}
+	
 
-    String target() {
-        return isSingle ? " target='inner-frame'" : "";
+    void file(String title, int b, int n, List<Node> 問リスト) throws IOException {
+        try (TextWriter writer = new TextWriter(Path.of(outDir, "b%d_n%d.html".formatted(b, n)))) {
+            head(title, null, writer);
+			writer.println("<body>");
+            writer.println("<div id='all'>");
+            menu(writer);
+            // writer.println("<p class='title'>%s</p>", paths(node));
+            writer.println("<h1 class='title'>%s</h1>", title);
+			writer.println("<div id='content'>");
+				// 問のレンダリング
+                for (Node 問ノード : 問リスト) {
+                    Token 問 = 問ノード.token;
+                    writer.println("%s<div class='rbox'><p %s>%s %s%s</p></div>",
+                        lineDirective(問), indent(0, 問.number), 問.number, text(問.header),
+                        bodyText(問));
+                    Token 答 = 問ノード.children.get(0).token;
+                    writer.println("%s<p %s>%s %s%s</p>",
+                        lineDirective(答), indent(0, 答.number), 答.number, text(答.header),
+                        bodyText(答));
+                }
+			writer.println("</div>"); // id='content'
+            writer.println("</div>"); // id='all'
+            writer.println("</body>");
+            writer.println("</html>");
+        }
     }
 
-    public void link(Node node, int level, TextWriter writer, boolean bodyOnly) throws IOException {
-        Token token = node.token;
-        String title = "%s %s".formatted(token.number, token.header0());
-        String url = "%s.html".formatted(token.type.name.equals("区分番号") ? node.id : node.path);
-        writer.println("%s<p %s><a href='%s'%s>%s</a></p>",
-            lineDirective(token), indent(level, token.number), url, target(), title);
-        if (!isSingle)
-            file(node, title, url, bodyOnly);
-        if (bodyOnly)
-			for (Node child : node.children)
-				node(child, level + 1, writer);
-    }
-
-    public void text(Node node, int level, TextWriter writer) throws IOException {
-        Token token = node.token;
-        writer.println("%s<p %s>%s %s%s%s</p>",
-            lineDirective(token), indent(level, token.number), token.number, linkText(token.header),
-            token.body.size() > 0 ? "<br>" : "", linkBodyText(token));
-        for (Node child : node.children)
-            node(child, level + 1, writer);
-    }
-
-    public void node(Node node, int level, TextWriter writer) throws IOException {
-        // Token token = node.token;
-        // if (token.type.name.equals("区分番号") && !token.header.equals("削除"))
-        //     link(node, level, writer, false);
-        // else if (MAIN_NODES.contains(token.type.name)) {
-        //     if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
-        //         link(node, level, writer, false);
-        //     else if (node.token.body.size() > 0)
-        //         link(node, level, writer, true);
-        //     else
-        //         text(node, level, writer);
-        // } else
-        //     text(node, level, writer);
-    }
-
-    public void file(Node node, String title, String outHtmlFile, boolean bodyOnly) throws IOException {
+    public void file(String title, String outHtmlFile, boolean isSingle) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, outHtmlFile))) {
-            head(title, node, writer);
+            head(title, null, writer);
 			writer.println("<body>");
             writer.println("<div id='all'>");
             if (!isSingle) {
                 menu(writer);
-                writer.println("<p class='title'>%s</p>", paths(node));
+                // writer.println("<p class='title'>%s</p>", paths(node));
                 writer.println("<h1 class='title'>%s</h1>", title);
             }
 			writer.println("<div id='content'>");
@@ -83,18 +115,21 @@ public class 疑義解釈本文 extends HTML {
                 menu(writer);
                 writer.println("<h1 class='title'>%s</h1>", title);
             }
-			if (node.token != null) {
-			    // headerの後半とbodyの出力
-                Token token = node.token;
-                if (!token.header1().isEmpty())
-                    writer.println("<p><b>%s</b></p>", linkText(token.header1()));
-                if (token.body.size() > 0)
-                    writer.println("<p>%s</p>", linkBodyText(token));
-			}
-			if (!bodyOnly) {
+			if (!isSingle) {
 				// 子ノードのレンダリング
-				for (Node child : node.children)
-					node(child, 0, writer);
+                int b = 0;
+                for (Entry<NameNode, Map<NameNode, List<Node>>> 分類 : 疑義解釈.entrySet()) {
+                    ++b;
+                    writer.println("%s<p %s>%s</p>",
+                        lineDirective(分類.getKey().node.token), indent(0, ""), 分類.getKey().name);
+                    int n = 0;
+                    for (Entry<NameNode, List<Node>> 名称 : 分類.getValue().entrySet()) {
+                        ++n;
+                        writer.println("%s<p %s><a href='b%d_n%d.html'>%s</a></p>",
+                            lineDirective(名称.getKey().node.token), indent(1, ""), b, n, 名称.getKey().name);
+                        file(分類.getKey().name + "<br>" + 名称.getKey().name, b, n, 名称.getValue());
+                    }
+                }
 			}
             if (isSingle) {
                 writer.println("</div>"); // id='left-frame'
@@ -110,9 +145,9 @@ public class 疑義解釈本文 extends HTML {
         }
     }
 
-    public void render(Node node, String title, String outHtmlFile) throws IOException {
+    public void render(String title, String outHtmlFile, boolean isSingle) throws IOException {
         this.mainTitle = title;
-        file(node, title, outHtmlFile, false);
+        file(title, outHtmlFile, isSingle);
     }
 
 }

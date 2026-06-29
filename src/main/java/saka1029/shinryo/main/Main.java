@@ -19,6 +19,7 @@ import saka1029.shinryo.parser.施設基準告示読込;
 import saka1029.shinryo.parser.施設基準通知読込;
 import saka1029.shinryo.parser.歯科告示読込;
 import saka1029.shinryo.parser.歯科通知読込;
+import saka1029.shinryo.parser.疑義解釈読込;
 import saka1029.shinryo.parser.調剤告示読込;
 import saka1029.shinryo.parser.調剤通知読込;
 import saka1029.shinryo.pdf.PDF;
@@ -30,6 +31,7 @@ import saka1029.shinryo.renderer.施設基準告示本文;
 import saka1029.shinryo.renderer.施設基準通知本文;
 import saka1029.shinryo.renderer.本文;
 import saka1029.shinryo.renderer.様式一覧;
+import saka1029.shinryo.renderer.疑義解釈本文;
 
 public class Main {
 
@@ -153,7 +155,15 @@ public class Main {
         new 施設基準通知本文(outDir).render(tRoot, tTitle, "tuti.html");
         イメージコピー(param, 点数表);
     }
-    static void 疑義解釈HTML生成(Param param) {
+    static void 疑義解釈HTML生成(Param param) throws IOException {
+        String 点数表 = "g";
+        LOGGER.info(param.title(点数表) + "HTML生成");
+        String outDir = param.outDir(点数表);
+        String title = param.title(点数表);
+        String txt = param.inFile(点数表, "txt/ke.txt");
+        Node root = Parser.parse(new 疑義解釈読込(), true, txt);
+        new 疑義解釈本文(outDir, root).render(title, "index.html", false);
+        new 疑義解釈本文(outDir, root).render(title, "index-single.html", false);
     }
     
     static void 終了(Param param, String baseUrl) throws IOException {
@@ -222,7 +232,7 @@ public class Main {
                 case "k1": 様式一覧生成(param, "k"); break;
                 case "k2": 施設基準HTML生成(param); break;
                 case "g0": 疑義解釈PDF変換(param); break;
-                case "g1": LOGGER.info("STEP g1はありません"); break;
+                case "g1": LOGGER.info("STEP g1の処理はありません"); break;
                 case "g2": 疑義解釈HTML生成(param); break;
                 default: throw usage("不明なSTEPです(" + args[i] + ")");
             }
