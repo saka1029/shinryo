@@ -70,11 +70,13 @@ public class 疑義解釈本文 extends HTML {
     }
 
 	String text(String text) {
-	    return Pat.全半角間空白削除(text);
+	    return Pat.全半角間空白削除(text) + "<br>";
 	}
 
 	String bodyText(Token token) {
-	    return token.body.stream().collect(Collectors.joining());
+	    return token.body.stream()
+            .map(line -> Pat.全半角間空白削除(line) + "<br>")
+            .collect(Collectors.joining());
 	}
 	
 
