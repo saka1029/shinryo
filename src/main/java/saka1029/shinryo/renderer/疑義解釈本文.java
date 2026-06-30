@@ -127,7 +127,7 @@ public class 疑義解釈本文 extends HTML {
             int b = 0;
             for (Entry<NameNode, Map<NameNode, List<Node>>> 分類 : 疑義解釈.entrySet()) {
                 ++b;
-                writer.println("%s<p %s>%s</p>",
+                writer.println("%s<h2><p %s>%s</p></h2>",
                     lineDirective(分類.getKey().node.token), indent(0, ""), 分類.getKey().name);
                 int n = 0;
                 for (Entry<NameNode, List<Node>> 名称 : 分類.getValue().entrySet()) {
