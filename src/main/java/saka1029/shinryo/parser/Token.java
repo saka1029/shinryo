@@ -87,12 +87,18 @@ public class Token {
         return body.size();
     } 
 
+    /**
+     * トリムした本文の行を返します。
+     */
     public List<String> body() {
-        return body.stream().map(String::trim).toList();
+        return bodyStream().toList();
     } 
 
+    /**
+     * トリムした本文の行をストリームで返します。
+     */
     public Stream<String> bodyStream() {
-        return body.stream();
+        return body.stream().map(String::trim);
     } 
 
     public List<String> bodyBare() {
