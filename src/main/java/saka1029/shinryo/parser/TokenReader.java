@@ -42,7 +42,7 @@ public class TokenReader {
                     }
                     if (token == null)
                         token = new Token(TokenType.START, null, null, pdfFileName, txtFileName, pageNo, lineNo, 0);
-                    token.body.add(line.trim());
+                    token.bodyAdd(line.trim());
                 }
             }
             if (token != null)

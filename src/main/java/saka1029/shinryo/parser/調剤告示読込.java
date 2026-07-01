@@ -74,7 +74,7 @@ public class 調剤告示読込 extends Parser {
             カナ(n);
         } else if (isChild(parent, 注１) && eat(注１)) {
         	Token tyu = new Token(注ルート, "注", "", Collections.emptyList(), eaten);
-        	Token one = new Token(数字, "１", eaten.header, eaten.body, eaten);
+        	Token one = new Token(数字, "１", eaten.header, eaten.body(), eaten);
         	Node tyuNode = add(parent, tyu);
         	Node oneNode = add(tyuNode, one);
             カナ(oneNode);

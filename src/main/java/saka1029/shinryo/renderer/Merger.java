@@ -90,7 +90,7 @@ public class Merger {
         for (Iterator<Node> it = copy.children.iterator(); it.hasNext(); )
             if (MERGE_NODE_NAME.contains(it.next().token.type.name))
                 it.remove();
-        if (copy.token.body.size() > 0 || copy.children.size() > 0)
+        if (copy.token.bodySize() > 0 || copy.children.size() > 0)
             kNode.tuti = copy;
     }
 

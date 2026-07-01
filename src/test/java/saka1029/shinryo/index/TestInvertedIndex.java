@@ -62,7 +62,7 @@ public class TestInvertedIndex {
             } else if (MAIN_NODES.contains(t.type.name))
                 url = node.path + ".html";
             // else 親のURLを継承
-            for (String word : tokenize(t.header + " " + t.body.stream().collect(Collectors.joining())))
+            for (String word : tokenize(t.header + " " + t.bodyStream().collect(Collectors.joining())))
                 out.accept(url, word);
         }
         for (Node child : node.children)

@@ -81,7 +81,7 @@ public class 本文 extends HTML {
 	}
 
 	String linkBodyText(Token token) {
-	    return linkText(token.body.stream().collect(Collectors.joining()));
+	    return linkText(token.bodyStream().collect(Collectors.joining()));
 	}
 	
 	static void beginTuti(TextWriter writer) {
@@ -114,7 +114,7 @@ public class 本文 extends HTML {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
             lineDirective(token), indent(level, token.number), token.number, linkText(token.header),
-            token.body.size() > 0 ? "<br>" : "", linkBodyText(token));
+            token.bodySize() > 0 ? "<br>" : "", linkBodyText(token));
         for (Node child : node.children)
             node(child, level + 1, writer);
     }
@@ -129,7 +129,7 @@ public class 本文 extends HTML {
         else if (MAIN_NODES.contains(token.type.name)) {
             if (node.children.stream().anyMatch(c -> !MAIN_TREE_NODES.contains(c.token.type.name)))
                 link(node, level, writer, false);
-            else if (node.token.body.size() > 0)
+            else if (node.token.bodySize() > 0)
                 link(node, level, writer, true);
             else
                 text(node, level, writer);
@@ -160,12 +160,12 @@ public class 本文 extends HTML {
                 Token token = node.token;
                 if (!token.header1().isEmpty())
                     writer.println("<p><b>%s</b></p>", linkText(token.header1()));
-                if (token.body.size() > 0)
+                if (token.bodySize() > 0)
                     writer.println("<p>%s</p>", linkBodyText(token));
 			}
 			// 歯科の区分番号で記述が空の場合、医科の区分番号へリンクする
 			if (kubunMap != null && node.token != null && node.token.type.name.equals("区分番号")
-				&& node.token.header1().isBlank() && node.token.body.isEmpty() && node.children.isEmpty()) {
+				&& node.token.header1().isBlank() && node.token.body().isEmpty() && node.children.isEmpty()) {
 				String name = node.token.header0().replaceFirst(区分末尾の括弧, "");
 				String ikaId = kubunMap.get(name);
 				if (ikaId == null)
@@ -180,7 +180,7 @@ public class 本文 extends HTML {
 			}
 			// 通知ノードのレンダリング
 			if (!node.isTuti && node.tuti != null
-				&& (!node.tuti.token.body.stream().allMatch(String::isBlank) || node.tuti.children.size() > 0)) {
+				&& (!node.tuti.token.bodyStream().allMatch(String::isBlank) || node.tuti.children.size() > 0)) {
 			    beginTuti(writer);
                 writer.println("<p>%s</p>", linkBodyText(node.tuti.token));
 			    for (Node child : node.tuti.children)

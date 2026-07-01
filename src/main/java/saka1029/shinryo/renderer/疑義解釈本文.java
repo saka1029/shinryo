@@ -74,7 +74,7 @@ public class 疑義解釈本文 extends HTML {
 	}
 
 	String bodyText(Token token) {
-	    return token.body.stream()
+	    return token.body().stream()
             .map(line -> Pat.全半角間空白削除(line) + "<br>")
             .collect(Collectors.joining());
 	}

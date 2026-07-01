@@ -36,9 +36,9 @@ public abstract class 施設基準本文 extends HTML {
         Token token = node.token;
         writer.println("%s<p %s>%s %s%s%s</p>",
             lineDirective(token), indent(level, token.number), token.number, anchor(token.header, node),
-            // token.body.size() > 0 ? "<br>" : "",
+            // token.bodySize() > 0 ? "<br>" : "",
             "",     // headerとbodyの間に<br>を置きません。
-            anchor(token.body.stream().collect(Collectors.joining()), node));
+            anchor(token.bodyStream().collect(Collectors.joining()), node));
         for (Node child : node.children)
             node(child, level + 1, writer);
     }
@@ -59,8 +59,8 @@ public abstract class 施設基準本文 extends HTML {
                 Token token = node.token;
                 if (!token.header1().isEmpty())
                     writer.println("<p><b>%s</b></p>", anchor(token.header1(), node));
-                if (token.body.size() > 0)
-                    writer.println("<p>%s</p>", anchor(String.join("", token.body), node));
+                if (token.bodySize() > 0)
+                    writer.println("<p>%s</p>", anchor(String.join("", token.body()), node));
 			}
             // 子ノードのレンダリング
             for (Node child : node.children)

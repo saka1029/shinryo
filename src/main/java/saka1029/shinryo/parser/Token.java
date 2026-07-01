@@ -2,6 +2,7 @@ package saka1029.shinryo.parser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Token {
     public final TokenType type;
@@ -23,7 +24,7 @@ public class Token {
     public final int pageNo;
     public final int lineNo;
     public final int indent;
-    public final List<String> body;
+    private final List<String> body;
 
     public Token(TokenType type, String number, String header, String pdfFileName, String txtFileName, int pageNo, int lineNo, int indent,
         List<String> body) {
@@ -69,13 +70,33 @@ public class Token {
      * <pre>
      * header         header0
      * -------------  -------
-     * "aaa"          ""
+     * "aaa"          "" 
      * "aaa bbb"      "bbb"
      * "aaa bbb ccc"  "bbb ccc"
      * </pre>
      */
     public String header1() {
         return header.replaceFirst("\\S*\\s*", "");
+    }
+
+    public void bodyAdd(String line) {
+        body.add(line);
+    }
+
+    public int bodySize() {
+        return body.size();
+    } 
+
+    public List<String> body() {
+        return body.stream().map(String::trim).toList();
+    } 
+
+    public Stream<String> bodyStream() {
+        return body.stream();
+    } 
+
+    public List<String> bodyBare() {
+        return new ArrayList<>(body);
     }
 
     @Override
