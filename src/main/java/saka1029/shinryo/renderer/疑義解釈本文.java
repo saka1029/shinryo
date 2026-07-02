@@ -79,6 +79,28 @@ public class 疑義解釈本文 extends HTML {
             .collect(Collectors.joining());
 	}
 	
+    static float width(String s) {
+        return s.codePoints().map(c -> c < 256 ? 1 : 2).sum();
+    }
+
+    static final String NL = "\r\n";
+
+    String text(Token token) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<pre>");
+        float indent = width(token.number) + 1;
+        sb.append(token.number).append(" ").append(token.header).append(NL);
+        List<String> body = token.bodyBare();
+        if (!body.isEmpty()) {
+            int minIndent = body.stream()
+                .mapToInt(line -> line.replaceFirst("\\S.*$", "").length())
+                .min().getAsInt();
+            for (String line : token.bodyBare())
+                sb.append
+        }
+        sb.append("</pre>");
+        return sb.toString();
+    }
 
     void file(String title, int b, int n, List<Node> 問リスト) throws IOException {
         try (TextWriter writer = new TextWriter(Path.of(outDir, "b%d_n%d.html".formatted(b, n)))) {
