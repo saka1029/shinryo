@@ -79,7 +79,7 @@ public class 疑義解釈本文 extends HTML {
             .collect(Collectors.joining());
 	}
 	
-    static float width(String s) {
+    static int width(String s) {
         return s.codePoints().map(c -> c < 256 ? 1 : 2).sum();
     }
 
@@ -87,18 +87,16 @@ public class 疑義解釈本文 extends HTML {
 
     String text(Token token) {
         StringBuilder sb = new StringBuilder();
-        sb.append("<pre>");
-        float indent = width(token.number) + 1;
         sb.append(token.number).append(" ").append(token.header).append(NL);
         List<String> body = token.bodyBare();
         if (!body.isEmpty()) {
+            String indent = " ".repeat(width(token.number) + 1);
             int minIndent = body.stream()
                 .mapToInt(line -> line.replaceFirst("\\S.*$", "").length())
                 .min().getAsInt();
-            for (String line : token.bodyBare())
-                sb.append
+            for (String line : body)
+                sb.append(indent).append(line.substring(minIndent)).append(NL);
         }
-        sb.append("</pre>");
         return sb.toString();
     }
 
@@ -114,13 +112,15 @@ public class 疑義解釈本文 extends HTML {
 				// 問のレンダリング
                 for (Node 問ノード : 問リスト) {
                     Token 問 = 問ノード.token;
-                    writer.println("%s<div class='rbox'><p %s>%s %s%s</p></div>",
-                        lineDirective(問), indent(0, 問.number), 問.number, text(問.header),
-                        bodyText(問));
+                    writer.println("%s<div class='rbox'><pre>%s</pre></div>", lineDirective(問), text(問));
+                    // writer.println("%s<div class='rbox'><p %s>%s %s%s</p></div>",
+                    //     lineDirective(問), indent(0, 問.number), 問.number, text(問.header),
+                    //     bodyText(問));
                     Token 答 = 問ノード.children.get(0).token;
-                    writer.println("%s<p %s>%s %s%s</p>",
-                        lineDirective(答), indent(0, 答.number), 答.number, text(答.header),
-                        bodyText(答));
+                    writer.println("%s<pre>%s</pre>", lineDirective(答), text(答));
+                    // writer.println("%s<p %s>%s %s%s</p>",
+                    //     lineDirective(答), indent(0, 答.number), 答.number, text(答.header),
+                    //     bodyText(答));
                 }
 			writer.println("</div>"); // id='content'
             writer.println("</div>"); // id='all'

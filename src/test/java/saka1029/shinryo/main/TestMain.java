@@ -59,4 +59,10 @@ public class TestMain {
             "-i", "in", "-o", "debug", "-b", BASE_URL, "08", "k2"});
     }
 
+    @Test
+    public void test08G2Debug() throws IOException {
+        Main.main(new String[] {
+            "-i", "in", "-o", "../s", "-b", BASE_URL, "08", "g2"});
+    }
+
 }
