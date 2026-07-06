@@ -32,7 +32,7 @@
 //        + "</form>\n";
     links += "<a href='../../index.html' target='_top'>ホーム</a>";
     if (年度 != 最新年度) {
-        // update 2026-07-06
+        // update 2026-07-06 a
         const latest = `../../${最新年度}/${点数表}/${種類}.html`;
         links += ` <a href=' + latest + '><font color='red'>最新版</font></a>`;
         window.addEventListener('load',function() {
