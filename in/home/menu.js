@@ -30,10 +30,14 @@
 //        + "    <input type='submit' name='sa' value='検索' />\n"
 //        + "    <img src='http://www.google.com/cse/images/google_custom_search_smwide.gif' align='middle'>\n"
 //        + "</form>\n";
-    links += " <a href='../../index.html' target='_top'>ホーム</a>";
+    links += "<a href='../../index.html' target='_top'>ホーム</a>";
     if (年度 != 最新年度) {
-        links += ` <a href='../../${最新年度}/${点数表}/${種類}.html'><font color='red'>最新版</font></a>`;
-        window.onload = function() { alert("このページは旧版です。「最新版」をクリックしてください。"); };
+        const latest = `../../${最新年度}/${点数表}/${種類}.html`;
+        links += ` <a href=' + latest + '><font color='red'>最新版</font></a>`;
+        window.addEventListener('load',function() {
+            if (window.confirm("このページは旧版です。最新版を表示させますか？"))
+                window.location.href = latest;
+        });
     }
     if (点数表 == "k") {
         links += " <a href='index.html'>告示</a>";
