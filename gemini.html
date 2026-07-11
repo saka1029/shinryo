@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>診療報酬点数表 検索・閲覧（デザイン改善案）</title>
+    <style>
+        /* --- 基本リセット & 共通スタイル --- */
+        :root {
+            --primary-color: #1e3a8a; /* 信頼感のあるネイビー */
+            --primary-light: #eff6ff; /* 薄いブルー */
+            --text-color: #2d3748;    /* 真っ黒ではない墨色 */
+            --bg-color: #f8fafc;      /* 目に優しい薄いグレー */
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* --- ヘッダー --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* --- メインコンテナ --- */
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* --- お知らせ / 案内エリア --- */
+        .intro-box {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .intro-box p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* --- アコーディオン（年度別） --- */
+        details {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* 開いているときのスタイル */
+        details[open] {
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border-color: #cbd5e1;
+        }
+
+        /* 見出し部分 */
+        summary {
+            padding: 1.25rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        summary::-webkit-details-marker {
+            display: none; /* デフォルトの三角を消す */
+        }
+
+        /* カスタムの矢印アイコン（CSSで作成） */
+        summary::after {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-bottom: 2px solid var(--primary-color);
+            border-right: 2px solid var(--primary-color);
+            transform: rotate(45deg);
+            transition: transform 0.2s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(-130deg);
+        }
+
+        summary:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* --- カテゴリリンクのグリッド配置 --- */
+        .grid-container {
+            padding: 1.25rem;
+            border-top: 1px solid var(--border-color);
+            background-color: #fafafa;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        /* リンクボタンの装飾 */
+        .grid-container a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem 1rem;
+            background-color: white;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            transition: all 0.15s ease;
+        }
+
+        /* ホバー時のアクション */
+        .grid-container a:hover {
+            color: white;
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(30, 58, 138, 0.2);
+        }
+
+        /* --- フッター --- */
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>診療報酬点数表 検索・閲覧</h1>
+        <p>医科・歯科・調剤・施設基準等のリファレンスサイト</p>
+    </header>
+
+    <main>
+        <div class="intro-box">
+            <p>💡 各年度を選択すると、区分ごとの点数表一覧（医科・歯科・調剤等）が表示されます。</p>
+        </div>
+
+        <details open>
+            <summary>令和08年 診療報酬点数表</summary>
+            <div class="grid-container">
+                <a href="#">医科</a>
+                <a href="#">歯科</a>
+                <a href="#">調剤</a>
+                <a href="#">施設基準</a>
+            </div>
+        </details>
+
+        <details>
+            <summary>令和06年 診療報酬点数表</summary>
+            <div class="grid-container">
+                <a href="#">医科</a>
+                <a href="#">歯科</a>
+                <a href="#">調剤</a>
+                <a href="#">施設基準</a>
+                <a href="#">調剤（経過措置）</a>
+            </div>
+        </details>
+
+        <details>
+            <summary>令和04年 診療報酬点数表</summary>
+            <div class="grid-container">
+                <a href="#">医科</a>
+                <a href="#">歯科</a>
+                <a href="#">調剤</a>
+                <a href="#">施設基準</a>
+            </div>
+        </details>
+
+        <details>
+            <summary>令和02年 診療報酬点数表</summary>
+            <div class="grid-container">
+                <a href="#">医科</a>
+                <a href="#">歯科</a>
+                <a href="#">調剤</a>
+                <a href="#">施設基準</a>
+            </div>
+        </details>
+
+    </main>
+
+    <footer>
+        <p>© 2026 診療報酬点数表 検索・閲覧システム</p>
+    </footer>
+
+</body>
+</html>
